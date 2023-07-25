@@ -5,6 +5,7 @@ import { Container } from './Components/Layout/Container';
 
 import './App.css'
 import Login from './Components/Pages/Login'
+import Home from './Components/Pages/Home';
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
 
       <Route path="/" element={<Login />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/home" element={<Home />} />
 
       </Routes>
       
