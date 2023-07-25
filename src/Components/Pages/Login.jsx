@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import styles from './Login.module.css'
+import logo from '../../img/logo.png'
 import { Input } from '../Forms/input'
 import { Button } from '../Forms/button'
 
 
 export default function Login() {
 
-    const [user,setUser] = useState({})
+    const [user, setUser] = useState({})
 
     function HandleLogin(e) {
         setUser({ ...user, login: e.target.value });
@@ -24,14 +25,17 @@ export default function Login() {
     return (
         <div>
             <div className={styles.title}>
-                Faça o Login para entrar no Sistema
+                <img src={logo} alt="logo" />
+                <a>Sistema de Gerenciamento de Refeições</a>
             </div>
+            <div className={styles.divform}>
             <form onSubmit={submit} className={styles.form}>
-                <Input type="text" text="Digite seu Login" name="login" id="login" placeholder="Digite seu Login" handleOnChange={HandleLogin} value={user.login} />
-                <Input type="password" text="Digite sua Senha" name="senha" id="senha" placeholder="Digite sua Senha" handleOnChange={HandleSenha} value={user.senha} />
+                <Input type="text" text="Login" name="login" id="login" placeholder="Digite seu Login" handleOnChange={HandleLogin} value={user.login} />
+                <Input type="password" text="Senha" name="senha" id="senha" placeholder="Digite sua Senha" handleOnChange={HandleSenha} value={user.senha} />
                 <Button text="Entrar" />
             </form>
+            </div>
         </div>
-        
+
     )
 }
