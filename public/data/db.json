@@ -1,0 +1,53 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "name": "Alan Barbosa",
+      "cpf": "129.641.886-37",
+      "setor": {
+        "id": 1,
+        "name": "Tecnologia da Informação",
+        "code": "T.I"
+      },
+      "senha": "aopsjd345346"
+    },
+    {
+      "id": 2,
+      "name": "Raulivan",
+      "cpf": "1245678945",
+      "setor": {
+        "id": 1,
+        "name": "Tecnologia da Informação",
+        "code": "T.I"
+      },
+      "senha": "ertgyewy6785678"
+    }
+  ],
+  "setor": [
+    {
+      "id": 1,
+      "name": "Tecnologia da Informação",
+      "code": "T.I"
+    },
+    {
+      "id": 2,
+      "name": "Recursos Humanos",
+      "code": "RH"
+    },
+    {
+      "id": 3,
+      "name": "Moldação",
+      "code": "MO"
+    },
+    {
+      "id": 4,
+      "name": "Fusão",
+      "code": "FU"
+    },
+    {
+      "id": 5,
+      "name": "Acabamento",
+      "code": "ATO"
+    }
+  ]
+}
