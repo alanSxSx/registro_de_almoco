@@ -7,7 +7,7 @@
     height: 15vh;
     background-color: rgb(255, 0, 0);
     color: white;
-    
+
 }
 
 .navbar img {
@@ -29,7 +29,7 @@
     color: white;
     text-decoration: none;
     margin: 0 1em;
-    width: 5em;
+    width: 110px;
     height: 15vh;
 }
 
@@ -37,7 +37,7 @@
     color: rgb(255, 0, 0);
     background-color: white;
     border: solid 1px;
-    
+
 }
 
 
