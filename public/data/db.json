@@ -10,7 +10,7 @@
         "code": "T.I"
       },
       "senha": "aopsjd345346",
-      "status": true
+      "status": false
     },
     {
       "id": 2,
@@ -36,6 +36,66 @@
       "senha": "123456798asd",
       "status": false,
       "image": "register-placeholder.svg"
+    },
+    {
+      "id": 4,
+      "name": "tesste",
+      "cpf": "1234234",
+      "setor": {
+        "id": 1,
+        "name": "Tecnologia da Informação",
+        "code": "T.I"
+      },
+      "senha": "asdas56756",
+      "status": true
+    },
+    {
+      "id": 5,
+      "name": "wdfgdsf",
+      "cpf": "ertwet",
+      "setor": {
+        "id": 2,
+        "name": "Recursos Humanos",
+        "code": "RH"
+      },
+      "senha": "sdafasf",
+      "status": true
+    },
+    {
+      "id": 6,
+      "name": "asdsfsdafs",
+      "cpf": "32452345",
+      "setor": {
+        "id": 3,
+        "name": "Moldação",
+        "code": "MO"
+      },
+      "senha": "atfasdf6578567",
+      "status": true
+    },
+    {
+      "id": 7,
+      "name": "dasfasdfa",
+      "cpf": "3425235",
+      "setor": {
+        "id": 3,
+        "name": "Moldação",
+        "code": "MO"
+      },
+      "senha": "asdfasdf5678",
+      "status": true
+    },
+    {
+      "id": 8,
+      "name": "werfweqf",
+      "cpf": "34252345",
+      "setor": {
+        "id": 2,
+        "name": "Recursos Humanos",
+        "code": "RH"
+      },
+      "senha": "34r5t3ret",
+      "status": true
     }
   ],
   "setor": [

@@ -2,7 +2,6 @@
     width: 100vw;
     display: flex;
     justify-content: center;
-    background-color: rgb(238, 217, 217);
 }
 
 .form {
@@ -30,30 +29,36 @@
     margin-bottom: 2em;
     padding: 0;
     width: 20vw;
+
 }
 
 .title {
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
     font-weight: bold;
     width: 100vw;
     background-color: rgb(255, 0, 0);
     color: white;
-    padding: 0 50px;
+		height: 10vh;
+		padding: 0 20px;
 }
 
 .title a {
     display: flex;
     align-items: center;
+		justify-content: center;
     font-size: 1.5em;
+		flex-grow: 1;
+		margin-right: 70px;
+
     /* justify-content: center;
     width: 100%; */
 }
 
 .title img {
-    width: 9%;
-    height: 15%;
+    width: 70px;
+    height: 70px;
 
 }
 
@@ -68,11 +73,15 @@
         justify-content: center;
         text-align: center;
         font-size: .8rem;
+				padding: 0;
+				height: auto;
+
     }
 
     .title a {
         padding-top: 1em;
         padding-bottom: 1em;
+				margin: 0;
     }
 
     .title img {
@@ -88,12 +97,12 @@
     }
 
     .form input {
-        width: 100vw;
+        width: 90vw;
         border-radius: 0 !important;
     }
 
     .form button {
-        width: 100vw;
+        width: 90vw;
         border-radius: 0 !important;
     }
 
