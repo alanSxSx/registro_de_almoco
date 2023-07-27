@@ -30,6 +30,7 @@ export default function Cadastro() {
         cpf: '',
         setor: [],
         senha: '',
+        status: true,
     };
 
     const [registers, setRegisters] = useState(null);
@@ -155,7 +156,7 @@ export default function Cadastro() {
         setSubmitted(false);
 
         let _registers = [...registers];
-        
+
 
         fetch(`http://localhost:3000/data/${register.id}`, {
             method: 'PATCH',
@@ -326,10 +327,21 @@ export default function Cadastro() {
         setRegister(_register);
     }
 
+    function getStatusLabel(status) {
+        return status ? 'Ativo' : 'Inativo';
+      }
+
     const onInputChange = (e, name) => {
-        const val = (e.target && e.target.value) || '';
+        // const val = (e.target && e.target.value) || '';
+        const val = e.target ? e.target.value : e.value;
         let _register = { ...register };
-        _register[`${name}`] = val;
+        _register[name] = name === 'status' ? val === 'true' : val;
+       /* if (name === 'status') {
+            _register[name] = val === 'true'; // Converte a string em um valor booleano
+        } else {
+            _register[name] = val;
+        }
+        //_register[`${name}`] = val;*/
 
         setRegister(_register);
     }
@@ -373,7 +385,7 @@ export default function Cadastro() {
     }
 
     const statusBodyTemplate = (rowData) => {
-        return <span className={`register-badge status-${rowData.inventoryStatus.toLowerCase()}`}>{rowData.inventoryStatus}</span>;
+        return <span className={`register-badge status-${getStatusLabel(rowData.status).toLowerCase()}`}>{getStatusLabel(rowData.status)}</span>;
     }
 
     const actionBodyTemplate = (rowData) => {
@@ -437,16 +449,17 @@ export default function Cadastro() {
                             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} registers"
                             globalFilter={globalFilter} header={header} responsiveLayout="scroll">
                             <Column selectionMode="multiple" headerStyle={{ width: '3rem' }} exportable={false}></Column>
-                            <Column field="id" header="id" sortable style={{ minWidth: '12rem' }}></Column>
+                            <Column field="id" header="id" sortable style={{ minWidth: '3rem' }}></Column>
                             <Column field="name" header="Name" sortable style={{ minWidth: '16rem' }}></Column>
-                            <Column field="cpf" header="CPF" sortable style={{ minWidth: '16rem' }}></Column>
-                            <Column field="setor.name" header="Setor" sortable style={{ minWidth: '16rem' }}></Column>
+                            <Column field="cpf" header="CPF" sortable style={{ minWidth: '10rem' }}></Column>
+                            <Column field="setor.name" header="Setor" sortable style={{ minWidth: '10rem' }}></Column>
+                            <Column body={statusBodyTemplate} field="status" header="Status"  sortable style={{ minWidth: '5rem' }}></Column>
                             {/* <Column field="image" header="Image" body={imageBodyTemplate}></Column> */}
                             {/* <Column field="price" header="Price" body={priceBodyTemplate} sortable style={{ minWidth: '8rem' }}></Column> */}
                             {/* <Column field="category" header="Category" sortable style={{ minWidth: '10rem' }}></Column> */}
                             {/* <Column field="rating" header="Reviews" body={ratingBodyTemplate} sortable style={{ minWidth: '12rem' }}></Column> */}
                             {/* <Column field="inventoryStatus" header="Status" body={statusBodyTemplate} sortable style={{ minWidth: '12rem' }}></Column> */}
-                            <Column body={actionBodyTemplate} exportable={false} style={{ minWidth: '8rem' }}></Column>
+                            <Column body={actionBodyTemplate} exportable={false}  style={{ minWidth: '8rem' }}></Column>
                         </DataTable>
                     </div>
 
@@ -462,11 +475,20 @@ export default function Cadastro() {
                             <InputText id="cpf" value={register.cpf} onChange={(e) => onInputChange(e, 'cpf')} required className={classNames({ 'p-invalid': submitted && !register.cpf })} />
                             {submitted && !register.cpf && <small className="p-error">CPF is required.</small>}
                         </div>
-                        {console.log()}
+
                         <div className="field">
                             <label htmlFor="setor">Setor</label>
                             <Dropdown value={register.setor} options={setores} onChange={(e) => onInputChange(e, 'setor')} optionLabel="name" placeholder="Selecione o Setor" />
                         </div>
+
+                        <div className="field">
+                            <label htmlFor="status">Status</label>
+                            <Dropdown value={register.status ? 'true' : 'false'} options={[
+                                { label: 'Ativo', value: 'true' },
+                                { label: 'Inativo', value: 'false' }
+                            ]} onChange={(e) => onInputChange(e, 'status')} optionLabel="label" placeholder="Selecione o Status" />
+                        </div>
+
                         <div className="field">
                             <label htmlFor="senha">Senha</label>
                             <Password id="senha" value={register.senha} onChange={(e) => onInputChange(e, 'senha')} required autoFocus className={classNames({ 'p-invalid': submitted && !register.senha })} />

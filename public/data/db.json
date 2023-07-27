@@ -9,7 +9,8 @@
         "name": "Tecnologia da Informação",
         "code": "T.I"
       },
-      "senha": "aopsjd345346"
+      "senha": "aopsjd345346",
+      "status": true
     },
     {
       "id": 2,
@@ -20,7 +21,21 @@
         "name": "Tecnologia da Informação",
         "code": "T.I"
       },
-      "senha": "ertgyewy6785678"
+      "senha": "ertgyewy6785678",
+      "status": true
+    },
+    {
+      "id": 3,
+      "name": "Teste",
+      "cpf": "123456789",
+      "setor": {
+        "id": 2,
+        "name": "Recursos Humanos",
+        "code": "RH"
+      },
+      "senha": "123456798asd",
+      "status": false,
+      "image": "register-placeholder.svg"
     }
   ],
   "setor": [
