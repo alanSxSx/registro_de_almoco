@@ -124,5 +124,25 @@
       "name": "Acabamento",
       "code": "ATO"
     }
+  ],
+  "precos": [
+    {
+      "0": {
+        "0": {
+          "precofuncionario": "2",
+          "precoempresa": "13",
+          "precototal": "20",
+          "id": 1
+        },
+        "precofuncionario": "3",
+        "precoempresa": "15",
+        "precototal": "18",
+        "id": 1
+      },
+      "precofuncionario": "2",
+      "precoempresa": "15",
+      "precototal": "17",
+      "id": 1
+    }
   ]
 }

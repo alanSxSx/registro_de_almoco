@@ -1,9 +1,9 @@
-.navbar{
+.navbar {
     display: flex;
     align-items: center;
     justify-content: space-around;
     font-weight: bold;
-    width: 100vw;
+    width: 100%;
     height: 10vh;
     background-color: rgb(255, 0, 0);
     color: white;
@@ -12,10 +12,10 @@
 
 .navbar img {
     width: 70px;
-    height: 70px;
+    height: 10vh;
 }
 
-.navleft{
+.navleft {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -40,28 +40,79 @@
 
 }
 
+.btnmenu {
+    width: 40px;
+    height: 50px;
+    position: absolute;
+    left: 25px;
+    top: 30px;
+    padding: 0px;
+    cursor: pointer;
+
+}
+
+.btnmenu span {
+    height: 5px;
+    display: none;
+    margin-bottom: 5px;
+    background-color: #ffffff;
+}
+
+
+
 
 @media screen and (max-width: 767px) {
 
-.navbar{
-    display: flex;
-    flex-direction: column;
-    height: 30%;
-}
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: column;
+        height: 30%;
+        width: 100vw;
 
-.navbar img{
-    margin-top: 1em;
-}
 
-.navleft{
-    display: flex;
-    flex-direction: column;
-    margin-top: 1em;
-}
+    }
 
-.navbar div a{
-    width: 100vw;
-}
+    .navbar img {
+        margin-top: 1em;
+        margin-bottom: 1em;
+    }
+
+    .navleft {
+        display: flex;
+        flex-direction: column;
+        margin-top: 1em;
+
+    }
+
+    .navbar div a {
+        width: 90vw;
+    }
+
+
+    .btnmenu span{
+        display: block;
+    }
+
+
+    .navbar span.btnmenu {
+        display: block;
+        /* Adicione estilos conforme necessário para o botão de menu aparecer */
+      }
+    
+      /* Resto do estilo para exibir o menu em telas menores */
+      .navbar div.navleft {
+        display: none; /* Inicialmente, o menu fica oculto em telas menores */
+      }
+      .navbar div.navleft.showMenu {
+        display: flex; /* Quando o botão mobile é clicado, exibir o menu */
+        flex-direction: column;
+        align-items: center;
+      }
+
+
+
 
 
 }

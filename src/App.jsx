@@ -7,6 +7,7 @@ import './App.css'
 import Login from './Components/Pages/Login'
 import Home from './Components/Pages/Home';
 import Cadastro from './Components/Pages/Cadastro';
+import Configuracao from './Components/Pages/Configuracao';
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
       <Route path="/" element={<Login />} />
       <Route path="/login" element={<Login />} />
       <Route path="/home" element={<Home />} />
+      <Route path="/configuracao" element={<Configuracao />} />
       <Route path="/cadastro" element={<Cadastro />} />
 
       </Routes>
