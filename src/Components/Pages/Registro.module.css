@@ -1,0 +1,55 @@
+.title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: bold;
+    width: 100vw;
+    background-color: rgb(255, 0, 0);
+    color: white;
+		height: 10vh;
+		padding: 0 20px;
+}
+
+.title a {
+    display: flex;
+    align-items: center;
+		justify-content: center;
+    font-size: 1.5em;
+		flex-grow: 1;
+		margin-right: 70px;
+
+    /* justify-content: center;
+    width: 100%; */
+}
+
+.title img {
+    width: 70px;
+    height: 100%;
+
+}
+
+.tableheader{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.tableheader input{
+    width: 60vw;
+}
+
+.tableheader h2 {
+    margin-bottom: 1rem;
+}
+
+.card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+}
+
+
+
+
+

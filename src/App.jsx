@@ -8,6 +8,7 @@ import Login from './Components/Pages/Login'
 import Home from './Components/Pages/Home';
 import Cadastro from './Components/Pages/Cadastro';
 import Configuracao from './Components/Pages/Configuracao';
+import Registro from './Components/Pages/Registro';
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/home" element={<Home />} />
       <Route path="/configuracao" element={<Configuracao />} />
+      <Route path="/registro" element={<Registro />} />
       <Route path="/cadastro" element={<Cadastro />} />
 
       </Routes>
