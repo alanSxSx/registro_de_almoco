@@ -23,7 +23,7 @@
 }
 
 .title img {
-    width: 70px;
+    width: 10vh;
     height: 100%;
 
 }
@@ -49,6 +49,19 @@
     width: 100vw;
 }
 
+
+.columnbutton{
+text-align: center !important;
+}
+
+
+
+.pbutton{
+background-color: #22C55E;
+color: white;
+width: 20vw;
+border: 1px solid #22C55E;
+}
 
 
 

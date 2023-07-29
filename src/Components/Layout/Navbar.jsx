@@ -24,7 +24,7 @@ export default function Navbar() {
         <a href="#">Início</a>
         <a href="/cadastro">Cadastro</a>
         <a href="#">Marcações</a>
-        <a href="#">Lançamento</a>
+        <a href="/registro">Lançamento</a>
         <a href="/configuracao">Configuração</a>
       </div>
     </div>

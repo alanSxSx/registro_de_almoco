@@ -11,7 +11,7 @@
 }
 
 .navbar img {
-    width: 70px;
+    width: 10vh;
     height: 10vh;
 }
 
@@ -100,7 +100,7 @@
         display: block;
         /* Adicione estilos conforme necessário para o botão de menu aparecer */
       }
-    
+
       /* Resto do estilo para exibir o menu em telas menores */
       .navbar div.navleft {
         display: none; /* Inicialmente, o menu fica oculto em telas menores */
