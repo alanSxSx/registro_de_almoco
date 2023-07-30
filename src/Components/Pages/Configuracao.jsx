@@ -6,24 +6,18 @@ import { Button } from '../Forms/button'
 
 export default function Configuracao() {
 
-    let emptyPrecos = {
-        precoempresa: '',
-        precofuncionario: '',
-        precototal: '',
-    }
 
     const [precos, setPrecos] = useState(null);
     const [precoFuncAtual, setPrecoFuncAtual] = useState('');
     const [precoEmpAtual, setPrecoEmpAtual] = useState('');
     const [precoTotalAtual, setPrecoTotalAtual] = useState('');
-    const [dataCarregada, setDataCarregada] = useState(false);
+
 
     useEffect(() => {
         fetch('http://localhost:3000/precos')
             .then((resp) => resp.json())
             .then((data) => {
                 setPrecos(data);
-                setDataCarregada(true);
                 setPrecoFuncAtual(data[0].precofuncionario || '');
                 setPrecoEmpAtual(data[0].precoempresa || '');
                 setPrecoTotalAtual(data[0].precototal || '');
@@ -79,7 +73,7 @@ export default function Configuracao() {
                         <div>
                             <Button text="Enviar" />
                         </div>
-                        
+
                         <div className={styles.divinput}>
                             <Input type="text" text="Preço Funcionário Atual" name="precofuncatual" id="precofunatual" placeholder="" handleOnChange={() => { }} value={precoFuncAtual} />
                             <Input type="text" text="Preço Empresa Atual" name="precoempatual" id="precoempatual" placeholder="" handleOnChange={() => { }} value={precoEmpAtual} />

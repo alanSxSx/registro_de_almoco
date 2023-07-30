@@ -63,38 +63,14 @@
     },
     {
       "id": 6,
-      "name": "asdsfsdafs",
-      "cpf": "32452345",
+      "name": "AlanTeste",
+      "cpf": "123456789",
       "setor": {
-        "id": 3,
-        "name": "Moldação",
-        "code": "MO"
+        "id": 1,
+        "name": "Tecnologia da Informação",
+        "code": "T.I"
       },
-      "senha": "atfasdf6578567",
-      "status": true
-    },
-    {
-      "id": 7,
-      "name": "dasfasdfa",
-      "cpf": "3425235",
-      "setor": {
-        "id": 3,
-        "name": "Moldação",
-        "code": "MO"
-      },
-      "senha": "asdfasdf5678",
-      "status": true
-    },
-    {
-      "id": 8,
-      "name": "werfweqf",
-      "cpf": "34252345",
-      "setor": {
-        "id": 2,
-        "name": "Recursos Humanos",
-        "code": "RH"
-      },
-      "senha": "34r5t3ret",
+      "senha": "1",
       "status": true
     }
   ],
@@ -144,5 +120,10 @@
       "precototal": "17",
       "id": 1
     }
-  ]
+  ],
+	"refeicoes":[
+		{
+
+		}
+	]
 }

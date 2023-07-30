@@ -8,7 +8,6 @@ import { Column } from 'primereact/column';
 import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
 import { FileUpload } from 'primereact/fileupload';
-import { Rating } from 'primereact/rating';
 import { Toolbar } from 'primereact/toolbar';
 import { Password } from 'primereact/password'
 import { Dialog } from 'primereact/dialog';
@@ -50,9 +49,6 @@ export default function Cadastro() {
         registerService.getRegisters().then(data => setRegisters(data));
     }, []);
 
-    const formatCurrency = (value) => {
-        return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-    }
 
     const openNew = () => {
         setRegister(emptyRegister);
@@ -116,7 +112,7 @@ export default function Cadastro() {
             })
                 .then((resp) => resp.json())
                 .then((data) => {
-                    if (data && data.id) {
+                    if (data.id) {
                         _register.id = data.id;
                     }
                     setRegisters(_registers);
@@ -155,7 +151,7 @@ export default function Cadastro() {
     const saveEditRegister = () => {
         setSubmitted(false);
 
-        let _registers = [...registers];
+
 
 
         fetch(`http://localhost:3000/data/${register.id}`, {
@@ -199,7 +195,7 @@ export default function Cadastro() {
 
         }).then((resp) => resp.json())
             .then(() => {
-                setRegister(register.filter((register) => register.id !== register.id))
+                setRegister(register.filter((registers) => registers.id !== register.id))
                 // setProjectMessage('Projeto Removido com Sucesso !')
             })
             .catch(err => console.log(err))
@@ -321,44 +317,25 @@ export default function Cadastro() {
 
 
 
-    const onCategoryChange = (e) => {
-        let _register = { ...register };
-        _register['category'] = e.value;
-        setRegister(_register);
-    }
-
     function getStatusLabel(status) {
         return status ? 'Ativo' : 'Inativo';
       }
 
     const onInputChange = (e, name) => {
-        // const val = (e.target && e.target.value) || '';
         const val = e.target ? e.target.value : e.value;
         let _register = { ...register };
         _register[name] = name === 'status' ? val === 'true' : val;
-       /* if (name === 'status') {
-            _register[name] = val === 'true'; // Converte a string em um valor booleano
-        } else {
-            _register[name] = val;
-        }
-        //_register[`${name}`] = val;*/
 
         setRegister(_register);
     }
 
-    const onInputNumberChange = (e, name) => {
-        const val = e.value || 0;
-        let _register = { ...register };
-        _register[`${name}`] = val;
 
-        setRegister(_register);
-    }
 
     const leftToolbarTemplate = (rowData) => {
         return (
             <React.Fragment>
                 <Button label="Novo" icon="pi pi-plus" className="p-button-success mr-2" onClick={openNew} />
-                <Button label="Excluir" icon="pi pi-trash" className="p-button-danger" onClick={() => confirmDeleteSelected(rowData)} />
+                <Button label="Excluir" icon="pi pi-trash" className="p-button-danger" onClick={() => confirmDeleteSelected()} />
             </React.Fragment>
         )
     }
@@ -372,17 +349,7 @@ export default function Cadastro() {
         )
     }
 
-    const imageBodyTemplate = (rowData) => {
-        return <img src={`images/register/${rowData.image}`} onError={(e) => e.target.src = 'https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} alt={rowData.image} className="register-image" />
-    }
 
-    const priceBodyTemplate = (rowData) => {
-        return formatCurrency(rowData.price);
-    }
-
-    const ratingBodyTemplate = (rowData) => {
-        return <Rating value={rowData.rating} readOnly cancel={false} />;
-    }
 
     const statusBodyTemplate = (rowData) => {
         return <span className={`register-badge status-${getStatusLabel(rowData.status).toLowerCase()}`}>{getStatusLabel(rowData.status)}</span>;

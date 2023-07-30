@@ -1,73 +1,56 @@
 import styles from './Registro.module.css'
 import logo from '../../img/logo.png'
 import React, { useState, useEffect, useRef } from 'react';
-import { classNames } from 'primereact/utils';
 import { Password } from 'primereact/password'
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { Column } from 'primereact/column';
-import { Dropdown } from 'primereact/dropdown';
 import { RegisterService } from '../imports/RegisterService';
-import { Toolbar } from 'primereact/toolbar';
 import { DataTable } from 'primereact/datatable';
 import { Button } from 'primereact/button';
 
-
-
-
 export default function Registro() {
 
-	let emptyRegister = {
-		id: null,
-		id_func: null,
-		data_reg: '',
-		senha: '',
-	};
-
-
 	const [registers, setRegisters] = useState(null);
-	const [selectedRegisters, setSelectedRegisters] = useState(null);
 	const [globalFilter, setGlobalFilter] = useState(null);
 	const dt = useRef(null);
 	const [registerDialog, setRegisterDialog] = useState(false);
 	const registerService = new RegisterService();
+	const [senhaUsuario, setSenhaUsuario] = useState();
+	const [selectedRegister, setSelectedRegister] = useState(null); // Novo estado para armazenar o registro selecionado
+	const [setores, setSetores] = useState(null);
+	const [loading, setLoading] = useState(false);
+	const [precos, setPrecos] = useState(null);
 
 
 	useEffect(() => {
 		registerService.getRegisters().then(data => setRegisters(data));
+		getPrecos();
 	}, []);
 
 
-	const openNew = () => {
+	const openNew = (rowData) => {
+		setSelectedRegister(rowData);
 		setRegisterDialog(true);
 		fetch(`http://localhost:3000/setor`, {
-				method: 'GET',
-				headers: {
-						'Content-type': 'application/json',
-				}
+			method: 'GET',
+			headers: {
+				'Content-type': 'application/json',
+			}
 		})
-				.then(resp => resp.json())
-				.then((data) => {
-						setSetores(data)
+			.then(resp => resp.json())
+			.then((data) => {
+				setSetores(data)
 
-				})
+			})
 
-				.catch(err => console.log(err))
+			.catch(err => console.log(err))
 
-}
-
-	const leftToolbarTemplate = (rowData) => {
-		return (
-			<React.Fragment>
-				<Button label="Novo" icon="pi pi-plus" className="p-button-success mr-2" onClick={""} />
-				<Button label="Excluir" icon="pi pi-trash" className="p-button-danger" onClick={() => confirmDeleteSelected(rowData)} />
-			</React.Fragment>
-		)
 	}
 
 	const hideDialog = () => {
 		setRegisterDialog(false);
-}
+	}
 
 
 
@@ -83,17 +66,110 @@ export default function Registro() {
 
 	const renderButton = (rowData) => {
 		return (
-			<Button className={styles.pbutton} label="Registrar" onClick={openNew} />
+			<Button className={styles.pbutton} label="Registrar" onClick={() => openNew(rowData)} />
 		);
 	};
 
 	const registerDialogFooter = (
 		<React.Fragment>
-				<Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={hideDialog} />
-				<Button label="Salvar" icon="pi pi-check" className="p-button-text" onClick={""} />
+			<Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={hideDialog} />
+			<Button label="Salvar" icon="pi pi-check" className="p-button-text" onClick={handleSalvar} />
 		</React.Fragment>
-);
+	);
 
+	function onRegisterSelect(e) {
+		setSelectedRegister(e.data); // Armazena o registro selecionado ao clicar no botão "Registrar"
+		console.log(selectedRegister)
+
+	}
+
+	async function getPrecos() {
+		fetch('http://localhost:3000/precos')
+		.then((resp) => resp.json())
+		.then((data) => {
+				setPrecos(data);
+				setPrecoFuncAtual(data[0].precofuncionario || '');
+				setPrecoEmpAtual(data[0].precoempresa || '');
+				setPrecoTotalAtual(data[0].precototal || '');
+		})
+		.catch((err) => console.log('Erro ao obter dados da API:', err));
+	}
+
+	async function handleSalvar(e) {
+		e.preventDefault();
+		setLoading(true);
+		setSenhaUsuario('')
+
+		try {
+			const response = await fetch(`http://localhost:3000/data/${selectedRegister.id}`, {
+				method: "GET",
+				headers: {
+					"Content-type": "application/json",
+				},
+			});
+
+			if (!response.ok) {
+				throw new Error("Falha ao buscar a senha da API.");
+			}
+
+			const data = await response.json();
+			const senhaEsperada = data.senha; // Supondo que a API retorne a senha do registro selecionado
+
+			if (senhaUsuario === senhaEsperada) {
+				// Senha correta, faça o que desejar aqui (por exemplo, registrar a refeição)
+				const currentDate = new Date();
+        const currentTime = currentDate.getTime();
+
+				const precos = await getPrecos();
+
+				console.log(precos)
+
+        // Encontra os preços corretos com base na lógica desejada
+        const precoFuncionario = precos.funcionario; // Supondo que o preço do funcionário esteja em uma propriedade "funcionario" no objeto de preços
+        const precoEmpresa = precos.empresa; // Supondo que o preço da empresa esteja em uma propriedade "empresa" no objeto de preços
+        const precoTotal = precoFuncionario + precoEmpresa;
+
+        // Constrói o objeto de refeição para enviar na solicitação POST
+        const refeicaoData = {
+          id_funcionario: selectedRegister.id,
+          nome: selectedRegister.name,
+          data: currentTime,
+          preco_funcionario: precoFuncionario,
+          preco_empresa: precoEmpresa,
+          preco_total: precoTotal,
+        };
+
+				const postResponse = await fetch("http://localhost:3000/refeicoes", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(refeicaoData),
+        });
+
+        if (!postResponse.ok) {
+          throw new Error("Falha ao registrar a refeição na API.");
+        }
+
+				console.log("Refeição registrada com sucesso!");
+				hideDialog();
+			} else {
+				// Senha incorreta
+				console.log("Senha incorreta. Tente novamente.");
+			}
+		} catch (error) {
+			console.error(error);
+			console.log("Preços retornados:", precos);
+			console.log("Erro ao verificar a senha. Tente novamente mais tarde.");
+			console.log(registers)
+		} finally {
+			setLoading(false);
+		}
+	}
+
+	function handleChangeSenha(e) {
+    setSenhaUsuario(e.target.value); // Atualiza o estado com a senha digitada pelo usuário
+  }
 
 
 
@@ -106,7 +182,7 @@ export default function Registro() {
 			<div className={styles.card}>
 				<DataTable ref={dt} value={registers}
 					style={{ width: '100%' }}
-
+					onSelectionChange={onRegisterSelect}
 					dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
 					paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
 					currentPageReportTemplate="Showing {first} to {last} of {totalRecords} registers"
@@ -118,6 +194,7 @@ export default function Registro() {
 
 				</DataTable>
 			</div>
+
 			<Dialog
 				visible={registerDialog}
 				style={{ width: '450px' }}
@@ -132,13 +209,14 @@ export default function Registro() {
 					<label htmlFor="senha">Senha</label>
 					<Password
 						id="senha"
-						value={""}
-						onChange={(e) => onInputChange(e, 'senha')}
+						value={senhaUsuario}
+						onChange={handleChangeSenha}
 						autoFocus
 						className={""}
 					/>
 				</div>
 			</Dialog>
+
 		</>
 
 	)
