@@ -8,6 +8,9 @@ import { Column } from 'primereact/column';
 import { RegisterService } from '../imports/RegisterService';
 import { DataTable } from 'primereact/datatable';
 import { Button } from 'primereact/button';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export default function Registro() {
 
@@ -18,12 +21,10 @@ export default function Registro() {
     const registerService = new RegisterService();
     const [senhaUsuario, setSenhaUsuario] = useState();
     const [selectedRegister, setSelectedRegister] = useState(null); // Novo estado para armazenar o registro selecionado
-    const [setores, setSetores] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [precos, setPrecos] = useState(null);
     const [precoFuncAtual, setPrecoFuncAtual] = useState();
     const [precoEmpAtual, setPrecoEmpAtual] = useState();
     const [precoTotalAtual, setPrecoTotalAtual] = useState();
+    const [disableSelectedRegisterButton, setDisableSelectedRegisterButton] = useState(null);
 
 
     useEffect(() => {
@@ -68,8 +69,9 @@ export default function Registro() {
     );
 
     const renderButton = (rowData) => {
+        const isDisabled = rowData.id === disableSelectedRegisterButton;
         return (
-            <Button className={styles.pbutton} label="Registrar" onClick={() => openNew(rowData)} />
+            <Button className={styles.pbutton} label="Registrar" onClick={() => openNew(rowData)} disabled={isDisabled} />
         );
     };
 
@@ -83,6 +85,13 @@ export default function Registro() {
     function onRegisterSelect(e) {
         setSelectedRegister(e.data); // Armazena o registro selecionado ao clicar no botão "Registrar"
 
+    }
+
+    function disableSelectedRegisterButtonById(id) {
+        setDisableSelectedRegisterButton(id);
+        setTimeout(() => {
+            setDisableSelectedRegisterButton(null);
+        }, 6 * 60 * 60 * 1000); // 6 horas em milissegundos
     }
 
     async function getPrecos() {
@@ -99,12 +108,11 @@ export default function Registro() {
 
     async function handleSalvar(e) {
         e.preventDefault();
-        setLoading(true);
         setSenhaUsuario('')
 
         if (!selectedRegister) {
             console.log("Nenhum registro selecionado."); // Adicione um tratamento adequado se nenhum registro estiver selecionado.
-            setLoading(false);
+            
             return;
         }
 
@@ -132,12 +140,12 @@ export default function Registro() {
                     minute: '2-digit',
                     second: '2-digit',
                 })
-                
+
                 let date = new Date().toLocaleDateString("pt-br", {
                     day: "2-digit",
                     month: "2-digit",
                     year: "numeric",
-                  }); 
+                });
 
                 // Constrói o objeto de refeição para enviar na solicitação POST
                 const refeicaoData = {
@@ -149,8 +157,6 @@ export default function Registro() {
                     preco_empresa: precoEmpAtual,
                     preco_total: precoTotalAtual,
                 };
-
-                console.log(refeicaoData)
 
                 const postResponse = await fetch('http://localhost:3000/refeicoes', {
                     method: 'POST',
@@ -166,19 +172,16 @@ export default function Registro() {
 
                 console.log("Refeição registrada com sucesso!");
                 hideDialog();
+                disableSelectedRegisterButtonById(selectedRegister.id);
             } else {
                 // Senha incorreta
-                console.log("Senha incorreta. Tente novamente.");
+                toast.error("Senha incorreta. Tente novamente.");
             }
         } catch (error) {
             console.error(error);
-            console.log("Preços retornados:", precos);
-            console.log("Erro ao verificar a senha. Tente novamente mais tarde.");
-            console.log(refeicaoData)
+           
 
-        } finally {
-            setLoading(false);
-        }
+        } 
     }
 
     function handleChangeSenha(e) {
@@ -189,6 +192,7 @@ export default function Registro() {
 
     return (
         <>
+             <ToastContainer />
             <div className={styles.title}>
                 <img src={logo} alt="logo" />
                 <a>Sistema de Gerenciamento de Refeições</a>
