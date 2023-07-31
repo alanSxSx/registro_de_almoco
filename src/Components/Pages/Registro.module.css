@@ -63,6 +63,28 @@ width: 20vw;
 border: 1px solid #22C55E;
 }
 
+.label{
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.field{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 5em;
+}
+
+.input{
+    width: 90%;
+}
+
+
+
 
 
 

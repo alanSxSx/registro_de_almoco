@@ -102,6 +102,12 @@ export default function Registro() {
         setLoading(true);
         setSenhaUsuario('')
 
+        if (!selectedRegister) {
+            console.log("Nenhum registro selecionado."); // Adicione um tratamento adequado se nenhum registro estiver selecionado.
+            setLoading(false);
+            return;
+        }
+
         try {
             const response = await fetch(`http://localhost:3000/data/${selectedRegister.id}`, {
                 method: "GET",
@@ -206,21 +212,21 @@ export default function Registro() {
             <Dialog
                 visible={registerDialog}
                 style={{ width: '450px' }}
-                header="Digite sua senha para registro da refeição"
+                header={`Olá ${selectedRegister?.name ?? 'usuário'}. Digite sua senha para registro da refeição.`}
                 modal
                 className="p-fluid"
                 footer={registerDialogFooter}
                 onHide={hideDialog}
             >
 
-                <div className="field">
-                    <label htmlFor="senha">Senha</label>
+                <div className={styles.field}>
+                    <label htmlFor="senha" className={styles.label}>Senha</label>
                     <Password
                         id="senha"
                         value={senhaUsuario}
                         onChange={handleChangeSenha}
                         autoFocus
-                        className={""}
+                        className={styles.input}
                     />
                 </div>
             </Dialog>
