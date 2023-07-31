@@ -10,7 +10,7 @@
         "code": "T.I"
       },
       "senha": "aopsjd345346",
-      "status": false
+      "status": true
     },
     {
       "id": 2,
@@ -126,7 +126,8 @@
       "idfunc": 6,
       "nome": "AlanTeste",
       "data": "31/07/2023",
-      "time": "12:53:55",
+      "time": "15:05:59",
+      "tipo": "A",
       "id": 1
     }
   ]

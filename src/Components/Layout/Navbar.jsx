@@ -21,7 +21,7 @@ export default function Navbar() {
       </span>
       <a href='/home'><img src={logo} alt="logo" /></a>
       <div className={`${styles.navleft} ${isMenuOpen ? styles.showMenu : ''}`}>
-        <a href="#">Início</a>
+        <a href="/home">Início</a>
         <a href="/cadastro">Cadastro</a>
         <a href="#">Marcações</a>
         <a href="/registro">Lançamento</a>

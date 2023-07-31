@@ -28,9 +28,13 @@ export default function Registro() {
 
 
     useEffect(() => {
-        registerService.getRegisters().then(data => setRegisters(data));
+        registerService.getRegisters().then((data) => {
+          // Filtrar os registros para exibir somente os funcionários com status === true
+          const funcionariosAtivos = data.filter((funcionario) => funcionario.status === true);
+          setRegisters(funcionariosAtivos);
+        });
         getPrecos();
-    }, []);
+      }, []);
 
 
     const openNew = (rowData) => {
@@ -153,6 +157,7 @@ export default function Registro() {
                     nome: selectedRegister.name,
                     data: date,
                     time: time,
+                    tipo: 'A',
                     preco_funcionario: precoFuncAtual,
                     preco_empresa: precoEmpAtual,
                     preco_total: precoTotalAtual,
@@ -171,6 +176,7 @@ export default function Registro() {
                 }
 
                 console.log("Refeição registrada com sucesso!");
+                toast.success("Refeição registrada com sucesso!");
                 hideDialog();
                 disableSelectedRegisterButtonById(selectedRegister.id);
             } else {
@@ -189,10 +195,9 @@ export default function Registro() {
     }
 
 
-
     return (
         <>
-             <ToastContainer />
+             <ToastContainer autoClose={1000} />
             <div className={styles.title}>
                 <img src={logo} alt="logo" />
                 <a>Sistema de Gerenciamento de Refeições</a>
