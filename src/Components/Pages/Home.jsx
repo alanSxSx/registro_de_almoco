@@ -1,26 +1,27 @@
 import React, { useEffect, useState } from 'react'
 import styles from './Home.module.css'
 import Navbar from '../Layout/Navbar'
+import { Button } from 'primereact/button';
 import { Calendar } from 'primereact/calendar';
 
 
 export default function Home() {
 
-    const [data,setData] = useState();
-    const [precos,setPrecos] = useState();
-    const [refeicoes,setRefeicoes] = useState();
+    const [data, setData] = useState([]);
+    const [precos, setPrecos] = useState();
+    const [refeicoes, setRefeicoes] = useState();
     const [dates, setDates] = useState(null);
+    const [totalAPagarPorFuncionarioCalculated, setTotalAPagarPorFuncionarioCalculated] = useState({});
 
     useEffect(() => {
         async function fetchData() {
             try {
                 const dataResponse = await getData();
-                
+
                 const precosResponse = await getPrecos();
                 const refeicoesResponse = await getRefeicoes();
 
                 setData(dataResponse);
-                
                 setPrecos(precosResponse);
                 setRefeicoes(refeicoesResponse);
             } catch (error) {
@@ -29,32 +30,83 @@ export default function Home() {
         }
 
         fetchData();
-    }, []);
+    }, [dates]);
+
 
     // Função para fazer o GET na tabela "data"
     async function getData() {
         const response = await fetch('http://localhost:3000/data');
         const data = await response.json();
         return data;
-      }
-      
-      
-      // Função para fazer o GET na tabela "precos"
-      async function getPrecos() {
+    }
+
+
+    // Função para fazer o GET na tabela "precos"
+    async function getPrecos() {
         const response = await fetch('http://localhost:3000/precos');
         const precos = await response.json();
         return precos;
-      }
-      
-      // Função para fazer o GET na tabela "refeicoes"
-      async function getRefeicoes() {
+    }
+
+    // Função para fazer o GET na tabela "refeicoes"
+    async function getRefeicoes() {
         const response = await fetch('http://localhost:3000/refeicoes');
         const refeicoes = await response.json();
         return refeicoes;
-      }
+    }
 
-      const funcionariosInativos = data ? data.filter((funcionario) => !funcionario.status) : [];
-      const refeicoesTipoM = refeicoes ? refeicoes.filter((refeicao) => refeicao.tipo === 'M') : [];
+    const funcionariosInativos = data ? data.filter((funcionario) => !funcionario.status) : [];
+    const refeicoesTipoM = refeicoes ? refeicoes.filter((refeicao) => refeicao.tipo === 'M') : [];
+
+    function calcularTotalAPagarPorFuncionario() {
+        
+        console.log('Ativado');
+    
+        setTotalAPagarPorFuncionarioCalculated({}); // Limpa os totais calculados
+    
+        if (!dates || !refeicoes || !precos || !data) {
+            console.log("Dados insuficientes para o cálculo.");
+            return;
+        }
+    
+        const totalPorFuncionario = {};
+    
+        data.forEach((funcionario) => {
+            const refeicoesDoFuncionarioNoIntervalo = refeicoes.filter((refeicao) => {
+              const dataRef = new Date(refeicao.data);
+              const dataInicial = new Date(dates[0]);
+              const dataFinal = new Date(dates[1]);
+        
+              // Ajustar para comparar apenas dia, mês e ano
+
+              console.log(dataRef == dataInicial)
+              console.log(dataInicial)
+              console.log(dataFinal)
+        
+              return (
+                dataRef >= dataInicial &&
+                dataRef <= dataFinal &&
+                refeicao.idfunc === funcionario.id
+              );
+            });
+            
+    
+            const totalAPagarFuncionario = refeicoesDoFuncionarioNoIntervalo.reduce(
+                (total, refeicao) => total + parseFloat(refeicao.preco_funcionario),
+                0
+            );
+    
+            totalPorFuncionario[funcionario.id] = totalAPagarFuncionario;
+        });
+
+        
+    
+        setTotalAPagarPorFuncionarioCalculated(totalPorFuncionario);
+        console.log(totalPorFuncionario)
+        
+      }
+    
+
 
 
     return (
@@ -104,16 +156,39 @@ export default function Home() {
                         <div className="text-green-500 font-medium">Preço Empresa: <b>{precos ? `R$${precos[0].precoempresa}` : '-'}</b></div>
                     </div>
                 </div>
-            
-            <div className="col-12 md:col-6 lg:col-4">
-            <Calendar value={dates} onChange={(e) => setDates(e.value)} selectionMode="range" readOnlyInput dateFormat="dd/mm/yy" />
 
-            </div>
-               
+                <div className="col-12 md:col-6 lg:col-12 flex justify-content-center">
+                    <Calendar value={dates} onChange={(e) => setDates(e.value)} selectionMode="range" readOnlyInput  />
+                </div>
+                <div className="col-12 md:col-6 lg:col-12 flex justify-content-center">
+                    <Button onClick={calcularTotalAPagarPorFuncionario}>Exibir</Button>
+                </div>
 
-                
+                <div className="col-12 md:col-6 lg:col-12 flex justify-content-center">
+                    {data ? (
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Funcionário</th>
+                                    <th>Total a Pagar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {data.map((funcionario) => (
+                                    <tr key={funcionario.id}>
+                                        <td>{funcionario.name}</td>
+                                        <td>{`R$${totalAPagarPorFuncionarioCalculated[funcionario.id] || 0}`}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table> )
+                    : (
+                            <div>Aguardando o carregamento dos dados...</div>
+                            )}           
+                </div> 
             </div>
         </>
 
     )
 }
+

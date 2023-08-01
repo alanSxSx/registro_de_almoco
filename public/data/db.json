@@ -125,10 +125,24 @@
     {
       "idfunc": 6,
       "nome": "AlanTeste",
-      "data": "31/07/2023",
-      "time": "15:05:59",
+      "data": "08/01/2023",
+      "time": "07:32:18",
       "tipo": "A",
+      "preco_funcionario": "2",
+      "preco_empresa": "15",
+      "preco_total": "17",
       "id": 1
+    },
+    {
+      "idfunc": 6,
+      "nome": "AlanTeste",
+      "data": "08/01/2023",
+      "time": "16:44:21",
+      "tipo": "A",
+      "preco_funcionario": "2",
+      "preco_empresa": "15",
+      "preco_total": "17",
+      "id": 2
     }
   ]
 }

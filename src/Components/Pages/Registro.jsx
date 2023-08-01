@@ -32,8 +32,8 @@ export default function Registro() {
           // Filtrar os registros para exibir somente os funcionários com status === true
           const funcionariosAtivos = data.filter((funcionario) => funcionario.status === true);
           setRegisters(funcionariosAtivos);
+          getPrecos();
         });
-        getPrecos();
       }, []);
 
 
@@ -102,10 +102,10 @@ export default function Registro() {
         fetch('http://localhost:3000/precos')
             .then((resp) => resp.json())
             .then((data) => {
-                setPrecos(data);
                 setPrecoFuncAtual(data[0].precofuncionario || '');
                 setPrecoEmpAtual(data[0].precoempresa || '');
                 setPrecoTotalAtual(data[0].precototal || '');
+                
             })
             .catch((err) => console.log('Erro ao obter dados da API:', err));
     }
