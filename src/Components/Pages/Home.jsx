@@ -3,6 +3,8 @@ import styles from './Home.module.css'
 import Navbar from '../Layout/Navbar'
 import { Button } from 'primereact/button';
 import { Calendar } from 'primereact/calendar';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
 
 
 export default function Home() {
@@ -59,53 +61,53 @@ export default function Home() {
     const refeicoesTipoM = refeicoes ? refeicoes.filter((refeicao) => refeicao.tipo === 'M') : [];
 
     function calcularTotalAPagarPorFuncionario() {
-        
+
         console.log('Ativado');
-    
+
         setTotalAPagarPorFuncionarioCalculated({}); // Limpa os totais calculados
-    
+
         if (!dates || !refeicoes || !precos || !data) {
             console.log("Dados insuficientes para o cálculo.");
             return;
         }
-    
+
         const totalPorFuncionario = {};
-    
+
         data.forEach((funcionario) => {
             const refeicoesDoFuncionarioNoIntervalo = refeicoes.filter((refeicao) => {
-              const dataRef = new Date(refeicao.data);
-              const dataInicial = new Date(dates[0]);
-              const dataFinal = new Date(dates[1]);
-        
-              // Ajustar para comparar apenas dia, mês e ano
+                const dataRef = new Date(refeicao.data);
+                const dataInicial = new Date(dates[0]);
+                const dataFinal = new Date(dates[1]);
 
-              console.log(dataRef == dataInicial)
-              console.log(dataInicial)
-              console.log(dataFinal)
-        
-              return (
-                dataRef >= dataInicial &&
-                dataRef <= dataFinal &&
-                refeicao.idfunc === funcionario.id
-              );
+                // Ajustar para comparar apenas dia, mês e ano
+
+                console.log(dataRef == dataInicial)
+                console.log(dataInicial)
+                console.log(dataFinal)
+
+                return (
+                    dataRef >= dataInicial &&
+                    dataRef <= dataFinal &&
+                    refeicao.idfunc === funcionario.id
+                );
             });
-            
-    
+
+
             const totalAPagarFuncionario = refeicoesDoFuncionarioNoIntervalo.reduce(
                 (total, refeicao) => total + parseFloat(refeicao.preco_funcionario),
                 0
             );
-    
+
             totalPorFuncionario[funcionario.id] = totalAPagarFuncionario;
         });
 
-        
-    
+
+
         setTotalAPagarPorFuncionarioCalculated(totalPorFuncionario);
         console.log(totalPorFuncionario)
-        
-      }
-    
+
+    }
+
 
 
 
@@ -158,7 +160,7 @@ export default function Home() {
                 </div>
 
                 <div className="col-12 md:col-6 lg:col-12 flex justify-content-center">
-                    <Calendar value={dates} onChange={(e) => setDates(e.value)} selectionMode="range" readOnlyInput  />
+                    <Calendar value={dates} onChange={(e) => setDates(e.value)} selectionMode="range" readOnlyInput />
                 </div>
                 <div className="col-12 md:col-6 lg:col-12 flex justify-content-center">
                     <Button onClick={calcularTotalAPagarPorFuncionario}>Exibir</Button>
@@ -166,26 +168,19 @@ export default function Home() {
 
                 <div className="col-12 md:col-6 lg:col-12 flex justify-content-center">
                     {data ? (
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Funcionário</th>
-                                    <th>Total a Pagar</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {data.map((funcionario) => (
-                                    <tr key={funcionario.id}>
-                                        <td>{funcionario.name}</td>
-                                        <td>{`R$${totalAPagarPorFuncionarioCalculated[funcionario.id] || 0}`}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table> )
-                    : (
+
+                        <DataTable value={data}>
+                            <Column field="name" header="Funcionário" />
+                            <Column
+                                header="Total a Pagar"
+                                body={(rowData) => `R$${totalAPagarPorFuncionarioCalculated[rowData.id] || 0}`}
+                            />
+                        </DataTable>
+                    )
+                        : (
                             <div>Aguardando o carregamento dos dados...</div>
-                            )}           
-                </div> 
+                        )}
+                </div>
             </div>
         </>
 
