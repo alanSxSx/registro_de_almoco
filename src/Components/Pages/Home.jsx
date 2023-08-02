@@ -5,6 +5,7 @@ import { Button } from 'primereact/button';
 import { Calendar } from 'primereact/calendar';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
+import { Tooltip } from 'primereact/tooltip';
 
 
 export default function Home() {
@@ -14,6 +15,11 @@ export default function Home() {
     const [refeicoes, setRefeicoes] = useState();
     const [dates, setDates] = useState(null);
     const [totalAPagarPorFuncionarioCalculated, setTotalAPagarPorFuncionarioCalculated] = useState({});
+
+    const cols = [
+        { field: 'name', header: 'Name' },
+        { field: 'total', header: 'Total a Pagar' },
+    ];
 
     useEffect(() => {
         async function fetchData() {
@@ -108,6 +114,51 @@ export default function Home() {
 
     }
 
+    // const exportPdf = () => {
+    //     import('jspdf').then((jsPDF) => {
+    //         import('jspdf-autotable').then(() => {
+    //             const doc = new jsPDF.default(0, 0);
+
+    //             doc.autoTable(exportColumns, data);
+    //             doc.save('almoco.pdf');
+    //         });
+    //     });
+    // };
+    const exportPdf = () => {
+        import('jspdf').then((jsPDF) => {
+            import('jspdf-autotable').then(() => {
+                // Cria uma cópia dos dados atualizados para exibir no PDF
+                const updatedData = data.map((funcionario) => ({
+                    ...funcionario,
+                    total: totalAPagarPorFuncionarioCalculated[funcionario.id] || 0,
+                }));
+    
+                const doc = new jsPDF.default(0, 0);
+                const table = document.querySelector('.p-datatable');
+    
+                // Usando a cópia dos dados atualizados para gerar o PDF
+                doc.autoTable(exportColumns, updatedData);
+                doc.save('almoco.pdf');
+            });
+        });
+    };
+
+
+
+    const header = (
+        <div className="flex align-items-center justify-content-end gap-2">
+            <Button type="button" icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
+        </div>
+         );
+
+    const exportColumns = cols.map((col) => ({ title: col.header, dataKey: col.field }));
+
+    const totalGeralAPagar = data.reduce((total, funcionario) => {
+        return total + (totalAPagarPorFuncionarioCalculated[funcionario.id] || 0);
+    }, 0);
+
+    
+
 
 
 
@@ -160,7 +211,7 @@ export default function Home() {
                 </div>
 
                 <div className="col-12 md:col-6 lg:col-12 flex justify-content-center">
-                    <Calendar value={dates} onChange={(e) => setDates(e.value)} selectionMode="range" readOnlyInput />
+                    <Calendar value={dates} onChange={(e) => setDates(e.value)} selectionMode="range" dateFormat="dd/mm/yy" readOnlyInput />
                 </div>
                 <div className="col-12 md:col-6 lg:col-12 flex justify-content-center">
                     <Button onClick={calcularTotalAPagarPorFuncionario}>Exibir</Button>
@@ -168,14 +219,29 @@ export default function Home() {
 
                 <div className="col-12 md:col-6 lg:col-12 flex justify-content-center">
                     {data ? (
-
-                        <DataTable value={data}>
-                            <Column field="name" header="Funcionário" />
-                            <Column
-                                header="Total a Pagar"
+                        <>
+                        <Tooltip target=".export-buttons>button" position="bottom" />
+                        <DataTable value={data} paginator rows={10} rowsPerPageOptions={[5, 10, 25]} style={{ width: '60%' }}
+                        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+                        showGridlines header={header}>
+                            <Column field="name" header="Funcionário" sortable  style={{ maxWidth: '8rem' }} footer={"Total"} />
+                            <Column field='total'
+                                header="Total Funcionario"
                                 body={(rowData) => `R$${totalAPagarPorFuncionarioCalculated[rowData.id] || 0}`}
+                                footer={`R$${totalGeralAPagar}`}
+                            />
+                            <Column field='total'
+                                header="Total Empresa"
+                                body={(rowData) => `R$${totalAPagarPorFuncionarioCalculated[rowData.id] || 0}`}
+                                footer={`R$${totalGeralAPagar}`}
+                            />
+                            <Column field='total'
+                                header="Total Agregado"
+                                body={(rowData) => `R$${totalAPagarPorFuncionarioCalculated[rowData.id] || 0}`}
+                                footer={`R$${totalGeralAPagar}`}
                             />
                         </DataTable>
+                        </>
                     )
                         : (
                             <div>Aguardando o carregamento dos dados...</div>
