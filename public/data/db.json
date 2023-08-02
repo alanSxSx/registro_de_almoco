@@ -9,7 +9,7 @@
         "name": "Tecnologia da Informação",
         "code": "T.I"
       },
-      "senha": "aopsjd345346",
+      "senha": "1",
       "status": true
     },
     {
@@ -21,7 +21,7 @@
         "name": "Tecnologia da Informação",
         "code": "T.I"
       },
-      "senha": "ertgyewy6785678",
+      "senha": "1",
       "status": true
     },
     {
@@ -154,6 +154,28 @@
       "preco_empresa": "15",
       "preco_total": "17",
       "id": 3
+    },
+    {
+      "idfunc": 1,
+      "nome": "Alan Barbosa",
+      "data": "08/02/2023",
+      "time": "07:50:17 PM",
+      "tipo": "A",
+      "preco_funcionario": "2",
+      "preco_empresa": "15",
+      "preco_total": "17",
+      "id": 4
+    },
+    {
+      "idfunc": 2,
+      "nome": "Raulivan",
+      "data": "08/02/2023",
+      "time": "07:50:20 PM",
+      "tipo": "A",
+      "preco_funcionario": "2",
+      "preco_empresa": "15",
+      "preco_total": "17",
+      "id": 5
     }
   ]
 }
