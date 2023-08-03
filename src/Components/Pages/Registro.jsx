@@ -26,6 +26,7 @@ export default function Registro() {
     const [precoTotalAtual, setPrecoTotalAtual] = useState();
     const [disableSelectedRegisterButton, setDisableSelectedRegisterButton] = useState(null);
     const [ultimasRefeicoes, setUltimasRefeicoes] = useState({});
+		const [ultimasRefeicoesHora, setUltimasRefeicoesHora] = useState({});
 
 
     // useEffect(() => {
@@ -43,14 +44,19 @@ export default function Registro() {
           const funcionariosAtivos = data.filter((funcionario) => funcionario.status === true);
           setRegisters(funcionariosAtivos);
           getPrecos();
-      
+
           // Buscar as primeiras refeições de cada usuário e armazenar no estado
           const ultimasRefeicoesData = {};
+					const ultimasRefeicoesHora = {};
           for (const funcionario of funcionariosAtivos) {
-            const primeiraRefeicao = await getPrimeiraRefeicao(funcionario.id);
-            ultimasRefeicoesData[funcionario.id] = primeiraRefeicao;
+						const ultimaRefeicao = await getUltimaRefeicao(funcionario.id);
+						ultimasRefeicoesData[funcionario.id] = ultimaRefeicao;
+						const ultimaRefeicaoTime = await getUltimaRefeicaoHora(funcionario.id);
+						ultimasRefeicoesHora[funcionario.id] = ultimaRefeicaoTime;
+
           }
           setUltimasRefeicoes(ultimasRefeicoesData);
+					setUltimasRefeicoesHora(ultimasRefeicoesHora)
         });
       }, []);
 
@@ -216,48 +222,95 @@ export default function Registro() {
 
 
 
-    async function getPrimeiraRefeicao(id) {
-        try {
-          const response = await fetch(
-            `http://localhost:3000/refeicoes?idfunc=${id}&_sort=data:asc&_limit=1`,
-            {
-              method: 'GET',
-              headers: {
-                'Content-type': 'application/json',
-              },
-            }
-          );
-      
-          if (!response.ok) {
-            throw new Error('Falha ao buscar a primeira refeição do usuário na API.');
-          }
-      
-          const refeicoesDoUsuario = await response.json();
-          return refeicoesDoUsuario[0]?.data || null;
-        } catch (error) {
-          console.error(error);
-          return null;
-        }
-      }
-    function renderPrimeiraRefeicao(id) {
-        const dataRefeicao = ultimasRefeicoes[id];
+    async function getUltimaRefeicao(id) {
+			try {
+				const response = await fetch(
+				`http://localhost:3000/refeicoes?idfunc=${id}`,
+					{
+						method: 'GET',
+						headers: {
+							'Content-type': 'application/json',
+						},
+					}
+				);
 
-       
-        console.log(ultimasRefeicoes)
-        if (!dataRefeicao) {
-          return 'Nenhuma refeição registrada';
-        }
-      
-      
-        const formattedDate = new Date(dataRefeicao).toLocaleDateString('en-US', {
-          day: '2-digit',
-          month: '2-digit',
-          year: 'numeric',
-        });
-      
-        return formattedDate;
-      }
+				if (!response.ok) {
+					throw new Error('Falha ao buscar a última refeição do usuário na API.');
+				}
 
+				const refeicoesDoUsuario = await response.json();
+				const length = refeicoesDoUsuario.length - 1;
+				return refeicoesDoUsuario[length]?.data || null;
+			} catch (error) {
+				console.error(error);
+				return null;
+			}
+		}
+
+		function renderUltimaRefeicao(rowData) {
+			const dataRefeicao = ultimasRefeicoes[rowData.id];
+
+
+			if (dataRefeicao === undefined) {
+				return 'Buscando...'; // Mostrar uma mensagem enquanto os dados estão sendo buscados
+			}
+
+			if (dataRefeicao === null) {
+				return 'Nenhuma refeição registrada';
+			}
+
+			const formattedDate = new Date(dataRefeicao).toLocaleDateString('en-US', {
+				day: '2-digit',
+				month: '2-digit',
+				year: 'numeric',
+			});
+
+			return formattedDate;
+		}
+
+		async function getUltimaRefeicaoHora(id) {
+			try {
+				const response = await fetch(
+				`http://localhost:3000/refeicoes?idfunc=${id}`,
+					{
+						method: 'GET',
+						headers: {
+							'Content-type': 'application/json',
+						},
+					}
+				);
+
+				if (!response.ok) {
+					throw new Error('Falha ao buscar a última refeição do usuário na API.');
+				}
+
+				const refeicoesDoUsuario = await response.json();
+				const length = refeicoesDoUsuario.length - 1;
+				return refeicoesDoUsuario[length]?.time || null;
+			} catch (error) {
+				console.error(error);
+				return null;
+			}
+		}
+
+		function renderUltimaRefeicaoTime(rowData) {
+			const horaRefeicao = ultimasRefeicoesHora[rowData.id];
+
+			console.log(horaRefeicao)
+
+
+			if (horaRefeicao === undefined) {
+				return 'Buscando...'; // Mostrar uma mensagem enquanto os dados estão sendo buscados
+			}
+
+			if (horaRefeicao === null) {
+				return 'Nenhuma refeição registrada';
+			}
+
+
+
+			return horaRefeicao;
+		}
 
 
     return (
@@ -276,9 +329,10 @@ export default function Registro() {
                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} registers"
                     globalFilter={globalFilter} header={header} responsiveLayout="scroll">
                     <Column field="id" header="id" sortable style={{ maxWidth: '1rem' }}></Column>
-                    <Column field="name" header="Name" sortable style={{ maxWidth: '8rem' }}></Column>
-                    <Column field="setor.name" header="Setor" sortable style={{ maxWidth: '5rem' }}></Column>
-                    <Column header="Última Refeição" body={renderPrimeiraRefeicao} style={{ maxWidth: '8rem' }}></Column>
+                    <Column field="name" header="Name" sortable style={{ maxWidth: '3rem' }}></Column>
+                    <Column field="setor.name" header="Setor" sortable style={{ maxWidth: '2rem' }}></Column>
+                    <Column header="Última Refeição" body={renderUltimaRefeicao} style={{ maxWidth: '2rem' }}></Column>
+										<Column header="Hora Ultima Refeição" body={renderUltimaRefeicaoTime} style={{ maxWidth: '2rem' }}></Column>
                     <Column className={styles.columnbutton} header="Registro" body={renderButton} style={{ maxWidth: '5rem' }}></Column>
 
                 </DataTable>
