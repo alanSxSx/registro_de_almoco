@@ -176,6 +176,72 @@
       "preco_empresa": "15",
       "preco_total": "17",
       "id": 5
+    },
+    {
+      "idfunc": 2,
+      "nome": "Raulivan",
+      "data": "08/03/2023",
+      "time": "07:27:09 AM",
+      "tipo": "A",
+      "preco_funcionario": "2",
+      "preco_empresa": "15",
+      "preco_total": "17",
+      "id": 6
+    },
+    {
+      "idfunc": 2,
+      "nome": "Raulivan",
+      "data": "08/03/2023",
+      "time": "07:41:05 AM",
+      "tipo": "A",
+      "preco_funcionario": "2",
+      "preco_empresa": "15",
+      "preco_total": "17",
+      "id": 7
+    },
+    {
+      "idfunc": 2,
+      "nome": "Raulivan",
+      "data": "08/03/2023",
+      "time": "08:08:08 AM",
+      "tipo": "A",
+      "preco_funcionario": "2",
+      "preco_empresa": "15",
+      "preco_total": "17",
+      "id": 8
+    },
+    {
+      "idfunc": 2,
+      "nome": "Raulivan",
+      "data": "08/03/2023",
+      "time": "01:21:10 PM",
+      "tipo": "A",
+      "preco_funcionario": "2",
+      "preco_empresa": "15",
+      "preco_total": "17",
+      "id": 9
+    },
+    {
+      "idfunc": 6,
+      "nome": "AlanTeste",
+      "data": "08/03/2023",
+      "time": "01:37:00 PM",
+      "tipo": "A",
+      "preco_funcionario": "2",
+      "preco_empresa": "15",
+      "preco_total": "17",
+      "id": 10
+    },
+    {
+      "idfunc": 2,
+      "nome": "Raulivan",
+      "data": "08/03/2023",
+      "time": "03:56:32 PM",
+      "tipo": "A",
+      "preco_funcionario": "2",
+      "preco_empresa": "15",
+      "preco_total": "17",
+      "id": 11
     }
   ]
 }
