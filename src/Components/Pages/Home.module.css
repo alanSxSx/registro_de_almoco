@@ -1,4 +1,5 @@
 .home{
     display: flex;
     flex-wrap: wrap;
+    font-weight: 700;
 }
