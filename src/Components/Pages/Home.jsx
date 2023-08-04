@@ -320,7 +320,7 @@ export default function Home() {
 			<div className={styles.home}>
 				<div className="col-12 md:col-6 lg:col-4">
 					<div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
-						<div className="flex justify-content-between mb-3">
+						<div className="flex justify-content-between mb-3 h-4rem">
 							<div>
 								<span className="block text-500 font-medium mb-3">Funcionários</span>
 								<div className="text-900 font-medium text-xl">{data ? data.length : 0}</div>
@@ -334,7 +334,7 @@ export default function Home() {
 				</div>
 				<div className="col-12 md:col-6 lg:col-4">
 					<div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
-						<div className="flex justify-content-between mb-3">
+						<div className="flex justify-content-between mb-3 h-4rem">
 							<div>
 								<span className="block text-500 font-medium mb-3">Refeições</span>
 								<div className="text-900 font-medium text-xl">{refeicoes ? refeicoes.length : 0}</div>
@@ -348,7 +348,7 @@ export default function Home() {
 				</div>
 				<div className="col-12 md:col-6 lg:col-4">
 					<div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
-						<div className="flex justify-content-between mb-3">
+						<div className="flex justify-content-between mb-3 h-3rem ">
 							<div>
 								<span className="block text-500 font-medium mb-3">Preço da Refeição</span>
 								<div className="text-900 font-medium text-xl">Preço Total: <b>{precos ? `R$${precos[0].precototal}` : '-'}</b></div>
@@ -362,10 +362,11 @@ export default function Home() {
 					</div>
 				</div>
 
-				<div className="col-12 md:col-6 lg:col-12 flex justify-content-center">
-					<Calendar value={dates} onChange={(e) => setDates(e.value)} selectionMode="range" dateFormat="dd/mm/yy" readOnlyInput />
+				<div className="col-12 md:col-6 lg:col-12 flex justify-content-center align-items-center">
+				<a className='text-xl text-indigo-500'>Selecione o intervalo de Datas: </a>
 				</div>
-				<div className="col-12 md:col-6 lg:col-12 flex justify-content-center">
+				<div className="col-12 md:col-6 lg:col-12 flex justify-content-center align-items-center">
+					<Calendar value={dates} onChange={(e) => setDates(e.value)} selectionMode="range" dateFormat="dd/mm/yy" readOnlyInput className='mr-2' />
 					<Button onClick={handleButtonExibir}>Exibir</Button>
 				</div>
 
