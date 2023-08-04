@@ -24,11 +24,11 @@ export default function Registro() {
     const [precoFuncAtual, setPrecoFuncAtual] = useState();
     const [precoEmpAtual, setPrecoEmpAtual] = useState();
     const [precoTotalAtual, setPrecoTotalAtual] = useState();
-  
+
     const [ultimasRefeicoes, setUltimasRefeicoes] = useState({});
     const [ultimasRefeicoesHora, setUltimasRefeicoesHora] = useState({});
 
-    const [dataRef,setDataRef] = useState({})
+    const [dataRef, setDataRef] = useState({})
 
 
     // useEffect(() => {
@@ -46,7 +46,7 @@ export default function Registro() {
             const funcionariosAtivos = data.filter((funcionario) => funcionario.status === true);
             setRegisters(funcionariosAtivos);
             getPrecos();
-            
+
 
 
             // Buscar as primeiras refeições de cada usuário e armazenar no estado
@@ -105,7 +105,7 @@ export default function Registro() {
     const renderButton = (rowData) => {
         const buttonDisabled = disableButton(rowData);
         return (
-            <Button className={styles.pbutton} label="Registrar" onClick={() => openNew(rowData)} disabled={buttonDisabled}  />
+            <Button className={styles.pbutton} label="Registrar" onClick={() => openNew(rowData)} disabled={buttonDisabled} />
         );
     };
 
@@ -199,6 +199,18 @@ export default function Registro() {
 
                 console.log("Refeição registrada com sucesso!");
                 toast.success("Refeição registrada com sucesso!");
+                //atualiza FRONT
+                const updatedUltimasRefeicoes = { ...ultimasRefeicoes };
+                const updatedUltimasRefeicoesHora = { ...ultimasRefeicoesHora };
+                
+                updatedUltimasRefeicoes[selectedRegister.id] = date;
+                updatedUltimasRefeicoesHora[selectedRegister.id] = time;
+            
+                setUltimasRefeicoes(updatedUltimasRefeicoes);
+                setUltimasRefeicoesHora(updatedUltimasRefeicoesHora);
+                
+
+                
                 hideDialog();
 
             } else {
@@ -307,24 +319,15 @@ export default function Registro() {
         return horaRefeicao;
     }
 
-    // function disableButton(id) {
-    //     const currentDate = new Date();
-
-    //     if(currentDate > dataRef){
-    //     disableButton(id);
-    //     } else {
-    //         disableButton(null)
-    //     }
-    // }
 
     function disableButton(rowData) {
         const currentDate = new Date();
         const dataRefeicao = ultimasRefeicoes[rowData.id];
-        
+
         if (dataRefeicao === undefined) {
             return true; // Desabilita o botão enquanto os dados estão sendo buscados
         }
-    
+
         if (dataRefeicao === null) {
             return false; // Não desabilita o botão se nenhuma refeição estiver registrada
         }
@@ -334,7 +337,7 @@ export default function Registro() {
             month: '2-digit',
             year: '2-digit',
         });
-    
+
         // Convertendo a data atual para o mesmo formato da data da última refeição
         const formattedCurrentDate = currentDate.toLocaleDateString('en-US', {
             day: '2-digit',
@@ -342,24 +345,24 @@ export default function Registro() {
             year: '2-digit',
         });
 
-        if(formattedCurrentDate > formattedDataRefeicao){
+        if (formattedCurrentDate > formattedDataRefeicao) {
             console.log(`Opção 1`)
             return false;
         }
 
-        if(formattedCurrentDate  == formattedDataRefeicao) {
+        if (formattedCurrentDate == formattedDataRefeicao) {
             console.log(`Opção 2`)
             return true;
         }
 
-        if(formattedCurrentDate  < formattedDataRefeicao) {
+        if (formattedCurrentDate < formattedDataRefeicao) {
             console.log(`Opção 3`)
             return true;
         }
-    
+
     }
 
-    
+
 
     return (
         <>
