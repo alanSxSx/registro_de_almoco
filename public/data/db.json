@@ -143,6 +143,17 @@
       "preco_empresa": "15",
       "preco_total": "17",
       "id": 2
+    },
+    {
+      "idfunc": 6,
+      "nome": "AlanTeste",
+      "data": "08/04/2023",
+      "time": "11:34:28 AM",
+      "tipo": "A",
+      "preco_funcionario": "2",
+      "preco_empresa": "15",
+      "preco_total": "17",
+      "id": 3
     }
   ]
 }

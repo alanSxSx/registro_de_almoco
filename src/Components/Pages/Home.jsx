@@ -19,8 +19,10 @@ export default function Home() {
 	const [totalAPagarPorFuncionarioGeral, setTotalAPagarPorFuncionarioGeral] = useState({});
 
 	const cols = [
-		{ field: 'name', header: 'Name' },
-		{ field: 'total', header: 'Total a Pagar' },
+		{ field: 'name', header: 'Nome Funcionario' },
+		{ field: 'totalFuncionario', header: 'Total a Pagar' },
+		{ field: 'totalEmpresa', header: 'Total Empresa' },
+		{ field: 'totalGeral', header: 'Total Agregado' },
 	];
 
 	useEffect(() => {
@@ -70,8 +72,6 @@ export default function Home() {
 
 	function calcularTotalAPagarPorFuncionario() {
 
-		console.log('Ativado');
-
 		setTotalAPagarPorFuncionarioCalculated({}); // Limpa os totais calculados
 
 		if (!dates || !refeicoes || !precos || !data) {
@@ -115,8 +115,6 @@ export default function Home() {
 	//FIM TOTAL A PAGAR POR FUNCIONARIO ---------------------------------------------------------
 
 	function TotalAPagarEmpresa() {
-
-		console.log('Ativado');
 
 		setTotalAPagarPorFuncionarioEmpresa({}); // Limpa os totais calculados
 
@@ -205,26 +203,65 @@ export default function Home() {
 
 	//FIM TOTAL A PAGAR GERAL POR FUNCIONARIO ---------------------------------------------------------
 
-
-
 	const exportPdf = () => {
 		import('jspdf').then((jsPDF) => {
 			import('jspdf-autotable').then(() => {
 				// Cria uma cópia dos dados atualizados para exibir no PDF
 				const updatedData = data.map((funcionario) => ({
 					...funcionario,
-					total: totalAPagarPorFuncionarioCalculated[funcionario.id] || 0,
+					totalFuncionario: totalAPagarPorFuncionarioCalculated[funcionario.id] || 0,
+					totalEmpresa: totalAPagarPorFuncionarioEmpresa[funcionario.id] || 0,
+					totalGeral: totalAPagarPorFuncionarioGeral[funcionario.id] || 0,
 				}));
+	
+				// Calcula os totais
+				const totalFuncAPagar = updatedData.reduce((total, funcionario) => total + funcionario.totalFuncionario, 0);
+				const totalGeralAPagarEmp = updatedData.reduce((total, funcionario) => total + funcionario.totalEmpresa, 0);
+				const totalGeralAPagar = updatedData.reduce((total, funcionario) => total + funcionario.totalGeral, 0);
+	
+				// Adiciona a linha de totalização
+				// const totalRow = {
+				// 	name: 'Total',
+				// 	totalFuncionario: totalFuncAPagar,
+				// 	totalEmpresa: totalGeralAPagarEmp,
+				// 	totalGeral: totalGeralAPagar,
+				// };
 
+				const totalRow = [
+					{ content: 'Total', styles: { fontStyle: 'bold' } },
+					{ content: totalFuncAPagar.toString(), styles: { fontStyle: 'bold' } },
+					{ content: totalGeralAPagarEmp.toString(), styles: { fontStyle: 'bold' } },
+					{ content: totalGeralAPagar.toString(), styles: { fontStyle: 'bold' } }
+				];
+
+				updatedData.push(totalRow);
+	
 				const doc = new jsPDF.default(0, 0);
-				const table = document.querySelector('.p-datatable');
-
+	
 				// Usando a cópia dos dados atualizados para gerar o PDF
-				doc.autoTable(exportColumns, updatedData);
+				doc.autoTable({
+					columns: exportColumns,
+					body: updatedData,
+					didDrawPage: (data) => {
+						// Adicionar rodapé personalizado somente na última página
+						const pageCount = doc.internal.getNumberOfPages();
+						if (data.pageNumber === pageCount) {
+							const pageHeight = doc.internal.pageSize.height;
+							const text = 'Este é o rodapé do PDF';
+							const textWidth = doc.getStringUnitWidth(text) * doc.internal.getFontSize() / doc.internal.scaleFactor;
+							const x = (doc.internal.pageSize.width - textWidth) / 2;
+							const y = pageHeight - 10;
+							doc.text(text, x, y);
+						}
+					}
+				});
+	
 				doc.save('almoco.pdf');
 			});
 		});
 	};
+
+
 
 
 
@@ -234,7 +271,9 @@ export default function Home() {
 		</div>
 	);
 
+
 	const exportColumns = cols.map((col) => ({ title: col.header, dataKey: col.field }));
+
 
 	const totalFuncAPagar = data.reduce((total, funcionario) => {
 		return total + (totalAPagarPorFuncionarioCalculated[funcionario.id] || 0);
@@ -247,6 +286,14 @@ export default function Home() {
 	const totalGeralAPagar = data.reduce((total, funcionario) => {
 		return total + (totalAPagarPorFuncionarioGeral[funcionario.id] || 0);
 	}, 0);
+
+	function handleButtonExibir() {
+
+		calcularTotalAPagarPorFuncionario();
+		TotalAPagarEmpresa();
+		TotalAPagarGeral();
+		setData([...data]);
+	}
 
 
 
@@ -305,7 +352,7 @@ export default function Home() {
 					<Calendar value={dates} onChange={(e) => setDates(e.value)} selectionMode="range" dateFormat="dd/mm/yy" readOnlyInput />
 				</div>
 				<div className="col-12 md:col-6 lg:col-12 flex justify-content-center">
-					<Button onClick={() => { calcularTotalAPagarPorFuncionario(); TotalAPagarEmpresa(); TotalAPagarGeral(); }}>Exibir</Button>
+					<Button onClick={handleButtonExibir}>Exibir</Button>
 				</div>
 
 				<div className="col-12 md:col-6 lg:col-12 flex justify-content-center">
@@ -316,17 +363,17 @@ export default function Home() {
 								paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
 								showGridlines header={header}>
 								<Column field="name" header="Funcionário" sortable style={{ maxWidth: '8rem' }} footer={"Total"} />
-								<Column field='total'
+								<Column field='totalfunc'
 									header="Total Funcionario"
 									body={(rowData) => `R$${totalAPagarPorFuncionarioCalculated[rowData.id] || 0}`}
 									footer={`R$${totalFuncAPagar}`}
 								/>
-								<Column field='total'
+								<Column field='totalemp'
 									header="Total Empresa"
 									body={(rowData) => `R$${totalAPagarPorFuncionarioEmpresa[rowData.id] || 0}`}
 									footer={`R$${totalGeralAPagarEmp}`}
 								/>
-								<Column field='total'
+								<Column field='totalagreg'
 									header="Total Agregado"
 									body={(rowData) => `R$${totalAPagarPorFuncionarioGeral[rowData.id] || 0}`}
 									footer={`R$${totalGeralAPagar}`}

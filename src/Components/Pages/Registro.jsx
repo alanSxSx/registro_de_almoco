@@ -274,7 +274,7 @@ export default function Registro() {
         });
 
         setDataRef(formattedDate)
-        console.log(dataRef)
+        
         return formattedDate;
     }
 
@@ -346,17 +346,17 @@ export default function Registro() {
         });
 
         if (formattedCurrentDate > formattedDataRefeicao) {
-            console.log(`Opção 1`)
+            
             return false;
         }
 
         if (formattedCurrentDate == formattedDataRefeicao) {
-            console.log(`Opção 2`)
+            
             return true;
         }
 
         if (formattedCurrentDate < formattedDataRefeicao) {
-            console.log(`Opção 3`)
+           
             return true;
         }
 
