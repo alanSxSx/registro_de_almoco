@@ -28,7 +28,7 @@ export default function Registro() {
     const [ultimasRefeicoes, setUltimasRefeicoes] = useState({});
     const [ultimasRefeicoesHora, setUltimasRefeicoesHora] = useState({});
 
-    const [dataRef, setDataRef] = useState({})
+   
 
 
     // useEffect(() => {
@@ -273,7 +273,7 @@ export default function Registro() {
             year: 'numeric',
         });
 
-        setDataRef(formattedDate)
+        
         
         return formattedDate;
     }

@@ -213,19 +213,12 @@ export default function Home() {
 					totalEmpresa: totalAPagarPorFuncionarioEmpresa[funcionario.id] || 0,
 					totalGeral: totalAPagarPorFuncionarioGeral[funcionario.id] || 0,
 				}));
-	
+
 				// Calcula os totais
 				const totalFuncAPagar = updatedData.reduce((total, funcionario) => total + funcionario.totalFuncionario, 0);
 				const totalGeralAPagarEmp = updatedData.reduce((total, funcionario) => total + funcionario.totalEmpresa, 0);
 				const totalGeralAPagar = updatedData.reduce((total, funcionario) => total + funcionario.totalGeral, 0);
-	
-				// Adiciona a linha de totalização
-				// const totalRow = {
-				// 	name: 'Total',
-				// 	totalFuncionario: totalFuncAPagar,
-				// 	totalEmpresa: totalGeralAPagarEmp,
-				// 	totalGeral: totalGeralAPagar,
-				// };
+
 
 				const totalRow = [
 					{ content: 'Total', styles: { fontStyle: 'bold' } },
@@ -235,9 +228,27 @@ export default function Home() {
 				];
 
 				updatedData.push(totalRow);
-	
+
 				const doc = new jsPDF.default(0, 0);
-	
+
+				let date1 = dates[0].toLocaleDateString("pt-BR", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                });
+
+				let date2 = dates[1].toLocaleDateString("pt-BR", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                });
+
+
+				const title = `Relatório de Almoço por Funcionário: De ${date1} até ${date2}`;
+				const titleX = (doc.internal.pageSize.width - doc.getStringUnitWidth(title) * doc.internal.getFontSize() / doc.internal.scaleFactor) / 2;
+				const titleY = 10;
+				doc.text(title, titleX, titleY);
+
 				// Usando a cópia dos dados atualizados para gerar o PDF
 				doc.autoTable({
 					columns: exportColumns,
@@ -255,7 +266,7 @@ export default function Home() {
 						}
 					}
 				});
-	
+
 				doc.save('almoco.pdf');
 			});
 		});
@@ -266,7 +277,10 @@ export default function Home() {
 
 
 	const header = (
-		<div className="flex align-items-center justify-content-end gap-2">
+		<div className="flex align-items-center justify-content-between gap-2">
+			<div>
+				Relatório de Almoço por Funcionário
+			</div>
 			<Button type="button" icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
 		</div>
 	);
