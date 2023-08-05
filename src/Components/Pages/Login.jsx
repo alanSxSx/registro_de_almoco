@@ -30,6 +30,9 @@ export default function Login() {
             </div>
             <div className={styles.divform}>
             <form onSubmit={submit} className={styles.form}>
+
+
+								<i class="fa-regular fa-user"/>
                 <Input type="text" text="Login" name="login" id="login" placeholder="Digite seu Login" handleOnChange={HandleLogin} value={user.login} />
                 <Input type="password" text="Senha" name="senha" id="senha" placeholder="Digite sua Senha" handleOnChange={HandleSenha} value={user.senha} />
                 <Button text="Entrar" />

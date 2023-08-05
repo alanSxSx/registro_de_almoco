@@ -10,7 +10,8 @@
         "code": "T.I"
       },
       "senha": "1",
-      "status": true
+      "status": true,
+      "tipo": "true"
     },
     {
       "id": 2,
@@ -72,6 +73,19 @@
       },
       "senha": "1",
       "status": true
+    },
+    {
+      "id": 7,
+      "name": "t1",
+      "cpf": "123456789",
+      "setor": {
+        "id": 2,
+        "name": "Recursos Humanos",
+        "code": "RH"
+      },
+      "senha": "1",
+      "status": true,
+      "tipo": false
     }
   ],
   "setor": [

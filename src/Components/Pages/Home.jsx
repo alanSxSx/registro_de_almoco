@@ -6,6 +6,7 @@ import { Calendar } from 'primereact/calendar';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Tooltip } from 'primereact/tooltip';
+import logo from '../../img/logo.png'
 
 
 export default function Home() {
@@ -232,16 +233,16 @@ export default function Home() {
 				const doc = new jsPDF.default(0, 0);
 
 				let date1 = dates[0].toLocaleDateString("pt-BR", {
-                    day: "2-digit",
-                    month: "2-digit",
-                    year: "numeric",
-                });
+					day: "2-digit",
+					month: "2-digit",
+					year: "numeric",
+				});
 
 				let date2 = dates[1].toLocaleDateString("pt-BR", {
-                    day: "2-digit",
-                    month: "2-digit",
-                    year: "numeric",
-                });
+					day: "2-digit",
+					month: "2-digit",
+					year: "numeric",
+				});
 
 
 				const title = `Relatório de Almoço por Funcionário: De ${date1} até ${date2}`;
@@ -277,10 +278,11 @@ export default function Home() {
 
 
 	const header = (
-		<div className="flex align-items-center justify-content-between gap-2">
-			<div>
+		<div className="flex align-items-center justify-content-around gap-2">
+			<img src={logo} className='w-4rem h-4rem'></img>
+			<a>
 				Relatório de Almoço por Funcionário
-			</div>
+			</a>
 			<Button type="button" icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
 		</div>
 	);
@@ -363,7 +365,7 @@ export default function Home() {
 				</div>
 
 				<div className="col-12 md:col-6 lg:col-12 flex justify-content-center align-items-center">
-				<a className='text-xl text-indigo-500'>Selecione o intervalo de Datas: </a>
+					<a className='text-xl text-red-500'>Selecione o intervalo de Datas: </a>
 				</div>
 				<div className="col-12 md:col-6 lg:col-12 flex justify-content-center align-items-center">
 					<Calendar value={dates} onChange={(e) => setDates(e.value)} selectionMode="range" dateFormat="dd/mm/yy" readOnlyInput className='mr-2' />
