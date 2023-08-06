@@ -26,43 +26,6 @@
       "status": true
     },
     {
-      "id": 3,
-      "name": "Teste",
-      "cpf": "123456789",
-      "setor": {
-        "id": 2,
-        "name": "Recursos Humanos",
-        "code": "RH"
-      },
-      "senha": "123456798asd",
-      "status": false,
-      "image": "register-placeholder.svg"
-    },
-    {
-      "id": 4,
-      "name": "tesste",
-      "cpf": "1234234",
-      "setor": {
-        "id": 1,
-        "name": "Tecnologia da Informação",
-        "code": "T.I"
-      },
-      "senha": "asdas56756",
-      "status": true
-    },
-    {
-      "id": 5,
-      "name": "wdfgdsf",
-      "cpf": "ertwet",
-      "setor": {
-        "id": 2,
-        "name": "Recursos Humanos",
-        "code": "RH"
-      },
-      "senha": "sdafasf",
-      "status": true
-    },
-    {
       "id": 6,
       "name": "AlanTeste",
       "cpf": "123456789",
@@ -75,9 +38,9 @@
       "status": true
     },
     {
-      "id": 7,
-      "name": "t1",
-      "cpf": "123456789",
+      "id": 8,
+      "name": "admin",
+      "cpf": "129.641.886-37",
       "setor": {
         "id": 2,
         "name": "Recursos Humanos",

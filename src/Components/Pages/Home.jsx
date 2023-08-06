@@ -320,7 +320,7 @@ export default function Home() {
 		<>
 			<Navbar />
 			<div className={styles.home}>
-				<div className="col-12 md:col-6 lg:col-4">
+				<div className="col-12 md:col-12 lg:col-4">
 					<div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
 						<div className="flex justify-content-between mb-3 h-4rem">
 							<div>
@@ -334,7 +334,7 @@ export default function Home() {
 						<span className="text-red-500 font-medium"> {funcionariosInativos.length} {funcionariosInativos.length === 1 ? "Funcionário" : "Funcionários"} Inativos </span>
 					</div>
 				</div>
-				<div className="col-12 md:col-6 lg:col-4">
+				<div className="col-12 md:col-12 lg:col-4">
 					<div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
 						<div className="flex justify-content-between mb-3 h-4rem">
 							<div>
@@ -348,7 +348,7 @@ export default function Home() {
 						<span className="text-yellow-500 font-medium">{refeicoesTipoM ? refeicoesTipoM.length : 0} Refeições Lançadas Manualmente </span>
 					</div>
 				</div>
-				<div className="col-12 md:col-6 lg:col-4">
+				<div className="col-12 md:col-12 lg:col-4">
 					<div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
 						<div className="flex justify-content-between mb-3 h-3rem ">
 							<div>
@@ -364,19 +364,20 @@ export default function Home() {
 					</div>
 				</div>
 
-				<div className="col-12 md:col-6 lg:col-12 flex justify-content-center align-items-center">
+				<div className="col-12 md:col-12 lg:col-4 flex justify-content-center align-items-center">
 					<a className='text-xl text-red-500'>Selecione o intervalo de Datas: </a>
 				</div>
-				<div className="col-12 md:col-6 lg:col-12 flex justify-content-center align-items-center">
+				<div className="col-12 md:col-12 lg:col-12 flex justify-content-center align-items-center">
 					<Calendar value={dates} onChange={(e) => setDates(e.value)} selectionMode="range" dateFormat="dd/mm/yy" readOnlyInput className='mr-2' />
 					<Button onClick={handleButtonExibir}>Exibir</Button>
 				</div>
 
-				<div className="col-12 md:col-6 lg:col-12 flex justify-content-center">
+				<div className="col-12 md:col-12 lg:col-12 flex justify-content-center">
 					{data ? (
 						<>
 							<Tooltip target=".export-buttons>button" position="bottom" />
 							<DataTable value={data} paginator rows={10} rowsPerPageOptions={[5, 10, 25]} style={{ width: '60%' }}
+								className={styles.dataTable}
 								paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
 								showGridlines header={header}>
 								<Column field="name" header="Funcionário" sortable style={{ maxWidth: '8rem' }} footer={"Total"} />

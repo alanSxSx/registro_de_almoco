@@ -13,6 +13,8 @@ import { Password } from 'primereact/password'
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
+import { InputMask } from 'primereact/inputmask';
+
 
 import 'primeicons/primeicons.css';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
@@ -87,6 +89,18 @@ export default function Cadastro() {
 
 	const saveRegister = () => {
 		setSubmitted(true);
+
+		if (!isCPFValid(register.cpf)) {
+			toast.current.show({ severity: 'error', summary: 'Error', detail: 'CPF INVÁLIDO', life: 3000 });
+			console.log("CPF inválido");
+			return;
+		}
+
+		if (!isCPFAvailable(register.cpf)) {
+			console.log("CPF não disponível");
+			toast.current.show({ severity: 'error', summary: 'Error', detail: 'CPF já está cadastrado.', life: 3000 });
+			return;
+		}
 
 		if (register.name.trim()) {
 			let _registers = [...registers];
@@ -407,6 +421,58 @@ export default function Cadastro() {
 		</React.Fragment>
 	);
 
+	function isCPFValid(cpf) {
+		// Remove any characters that are not digits
+		const cleanedCPF = cpf.replace(/\D/g, '');
+
+		if (cleanedCPF.length !== 11) {
+			return false;
+		}
+
+		// Check for known invalid CPF patterns
+		if (/^(\d)\1+$/.test(cleanedCPF)) {
+			return false;
+		}
+
+		// Validate the CPF using its algorithm
+		let sum = 0;
+		for (let i = 0; i < 9; i++) {
+			sum += parseInt(cleanedCPF.charAt(i)) * (10 - i);
+		}
+		let remainder = (sum * 10) % 11;
+		if (remainder === 10 || remainder === 11) {
+			remainder = 0;
+		}
+		if (remainder !== parseInt(cleanedCPF.charAt(9))) {
+			return false;
+		}
+
+		sum = 0;
+		for (let i = 0; i < 10; i++) {
+			sum += parseInt(cleanedCPF.charAt(i)) * (11 - i);
+		}
+		remainder = (sum * 10) % 11;
+		if (remainder === 10 || remainder === 11) {
+			remainder = 0;
+		}
+		if (remainder !== parseInt(cleanedCPF.charAt(10))) {
+			return false;
+		}
+
+		return true;
+	}
+
+	function isCPFAvailable(cpf) {
+		try {
+			const response =  fetch(`http://localhost:3000/data?cpf=${cpf}`);
+			const data =  response.json();
+			return data.length === 0; // Se o comprimento for 0, o CPF está disponível
+		} catch (error) {
+			console.error(error);
+			return false;
+		}
+	}
+
 
 
 	return (
@@ -448,8 +514,8 @@ export default function Cadastro() {
 							{submitted && !register.name && <small className="p-error">Name is required.</small>}
 						</div>
 						<div className="field">
-							<label htmlFor="CPF">CPF</label>
-							<InputText id="cpf" value={register.cpf} onChange={(e) => onInputChange(e, 'cpf')} required className={classNames({ 'p-invalid': submitted && !register.cpf })} />
+							<label htmlFor="cpf" className="font-bold block mb-2">CPF</label>
+							<InputMask id="cpf" mask="999.999.999-99" value={register.cpf} onChange={(e) => onInputChange(e, 'cpf')} required className={classNames({ 'p-invalid': submitted && !register.cpf })} />
 							{submitted && !register.cpf && <small className="p-error">CPF is required.</small>}
 						</div>
 

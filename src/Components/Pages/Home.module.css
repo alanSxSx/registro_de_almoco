@@ -3,3 +3,16 @@
     flex-wrap: wrap;
     font-weight: 700;
 }
+
+@media (max-width: 992px) {
+	.home {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+	}
+	.dataTable{
+	width: 100% !important;
+	}
+}
