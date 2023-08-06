@@ -22,5 +22,6 @@
 }
 
 .form_control input::placeholder {
+	padding-left: 3em;
 	color: #7b7b7b;
 }
