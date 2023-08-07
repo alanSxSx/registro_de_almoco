@@ -353,8 +353,8 @@ export default function Cadastro() {
 	const leftToolbarTemplate = (rowData) => {
 		return (
 			<React.Fragment>
-				<Button label="Novo" icon="pi pi-plus" className="p-button-success mr-2" onClick={openNew} />
-				<Button label="Excluir" icon="pi pi-trash" className="p-button-danger" onClick={() => confirmDeleteSelected()} />
+				<Button label="Novo" icon="pi pi-plus" className="p-button-success mr-2 w-12 md:w-12" onClick={openNew} />
+				<Button label="Excluir" icon="pi pi-trash" className="p-button-danger w-12 md:w-12" onClick={() => confirmDeleteSelected()} />
 			</React.Fragment>
 		)
 	}
@@ -362,8 +362,8 @@ export default function Cadastro() {
 	const rightToolbarTemplate = () => {
 		return (
 			<React.Fragment>
-				<FileUpload mode="basic" name="demo[]" auto url="https://primefaces.org/primereact/showcase/upload.php" accept=".csv" chooseLabel="Import" className="mr-2 inline-block" onUpload={importCSV} />
-				<Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={exportCSV} />
+				<FileUpload mode="basic" name="demo[]" auto url="https://primefaces.org/primereact/showcase/upload.php" accept=".csv" chooseLabel="Import" className="mr-2 w-12 md:w-12 m-0" onUpload={importCSV} />
+				<Button label="Export" icon="pi pi-upload" className="p-button-help w-12 md:w-12" onClick={exportCSV} />
 			</React.Fragment>
 		)
 	}
@@ -483,7 +483,7 @@ export default function Cadastro() {
 					<Toast ref={toast} />
 
 					<div className="card">
-						<Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
+						<Toolbar className={styles.toolbar} left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
 
 						<DataTable ref={dt} value={registers} selection={selectedRegisters} onSelectionChange={(e) => setSelectedRegisters(e.value)}
 							dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
