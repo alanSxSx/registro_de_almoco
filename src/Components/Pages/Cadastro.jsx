@@ -398,10 +398,10 @@ export default function Cadastro() {
 		</div>
 	);
 	const registerDialogFooter = (
-		<React.Fragment>
+		<div className={styles.dialogFooter}>
 			<Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={hideDialog} />
 			<Button label="Salvar" icon="pi pi-check" className="p-button-text" onClick={saveRegister} />
-		</React.Fragment>
+		</div>
 	);
 	const registerDialogFooter2 = (
 		<React.Fragment>
@@ -500,7 +500,7 @@ export default function Cadastro() {
 						</DataTable>
 					</div>
 
-					<Dialog visible={registerDialog} style={{ width: '450px' }} header="Register Details" modal className="p-fluid" footer={register.id === null ? registerDialogFooter : registerDialogFooter2} onHide={hideDialog}>
+					<Dialog visible={registerDialog} style={{ width: '450px'}} header="Register Details" modal className="p-fluid" footer={register.id === null ? registerDialogFooter : registerDialogFooter2} onHide={hideDialog}>
 						{register.image && <img src={`images/register/${register.image}`} onError={(e) => e.target.src = 'https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} alt={register.image} className="register-image block m-auto pb-3" />}
 						<div className="field">
 							<label htmlFor="name">Nome</label>

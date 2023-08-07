@@ -5,6 +5,10 @@ align-items: center;
 justify-content: center;
 }
 
+.dialogFooter{
+	padding-top: 2em;
+}
+
 
 @media screen and (max-width: 550px) {
   .toolbar {
