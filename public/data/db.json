@@ -1,19 +1,6 @@
 {
   "data": [
     {
-      "id": 1,
-      "name": "Alan Barbosa",
-      "cpf": "129.641.886-37",
-      "setor": {
-        "id": 1,
-        "name": "Tecnologia da Informação",
-        "code": "T.I"
-      },
-      "senha": "1",
-      "status": true,
-      "tipo": "true"
-    },
-    {
       "id": 2,
       "name": "Raulivan",
       "cpf": "1245678945",
@@ -26,29 +13,17 @@
       "status": true
     },
     {
-      "id": 6,
-      "name": "AlanTeste",
-      "cpf": "123456789",
+      "id": 3,
+      "name": "Alan Rodrigues Barbosa",
+      "cpf": "12964188637",
       "setor": {
         "id": 1,
         "name": "Tecnologia da Informação",
         "code": "T.I"
       },
-      "senha": "1",
-      "status": true
-    },
-    {
-      "id": 8,
-      "name": "admin",
-      "cpf": "129.641.886-37",
-      "setor": {
-        "id": 2,
-        "name": "Recursos Humanos",
-        "code": "RH"
-      },
-      "senha": "1",
+      "senha": "ALan0123",
       "status": true,
-      "tipo": false
+      "tipo": "true"
     }
   ],
   "setor": [

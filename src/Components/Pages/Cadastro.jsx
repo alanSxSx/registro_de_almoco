@@ -47,6 +47,7 @@ export default function Cadastro() {
 	const dt = useRef(null);
 	const registerService = new RegisterService();
 	const [setores, setSetores] = useState([]);
+	
 
 	useEffect(() => {
 		registerService.getRegisters().then(data => setRegisters(data));
@@ -96,8 +97,8 @@ export default function Cadastro() {
 			return;
 		}
 
+
 		if (!isCPFAvailable(register.cpf)) {
-			console.log("CPF não disponível");
 			toast.current.show({ severity: 'error', summary: 'Error', detail: 'CPF já está cadastrado.', life: 3000 });
 			return;
 		}
@@ -462,17 +463,10 @@ export default function Cadastro() {
 		return true;
 	}
 
-	function isCPFAvailable(cpf) {
-		try {
-			const response =  fetch(`http://localhost:3000/data?cpf=${cpf}`);
-			const data =  response.json();
-			return data.length === 0; // Se o comprimento for 0, o CPF está disponível
-		} catch (error) {
-			console.error(error);
-			return false;
-		}
-	}
-
+	const isCPFAvailable = (cpf) => {
+		const existingRegister = registers.find(register => register.cpf === cpf);
+		return !existingRegister; // Retorna true se o CPF não foi encontrado nos registros existentes
+	};
 
 
 	return (
@@ -515,7 +509,7 @@ export default function Cadastro() {
 						</div>
 						<div className="field">
 							<label htmlFor="cpf" className="font-bold block mb-2">CPF</label>
-							<InputMask id="cpf" mask="999.999.999-99" value={register.cpf} onChange={(e) => onInputChange(e, 'cpf')} required className={classNames({ 'p-invalid': submitted && !register.cpf })} />
+							<InputMask id="cpf" mask="99999999999" value={register.cpf} onChange={(e) => onInputChange(e, 'cpf')} required className={classNames({ 'p-invalid': submitted && !register.cpf })} />
 							{submitted && !register.cpf && <small className="p-error">CPF is required.</small>}
 						</div>
 
