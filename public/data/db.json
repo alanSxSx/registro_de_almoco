@@ -24,6 +24,19 @@
       "senha": "Alan0123",
       "status": true,
       "tipo": "true"
+    },
+    {
+      "id": 4,
+      "name": "Amanda Severino Marinho Rodrigues",
+      "cpf": "12821366663",
+      "setor": {
+        "id": 2,
+        "name": "Recursos Humanos",
+        "code": "RH"
+      },
+      "senha": "Alan0123",
+      "status": true,
+      "tipo": false
     }
   ],
   "setor": [
@@ -57,28 +70,34 @@
     {
       "0": {
         "0": {
-          "precofuncionario": "2",
-          "precoempresa": "13",
-          "precototal": "20",
+          "0": {
+            "precofuncionario": "2",
+            "precoempresa": "13",
+            "precototal": "20",
+            "id": 1
+          },
+          "precofuncionario": "3",
+          "precoempresa": "15",
+          "precototal": "18",
           "id": 1
         },
-        "precofuncionario": "3",
+        "precofuncionario": "2",
         "precoempresa": "15",
-        "precototal": "18",
+        "precototal": "17",
         "id": 1
       },
-      "precofuncionario": "2",
+      "precofuncionario": "5",
       "precoempresa": "15",
-      "precototal": "17",
+      "precototal": "20",
       "id": 1
     }
   ],
   "refeicoes": [
     {
-      "idfunc": 1,
-      "nome": "Alan Barbosa",
-      "data": "08/04/2023",
-      "time": "10:01:32 AM",
+      "idfunc": 2,
+      "nome": "Raulivan",
+      "data": "08/07/2023",
+      "time": "04:10:09 PM",
       "tipo": "A",
       "preco_funcionario": "2",
       "preco_empresa": "15",
@@ -86,10 +105,10 @@
       "id": 1
     },
     {
-      "idfunc": 2,
-      "nome": "Raulivan",
-      "data": "08/04/2023",
-      "time": "10:04:14 AM",
+      "idfunc": 3,
+      "nome": "Alan Rodrigues Barbosa",
+      "data": "08/07/2023",
+      "time": "04:10:16 PM",
       "tipo": "A",
       "preco_funcionario": "2",
       "preco_empresa": "15",
@@ -97,14 +116,14 @@
       "id": 2
     },
     {
-      "idfunc": 6,
-      "nome": "AlanTeste",
-      "data": "08/04/2023",
-      "time": "11:34:28 AM",
+      "idfunc": 4,
+      "nome": "Amanda Severino Marinho Rodrigues",
+      "data": "08/07/2023",
+      "time": "04:26:58 PM",
       "tipo": "A",
-      "preco_funcionario": "2",
+      "preco_funcionario": "5",
       "preco_empresa": "15",
-      "preco_total": "17",
+      "preco_total": "20",
       "id": 3
     }
   ]

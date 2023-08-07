@@ -364,7 +364,7 @@ export default function Home() {
 					</div>
 				</div>
 
-				<div className="col-12 md:col-12 lg:col-4 flex justify-content-center align-items-center">
+				<div className="flex justify-content-center align-items-center w-full col-12 lg:col-4">
 					<a className='text-xl text-red-500'>Selecione o intervalo de Datas: </a>
 				</div>
 				<div className="col-12 md:col-12 lg:col-12 flex justify-content-center align-items-center">
