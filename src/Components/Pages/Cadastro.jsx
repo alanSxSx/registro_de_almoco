@@ -110,13 +110,13 @@ export default function Cadastro() {
 				const index = findIndexById(register.id);
 
 				_registers[index] = _register;
-				toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Register Updated', life: 3000 });
+				toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Alteração Concluida com Sucesso', life: 3000 });
 			}
 			else {
 				_register.id = createId();
 				_register.image = 'register-placeholder.svg';
 				_registers.push(_register);
-				toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Register Created', life: 3000 });
+				toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Funcionário Cadastrado com Sucesso', life: 3000 });
 			}
 
 			fetch("http://localhost:3000/data", {
@@ -500,7 +500,7 @@ export default function Cadastro() {
 						</DataTable>
 					</div>
 
-					<Dialog visible={registerDialog} style={{ width: '450px'}} header="Register Details" modal className="p-fluid" footer={register.id === null ? registerDialogFooter : registerDialogFooter2} onHide={hideDialog}>
+					<Dialog visible={registerDialog} style={{ width: '450px'}} header="Cadastro de Funcionários" modal className="p-fluid" footer={register.id === null ? registerDialogFooter : registerDialogFooter2} onHide={hideDialog}>
 						{register.image && <img src={`images/register/${register.image}`} onError={(e) => e.target.src = 'https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} alt={register.image} className="register-image block m-auto pb-3" />}
 						<div className="field">
 							<label htmlFor="name">Nome</label>
@@ -542,17 +542,17 @@ export default function Cadastro() {
 
 					</Dialog>
 
-					<Dialog visible={deleteRegisterDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteRegisterDialogFooter} onHide={hideDeleteRegisterDialog}>
+					<Dialog visible={deleteRegisterDialog} style={{ width: '450px' }} header="Confirmação" modal footer={deleteRegisterDialogFooter} onHide={hideDeleteRegisterDialog}>
 						<div className="confirmation-content">
 							<i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
-							{register && <span>Are you sure you want to delete <b>{register.name}</b>?</span>}
+							{register && <span>Tem certeza que deseja excluir <b>{register.name}</b>?</span>}
 						</div>
 					</Dialog>
 
-					<Dialog visible={deleteRegistersDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteRegistersDialogFooter} onHide={hideDeleteRegistersDialog}>
+					<Dialog visible={deleteRegistersDialog} style={{ width: '450px' }} header="Confirmação" modal footer={deleteRegistersDialogFooter} onHide={hideDeleteRegistersDialog}>
 						<div className="confirmation-content">
 							<i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
-							{register && <span>Are you sure you want to delete the selected registers?</span>}
+							{register && <span>Tem certeza que deseja deletar os registros selecionados?</span>}
 						</div>
 					</Dialog>
 				</div>

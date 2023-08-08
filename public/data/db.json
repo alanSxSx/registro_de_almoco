@@ -37,6 +37,19 @@
       "senha": "Alan0123",
       "status": true,
       "tipo": false
+    },
+    {
+      "id": 5,
+      "name": "teste",
+      "cpf": "81476914672",
+      "setor": {
+        "id": 2,
+        "name": "Recursos Humanos",
+        "code": "RH"
+      },
+      "senha": "teste",
+      "status": true,
+      "tipo": false
     }
   ],
   "setor": [
