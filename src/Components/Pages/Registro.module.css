@@ -88,3 +88,17 @@ border: 1px solid #22C55E;
 
 
 
+
+@media screen and (max-width: 767px) {
+
+.pbutton{
+	background-color: #22C55E;
+	color: white;
+	width: 100%;
+	border: 1px solid #22C55E;
+	}
+
+}
+
+
+

@@ -1,4 +1,4 @@
-.navbar {
+/* .navbar {
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -7,55 +7,70 @@
     height: 10vh;
     background-color: rgb(255, 0, 0);
     color: white;
+} */
 
+.navbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	font-weight: bold;
+	width: 100%;
+	height: 10vh;
+	padding: 0 20px;
+	background-color: rgb(255, 0, 0);
+	color: white;
 }
 
 .navbar img {
-    width: 10vh;
-    height: 10vh;
+	display: flex;
+	align-items: center;
+	width: 10vh;
+	height: 10vh;
 }
 
 .navleft {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-grow: 1;
+	margin-right: 10vh;
 }
 
 .navbar div a {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-shrink: 1;
-    color: white;
-    text-decoration: none;
-    margin: 0 1em;
-    width: 110px;
-    height: 10vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-shrink: 1;
+	color: white;
+	text-decoration: none;
+	margin: 0 1em;
+	width: 110px;
+	height: 10vh;
 }
 
 .navbar div a:hover {
-    color: rgb(255, 0, 0);
-    background-color: white;
-    border: solid 1px;
+	color: rgb(255, 0, 0);
+	background-color: white;
+	border: solid 1px;
 
 }
 
 .btnmenu {
-    width: 40px;
-    height: 50px;
-    position: absolute;
-    left: 25px;
-    top: 30px;
-    padding: 0px;
-    cursor: pointer;
+	width: 40px;
+	height: 50px;
+	position: absolute;
+	left: 25px;
+	top: 30px;
+	padding: 0px;
+	cursor: pointer;
 
 }
 
 .btnmenu span {
-    height: 5px;
-    display: none;
-    margin-bottom: 5px;
-    background-color: #ffffff;
+	height: 5px;
+	display: none;
+	margin-bottom: 5px;
+	background-color: #ffffff;
 }
 
 
@@ -63,53 +78,57 @@
 
 @media screen and (max-width: 767px) {
 
-    .navbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-direction: column;
-        height: 30%;
-        width: 100vw;
+	.navbar {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		height: 30%;
+		width: 100vw;
 
 
-    }
+	}
 
-    .navbar img {
-        margin-top: 1em;
-        margin-bottom: 1em;
-    }
+	.navbar img {
+		margin-top: 1em;
+		margin-bottom: 1em;
+	}
 
-    .navleft {
-        display: flex;
-        flex-direction: column;
-        margin-top: 1em;
+	.navleft {
+		display: flex;
+		flex-direction: column;
+		margin-top: 1em;
+		margin:0;
 
-    }
+	}
 
-    .navbar div a {
-        width: 90vw;
-    }
-
-
-    .btnmenu span{
-        display: block;
-    }
+	.navbar div a {
+		width: 100vw;
+	}
 
 
-    .navbar span.btnmenu {
-        display: block;
-        /* Adicione estilos conforme necessário para o botão de menu aparecer */
-      }
+	.btnmenu span {
+		display: block;
+	}
 
-      /* Resto do estilo para exibir o menu em telas menores */
-      .navbar div.navleft {
-        display: none; /* Inicialmente, o menu fica oculto em telas menores */
-      }
-      .navbar div.navleft.showMenu {
-        display: flex; /* Quando o botão mobile é clicado, exibir o menu */
-        flex-direction: column;
-        align-items: center;
-      }
+
+	.navbar span.btnmenu {
+		display: block;
+		/* Adicione estilos conforme necessário para o botão de menu aparecer */
+	}
+
+	/* Resto do estilo para exibir o menu em telas menores */
+	.navbar div.navleft {
+		display: none;
+		/* Inicialmente, o menu fica oculto em telas menores */
+	}
+
+	.navbar div.navleft.showMenu {
+		display: flex;
+		/* Quando o botão mobile é clicado, exibir o menu */
+		flex-direction: column;
+		align-items: center;
+	}
 
 
 

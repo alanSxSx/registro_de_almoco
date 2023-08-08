@@ -40,7 +40,7 @@
     },
     {
       "id": 5,
-      "name": "teste",
+      "name": "Alan2",
       "cpf": "81476914672",
       "setor": {
         "id": 2,
@@ -84,24 +84,30 @@
       "0": {
         "0": {
           "0": {
-            "precofuncionario": "2",
-            "precoempresa": "13",
-            "precototal": "20",
+            "0": {
+              "precofuncionario": "2",
+              "precoempresa": "13",
+              "precototal": "20",
+              "id": 1
+            },
+            "precofuncionario": "3",
+            "precoempresa": "15",
+            "precototal": "18",
             "id": 1
           },
-          "precofuncionario": "3",
+          "precofuncionario": "2",
           "precoempresa": "15",
-          "precototal": "18",
+          "precototal": "17",
           "id": 1
         },
-        "precofuncionario": "2",
+        "precofuncionario": "5",
         "precoempresa": "15",
-        "precototal": "17",
+        "precototal": "20",
         "id": 1
       },
-      "precofuncionario": "5",
+      "precofuncionario": "2",
       "precoempresa": "15",
-      "precototal": "20",
+      "precototal": "17",
       "id": 1
     }
   ],
@@ -138,6 +144,17 @@
       "preco_empresa": "15",
       "preco_total": "20",
       "id": 3
+    },
+    {
+      "idfunc": 2,
+      "nome": "Raulivan",
+      "data": "08/08/2023",
+      "time": "08:02:45 PM",
+      "tipo": "A",
+      "preco_funcionario": "5",
+      "preco_empresa": "15",
+      "preco_total": "20",
+      "id": 4
     }
   ]
 }

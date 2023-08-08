@@ -28,7 +28,7 @@ export default function Registro() {
     const [ultimasRefeicoes, setUltimasRefeicoes] = useState({});
     const [ultimasRefeicoesHora, setUltimasRefeicoesHora] = useState({});
 
-   
+
 
 
     // useEffect(() => {
@@ -202,15 +202,15 @@ export default function Registro() {
                 //atualiza FRONT
                 const updatedUltimasRefeicoes = { ...ultimasRefeicoes };
                 const updatedUltimasRefeicoesHora = { ...ultimasRefeicoesHora };
-                
+
                 updatedUltimasRefeicoes[selectedRegister.id] = date;
                 updatedUltimasRefeicoesHora[selectedRegister.id] = time;
-            
+
                 setUltimasRefeicoes(updatedUltimasRefeicoes);
                 setUltimasRefeicoesHora(updatedUltimasRefeicoesHora);
-                
 
-                
+
+
                 hideDialog();
 
             } else {
@@ -273,8 +273,8 @@ export default function Registro() {
             year: 'numeric',
         });
 
-        
-        
+
+
         return formattedDate;
     }
 
@@ -346,17 +346,17 @@ export default function Registro() {
         });
 
         if (formattedCurrentDate > formattedDataRefeicao) {
-            
+
             return false;
         }
 
         if (formattedCurrentDate == formattedDataRefeicao) {
-            
+
             return true;
         }
 
         if (formattedCurrentDate < formattedDataRefeicao) {
-           
+
             return true;
         }
 
@@ -380,11 +380,11 @@ export default function Registro() {
                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} registers"
                     globalFilter={globalFilter} header={header} responsiveLayout="scroll">
                     <Column field="id" header="id" sortable style={{ maxWidth: '1rem' }}></Column>
-                    <Column field="name" header="Name" sortable style={{ maxWidth: '3rem' }}></Column>
-                    <Column field="setor.name" header="Setor" sortable style={{ maxWidth: '2rem' }}></Column>
-                    <Column header="Última Refeição" body={renderUltimaRefeicao} style={{ maxWidth: '2rem' }}></Column>
-                    <Column header="Hora Ultima Refeição" body={renderUltimaRefeicaoTime} style={{ maxWidth: '2rem' }}></Column>
-                    <Column className={styles.columnbutton} header="Registro" body={renderButton} style={{ maxWidth: '5rem' }}></Column>
+                    <Column field="name" header="Name" sortable style={{ minWidth: '3rem' }}></Column>
+                    <Column field="setor.name" header="Setor" sortable style={{ minWidth: '3rem' }}></Column>
+                    <Column header="Última Refeição" body={renderUltimaRefeicao} style={{ minWidth: '3rem' }}></Column>
+                    <Column header="Hora Ultima Refeição" body={renderUltimaRefeicaoTime} style={{ minWidth: '3rem' }}></Column>
+                    <Column className={styles.columnbutton} header="Registro" sortable body={renderButton} style={{ minWidth: '5rem' }}></Column>
 
                 </DataTable>
             </div>
