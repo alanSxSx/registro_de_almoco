@@ -33,7 +33,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    
+
 }
 .tableheader input{
     width: 60vw;
@@ -41,7 +41,7 @@
 
 .tableheader h2 {
     margin-bottom: 1rem;
-    
+
 }
 
 .card {
@@ -64,6 +64,7 @@ background-color: #22C55E;
 color: white;
 width: 20vw;
 border: 1px solid #22C55E;
+margin-bottom: 0.25rem;
 }
 
 .label{
@@ -102,6 +103,9 @@ border: 1px solid #22C55E;
 	width: 100%;
 	border: 1px solid #22C55E;
 	}
+
+.card{
+}
 
 }
 

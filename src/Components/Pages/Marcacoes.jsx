@@ -220,12 +220,13 @@ return (
 		<div className={styles.card}>
 			<div className='mb-3 mt-3 flex flex-column justify-content-center align-items-center '>
 				<h2 className='mb-3'>Adicione uma Refeição para o Funcionário:</h2>
-				<div>
+				<div className='flex justify-content-center align-items-center md:flex-row flex-column w-screen px-1'>
 					<Dropdown value={drop} onChange={handleDrop} options={registers} optionLabel="name"
-						placeholder="Selecione o Funcionário" className="w-full md:w-14rem mr-3" />
-					<Calendar value={calendar} onChange={handleCalendar} dateFormat="dd/mm/yy" className='mr-3' />
-					<Calendar value={timeCalendar} onChange={handleTimeCalendar} timeOnly className='mr-3' />
+						placeholder="Selecione o Funcionário" className="w-full mb-1 md:w-14rem md:mr-3" />
+					<Calendar value={calendar} onChange={handleCalendar} dateFormat="dd/mm/yy" className='w-full mb-1 md:w-14rem md:mr-3 ' />
+					<Calendar value={timeCalendar} onChange={handleTimeCalendar} timeOnly className='w-full mb-1 md:w-14rem md:mr-3' />
 					<Button className={styles.pbutton} label="Registrar" onClick={handleSalvar} />
+
 				</div>
 			</div>
 			<DataTable ref={dt} value={filteredRefeicoes}
