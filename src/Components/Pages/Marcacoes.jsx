@@ -30,6 +30,9 @@ export default function Marcacoes() {
     const [refeicoes, setRefeicoes] = useState();
     const [dates, setDates] = useState([]);
     const [filteredRefeicoes, setFilteredRefeicoes] = useState([]);
+    const [drop,setDrop] = useState();
+    const [calendar,setCalendar] = useState();
+    const [timeCalendar,setTimeCalendar] = useState();
 
 
 
@@ -100,13 +103,6 @@ export default function Marcacoes() {
         </div>
     );
 
-
-    const renderButton = (rowData) => {
-        return (
-            <Button className={styles.pbutton} label="Registrar" onClick={() => openNew(rowData)} />
-        );
-    };
-
     const registerDialogFooter = (
         <React.Fragment>
             <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={hideDialog} />
@@ -172,17 +168,17 @@ export default function Marcacoes() {
             if (senhaUsuario === senhaEsperada) {
                 // Senha correta, faça o que desejar aqui (por exemplo, registrar a refeição)
 
-                // let time = new Date().toLocaleTimeString("en-US", {
-                //     hour: '2-digit',
-                //     minute: '2-digit',
-                //     second: '2-digit',
-                // })
+                let time = new Date().toLocaleTimeString("en-US", {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                })
 
-                // let date = new Date().toLocaleDateString("en-US", {
-                //     day: "2-digit",
-                //     month: "2-digit",
-                //     year: "numeric",
-                // });
+                let date = new Date().toLocaleDateString("en-US", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                });
 
                 // Constrói o objeto de refeição para enviar na solicitação POST
                 const refeicaoData = {
@@ -250,6 +246,16 @@ export default function Marcacoes() {
         }));
     }
 
+    function handleDrop(e) {
+        setDrop(e.target.value)
+    }
+    function handleCalendar(e) {
+        setCalendar(e.target.value)
+    }
+    function handleTimeCalendar(e) {
+        setTimeCalendar(e.target.value)
+    }
+
 
 
     return (
@@ -258,11 +264,15 @@ export default function Marcacoes() {
             <Navbar />
 
             <div className={styles.card}>
-                <div className='mb-3 mt-3'>
-                    <h3 className='mb-3'>Adicione a Refeição para o Funcionário:</h3>
-                    <Dropdown value={""} onChange={""} options={""} optionLabel="name"
-                        placeholder="Selecione o Funcionário" className="w-full md:w-14rem" />
-
+                <div className='mb-3 mt-3 flex flex-column justify-content-center align-items-center '>
+                    <h2 className='mb-3'>Adicione uma Refeição para o Funcionário:</h2>
+                    <div>
+                    <Dropdown value={drop} onChange={handleDrop} options={registers} optionLabel="name"
+                        placeholder="Selecione o Funcionário" className="w-full md:w-14rem mr-3" />
+                    <Calendar value={calendar} onChange={handleCalendar} dateFormat="dd/mm/yy" className='mr-3'  />
+                    <Calendar value={timeCalendar} onChange={handleTimeCalendar} timeOnly  hourFormat="12" className='mr-3'/>
+                     <Button className={styles.pbutton} label="Registrar" onClick={() => openNew(rowData)} />
+                    </div>                                       
                 </div>
                 <DataTable ref={dt} value={filteredRefeicoes}
                     style={{ width: '100%' }}
