@@ -23,7 +23,7 @@ export default function Navbar() {
       <div className={`${styles.navleft} ${isMenuOpen ? styles.showMenu : ''}`}>
         <a href="/home">Início</a>
         <a href="/cadastro">Cadastro</a>
-        <a href="#">Marcações</a>
+        <a href="/marcacoes">Marcações</a>
         <a href="/registro">Lançamento</a>
         <a href="/configuracao">Configuração</a>
       </div>

@@ -1,0 +1,107 @@
+.title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: bold;
+    width: 100vw;
+    background-color: rgb(255, 0, 0);
+    color: white;
+		height: 10vh;
+		padding: 0 20px;
+}
+
+.title a {
+    display: flex;
+    align-items: center;
+		justify-content: center;
+    font-size: 1.5em;
+		flex-grow: 1;
+		margin-right: 70px;
+
+    /* justify-content: center;
+    width: 100%; */
+}
+
+.title img {
+    width: 10vh;
+    height: 100%;
+
+}
+
+.tableheader{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+}
+.tableheader input{
+    width: 60vw;
+}
+
+.tableheader h2 {
+    margin-bottom: 1rem;
+    
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+}
+
+
+.columnbutton{
+text-align: center !important;
+}
+
+
+
+.pbutton{
+background-color: #22C55E;
+color: white;
+width: 20vw;
+border: 1px solid #22C55E;
+}
+
+.label{
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.field{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 5em;
+}
+
+.input{
+    width: 90%;
+}
+
+
+
+
+
+
+
+@media screen and (max-width: 767px) {
+
+.pbutton{
+	background-color: #22C55E;
+	color: white;
+	width: 100%;
+	border: 1px solid #22C55E;
+	}
+
+}
+
+
+
