@@ -26,6 +26,10 @@ body,html{
     margin: 0;
   }
 
+h2{
+  color: #343a40;
+}
+
   @keyframes pulse {
     0% {
         background-color: rgba(165, 165, 165, 0.1)
