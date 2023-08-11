@@ -365,7 +365,7 @@ export default function Home() {
 				</div>
 
 				<div className="flex justify-content-center align-items-center w-full col-12 lg:col-4">
-					<a className='text-xl text-red-500'>Selecione o intervalo de Datas: </a>
+					<h2>Selecione o intervalo de Datas: </h2>
 				</div>
 				<div className="col-12 md:col-12 lg:col-12 flex justify-content-center align-items-center">
 					<Calendar value={dates} onChange={(e) => setDates(e.value)} selectionMode="range" dateFormat="dd/mm/yy" readOnlyInput className='mr-2' />
