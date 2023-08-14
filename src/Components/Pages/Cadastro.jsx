@@ -456,11 +456,7 @@ export default function Cadastro() {
 		if (remainder === 10 || remainder === 11) {
 			remainder = 0;
 		}
-		if (remainder !== parseInt(cleanedCPF.charAt(10))) {
-			return false;
-		}
-
-		return true;
+		return remainder === parseInt(cleanedCPF.charAt(10))
 	}
 
 	const isCPFAvailable = (cpf) => {

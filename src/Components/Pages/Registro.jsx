@@ -267,7 +267,7 @@ export default function Registro() {
             return 'Nenhuma refeição registrada';
         }
 
-        const formattedDate = new Date(dataRefeicao).toLocaleDateString('en-US', {
+        const formattedDate = new Date(dataRefeicao).toLocaleDateString('pt-BR', {
             day: '2-digit',
             month: '2-digit',
             year: 'numeric',
