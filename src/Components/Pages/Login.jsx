@@ -5,20 +5,30 @@ import { Input } from '../Forms/input'
 import { Button } from '../Forms/button'
 import { Toast } from 'primereact/toast';
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../Context/AuthProvider/AuthContext';
 
 
 export default function Login() {
 
 	const [user, setUser] = useState({})
 	const [data, setData] = useState({})
-	const toast = useRef(null);
 	const [authenticated, setAuthenticated] = useState(false);
 	const [isAdmin, setIsAdmin] = useState(false);
-
+	const toast = useRef(null);
+	const { login } = useAuth();
 	const navigate = useNavigate();
 
 	useEffect(() => {
 		fetchData();
+
+		localStorage.clear()
+
+		const storedAuthData = localStorage.getItem('authData');
+		if (storedAuthData) {
+		  const parsedAuthData = JSON.parse(storedAuthData);
+		  setAuthenticated(true);
+		  setIsAdmin(parsedAuthData.isAdmin);
+		}
 	}, []);
 
 	const fetchData = async () => {
@@ -43,25 +53,40 @@ export default function Login() {
 		e.preventDefault()
 		let isAuthenticated = false;
 		let isAdminUser = false;
+		let isUser = false;
 
 		for (const userData of data) {
 			if (userData.cpf === user.login && userData.senha === user.senha) {
 				isAuthenticated = true;
 				isAdminUser = userData.tipo === "true";
+				isUser === false
 
 				if (isAdminUser) {
 					console.log("Usuário Autenticado Como Admin");
+					login({ username: user.login, isAdmin:true });
 					setAuthenticated(true);
 					setIsAdmin(true)
 					toast.current.show({ severity: 'success', summary: 'Success', detail: 'Logado com Sucesso', life: 1000 });
+					const authData = {
+						cpf: user.login,
+						isAdmin: isAdminUser,
+					  };
+					  localStorage.setItem('authData', JSON.stringify(authData));
 				} else {
+					login({ username: user.login, isAdmin: false });
 					toast.current.show({ severity: 'success', summary: 'Success', detail: 'Logado com Sucesso', life: 1000 });
 					setAuthenticated(true);
                     setIsAdmin(false);
+					const authData = {
+						cpf: user.login,
+						isAdmin: isUser,
+					  };
+					localStorage.setItem('authData', JSON.stringify(authData));				
 				}
 
 				break;
 			}
+			
 		}
 
 		if (!isAuthenticated) {
@@ -70,9 +95,13 @@ export default function Login() {
 			console.log(user.Data.senha)
 			console.log("Não foi possível autenticar o usuário");
 		}
+	
+
+
 	}
 
 	if (authenticated && isAdmin) {
+		console.log(localStorage.getItem('authData'))
 		setTimeout(() => {
 			navigate("/home");
 		}, 1000);
@@ -80,10 +109,12 @@ export default function Login() {
 
 	// Se o usuário estiver autenticado e for um usuário normal, redirecione para /registro
 	if (authenticated && !isAdmin) {
+		console.log(localStorage.getItem('authData'))
 		setTimeout(() => {
 			navigate("/registro");
 		}, 1000);
 	}
+
 
 
 
