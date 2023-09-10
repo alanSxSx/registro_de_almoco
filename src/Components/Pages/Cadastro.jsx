@@ -27,12 +27,12 @@ export default function Cadastro() {
 
 	let emptyRegister = {
 		id: null,
+		id_setor: null,
 		name: '',
 		cpf: '',
-		setor: [],
 		senha: '',
-		status: true,
-		tipo: false,
+		status: 'true',
+		tipo: 'true',
 	};
 
 	const [registers, setRegisters] = useState(null);
@@ -47,31 +47,22 @@ export default function Cadastro() {
 	const dt = useRef(null);
 	const registerService = new RegisterService();
 	const [setores, setSetores] = useState([]);
-	
+
 
 	useEffect(() => {
 		registerService.getRegisters().then(data => setRegisters(data));
+		registerService.getSetores().then(data => setSetores(data));
+
 	}, []);
+
 
 
 	const openNew = () => {
 		setRegister(emptyRegister);
 		setSubmitted(false);
 		setRegisterDialog(true);
-		console.log(register)
-		fetch(`http://localhost:3000/setor`, {
-			method: 'GET',
-			headers: {
-				'Content-type': 'application/json',
-			}
-		})
-			.then(resp => resp.json())
-			.then((data) => {
-				setSetores(data)
-
-			})
-
-			.catch(err => console.log(err))
+		
+		registerService.getSetores().then(data => setSetores(data));
 
 	}
 
@@ -119,7 +110,7 @@ export default function Cadastro() {
 				toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Funcionário Cadastrado com Sucesso', life: 3000 });
 			}
 
-			fetch("http://localhost:3000/data", {
+			fetch("http://localhost:8080/users", {
 				method: "POST",
 				headers: {
 					'Content-Type': 'application/json',
@@ -131,16 +122,17 @@ export default function Cadastro() {
 					if (data.id) {
 						_register.id = data.id;
 					}
+					registerService.getRegisters().then(data => setRegisters(data));
 					setRegisters(_registers);
 					setRegisterDialog(false);
-					setRegister(emptyRegister);
+					setRegister(emptyRegister);				
 
 				})
 				.catch(err => console.log(err))
 
-
-
 		}
+		
+		console.log(register)
 
 	}
 
@@ -148,7 +140,7 @@ export default function Cadastro() {
 		setRegister({ ...register });
 		setRegisterDialog(true);
 
-		fetch(`http://localhost:3000/setor`, {
+		fetch(`http://localhost:8080/setor`, {
 			method: 'GET',
 			headers: {
 				'Content-type': 'application/json',
@@ -157,20 +149,19 @@ export default function Cadastro() {
 			.then(resp => resp.json())
 			.then((data) => {
 				setSetores(data)
+				console.log(registers)
 
 			})
 
 			.catch(err => console.log(err))
+
 
 	}
 
 	const saveEditRegister = () => {
 		setSubmitted(false);
 
-
-
-
-		fetch(`http://localhost:3000/data/${register.id}`, {
+		fetch(`http://localhost:8080/users/${register.id}`, {
 			method: 'PATCH',
 			headers: {
 				'Content-Type': 'application/json'
@@ -185,6 +176,8 @@ export default function Cadastro() {
 				setRegisterDialog(false);
 			})
 			.catch(err => console.log(err));
+
+			console.log(register)
 
 	}
 
@@ -203,7 +196,7 @@ export default function Cadastro() {
 		setRegister(emptyRegister);
 		toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Register Deleted', life: 3000 });
 
-		fetch(`http://localhost:3000/data/${register.id}`, {
+		fetch(`http://localhost:8080/users/${register.id}`, {
 			method: 'DELETE',
 			headers: {
 				'Content-Type': 'application/json'
@@ -299,7 +292,7 @@ export default function Cadastro() {
 		toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Registers Deleted', life: 3000 });
 
 		const deleteRequests = selects.map(id =>
-			fetch(`http://localhost:3000/data/${id}`, {
+			fetch(`http://localhost:8080/users/${id}`, {
 				method: 'DELETE',
 				headers: {
 					'Content-Type': 'application/json',
@@ -334,20 +327,38 @@ export default function Cadastro() {
 
 
 	function getStatusLabel(status) {
-		return status ? 'Ativo' : 'Inativo';
-	}
 
-	function getStatusLabelTipo(tipo) {
-		return tipo ? 'Administrador' : 'Usuario';
-	}
+		if (status == 'true') {
+			return 'Ativo'
+		} else {
+			return 'Inativo'
+		}
+		// return status ? 'Ativo' : 'Inativo';
+	  }
+	  
+	  function getStatusLabelTipo(tipo) {
 
-	const onInputChange = (e, name) => {
-		const val = e.target ? e.target.value : e.value;
+		if (tipo == 'true'){
+			return 'Administrador'
+		} else {
+			return 'Usuario'
+		}
+		//return tipo ? 'Administrador' : 'Usuário';
+	  }
+
+	  const onInputChange = (e, name) => {
 		let _register = { ...register };
-		_register[name] = name === 'status' ? val === 'true' : val;
+		const val = e.target.value; // Use e.value para obter o valor selecionado
 
+		if (name === 'id_setor') {
+			_register[name] = val;
+		} else {
+			_register[name] = val;
+		}
+		
 		setRegister(_register);
-	}
+	  }
+	  
 
 
 
@@ -465,6 +476,30 @@ export default function Cadastro() {
 	};
 
 
+	const getSetorName = (rowData) => {
+		const setorId = rowData.id_setor;
+		const setor = setores.find(setor => setor.id === setorId);
+	
+		return setor ? setor.name : '';
+	};
+
+
+
+
+	const onInputSetors = (e, name) => {
+		let _register = { ...register };
+		const val = e.target.value; // Use e.value para obter o valor selecionado
+
+		if (name === 'id_setor') {
+			_register[name] = val;
+		} else {
+			_register[name] = name === 'status' ? val === 'true' : val;
+		}
+	
+		setRegister(_register);
+	}
+
+
 	return (
 		<>
 			<Navbar />
@@ -484,7 +519,7 @@ export default function Cadastro() {
 							<Column field="id" header="id" sortable style={{ minWidth: '3rem' }}></Column>
 							<Column field="name" header="Name" sortable style={{ minWidth: '16rem' }}></Column>
 							<Column field="cpf" header="CPF" sortable style={{ minWidth: '10rem' }}></Column>
-							<Column field="setor.name" header="Setor" sortable style={{ minWidth: '10rem' }}></Column>
+							<Column body={getSetorName} field="id_setor" header="Setor" sortable style={{ minWidth: '10rem' }}></Column>
 							<Column body={statusBodyTemplate} field="status" header="Status" sortable style={{ minWidth: '5rem' }}></Column>
 							<Column body={statusBodyTemplateTipo} field="tipo" header="Tipo" sortable style={{ minWidth: '5rem' }}></Column>
 							{/* <Column field="image" header="Image" body={imageBodyTemplate}></Column> */}
@@ -496,7 +531,7 @@ export default function Cadastro() {
 						</DataTable>
 					</div>
 
-					<Dialog visible={registerDialog} style={{ width: '450px'}} header="Cadastro de Funcionários" modal className="p-fluid" footer={register.id === null ? registerDialogFooter : registerDialogFooter2} onHide={hideDialog}>
+					<Dialog visible={registerDialog} style={{ width: '450px' }} header="Cadastro de Funcionários" modal className="p-fluid" footer={register.id === null ? registerDialogFooter : registerDialogFooter2} onHide={hideDialog}>
 						{register.image && <img src={`images/register/${register.image}`} onError={(e) => e.target.src = 'https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} alt={register.image} className="register-image block m-auto pb-3" />}
 						<div className="field">
 							<label htmlFor="name">Nome</label>
@@ -509,22 +544,27 @@ export default function Cadastro() {
 							{submitted && !register.cpf && <small className="p-error">CPF is required.</small>}
 						</div>
 
+						{/* <div className="field">
+							<label htmlFor="setor">Setor</label>
+							<Dropdown  optionLabel={"name"} options={setores.map(setor => ({ label: setor.name, value: setor.id }))}  onChange={(e) => onInputSetors(e, 'id_setor')} placeholder="Selecione o Setor" />
+						</div> */}
+
 						<div className="field">
 							<label htmlFor="setor">Setor</label>
-							<Dropdown value={register.setor} options={setores} onChange={(e) => onInputChange(e, 'setor')} optionLabel="name" placeholder="Selecione o Setor" />
+							<Dropdown value={register.id_setor} options={setores.map(setor => ({ label: setor.name, value: setor.id }))} onChange={(e) => onInputSetors(e, 'id_setor')} optionLabel="label" optionValue="value" placeholder="Selecione o Setor" />
 						</div>
 
 						<div className="field">
 							<label htmlFor="status">Status</label>
-							<Dropdown value={register.status ? 'true' : 'false'} options={[
-								{ label: 'Ativo', value: 'true' },
+							<Dropdown value={register.status} options={[
+								{ label: 'Ativo', value: 'true'},
 								{ label: 'Inativo', value: 'false' }
 							]} onChange={(e) => onInputChange(e, 'status')} optionLabel="label" placeholder="Selecione o Status" />
 						</div>
 
 						<div className="field">
 							<label htmlFor="status">Tipo</label>
-							<Dropdown value={register.tipo ? 'true' : 'false'} options={[
+							<Dropdown value={register.tipo} options={[
 								{ label: 'Administrador', value: 'true' },
 								{ label: 'Usuario', value: 'false' }
 							]} onChange={(e) => onInputChange(e, 'tipo')} optionLabel="label" placeholder="Selecione o Tipo de Usuário" />
@@ -558,3 +598,4 @@ export default function Cadastro() {
 
 	)
 }
+
