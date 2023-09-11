@@ -46,9 +46,9 @@ export default function Home() {
 	}, [dates]);
 
 
-	// Função para fazer o GET na tabela "data"
+	// Função para fazer o GET na tabela "users"
 	async function getData() {
-		const response = await fetch('http://localhost:3000/data');
+		const response = await fetch('http://localhost:8080/users');
 		const data = await response.json();
 		return data;
 	}
@@ -56,14 +56,14 @@ export default function Home() {
 
 	// Função para fazer o GET na tabela "precos"
 	async function getPrecos() {
-		const response = await fetch('http://localhost:3000/precos');
+		const response = await fetch('http://localhost:8080/precos');
 		const precos = await response.json();
 		return precos;
 	}
 
 	// Função para fazer o GET na tabela "refeicoes"
 	async function getRefeicoes() {
-		const response = await fetch('http://localhost:3000/refeicoes');
+		const response = await fetch('http://localhost:8080/refeicoes');
 		const refeicoes = await response.json();
 		return refeicoes;
 	}
@@ -93,7 +93,7 @@ export default function Home() {
 				return (
 					dataRef >= dataInicial &&
 					dataRef <= dataFinal &&
-					refeicao.idfunc === funcionario.id
+					refeicao.id_funcionario === funcionario.id
 				);
 			});
 
@@ -137,7 +137,7 @@ export default function Home() {
 				return (
 					dataRef >= dataInicial &&
 					dataRef <= dataFinal &&
-					refeicao.idfunc === funcionario.id
+					refeicao.id_funcionario === funcionario.id
 				);
 			});
 
@@ -183,7 +183,7 @@ export default function Home() {
 				return (
 					dataRef >= dataInicial &&
 					dataRef <= dataFinal &&
-					refeicao.idfunc === funcionario.id
+					refeicao.id_funcionario === funcionario.id
 				);
 			});
 
@@ -309,6 +309,7 @@ export default function Home() {
 		TotalAPagarEmpresa();
 		TotalAPagarGeral();
 		setData([...data]);
+		console.log(refeicoes)
 	}
 
 

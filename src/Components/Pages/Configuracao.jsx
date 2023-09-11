@@ -14,7 +14,7 @@ export default function Configuracao() {
 
 
     useEffect(() => {
-        fetch('http://localhost:3000/precos')
+        fetch('http://localhost:8080/precos')
             .then((resp) => resp.json())
             .then((data) => {
                 setPrecos(data);
@@ -40,7 +40,7 @@ export default function Configuracao() {
 
     function submit(e) {
         e.preventDefault()
-        fetch(`http://localhost:3000/precos/${precos[0].id}`, {
+        fetch(`http://localhost:8080/precos/${precos[0].id}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',

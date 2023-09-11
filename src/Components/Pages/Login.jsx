@@ -33,7 +33,7 @@ export default function Login() {
 
 	const fetchData = async () => {
 		try {
-			const response = await fetch('http://localhost:3000/data/');
+			const response = await fetch('http://localhost:8080/users/');
 			const data = await response.json();
 			setData(data);
 		} catch (error) {

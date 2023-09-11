@@ -10,7 +10,6 @@ import Configuracao from './Components/Pages/Configuracao';
 import Registro from './Components/Pages/Registro';
 import Marcacoes from './Components/Pages/Marcacoes';
 import { ProtectedLayout } from './Components/Layout/ProtectedLayout';
-import Testando from './Components/Pages/Testando';
 
 function App() {
 
@@ -31,7 +30,7 @@ function App() {
       {/* <Route path="/cadastro" element={<ProtectedLayout> <Cadastro /> </ProtectedLayout>} /> */}
       <Route path="/cadastro" element={ <Cadastro />} />
       <Route path="/marcacoes" element={<ProtectedLayout> <Marcacoes /> </ProtectedLayout>} />
-      <Route path="/testando" element={<Testando />} />
+    
 
       </Routes>
       

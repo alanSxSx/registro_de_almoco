@@ -9,6 +9,7 @@ import { RegisterService } from '../imports/RegisterService';
 import { DataTable } from 'primereact/datatable';
 import { Button } from 'primereact/button';
 import { toast, ToastContainer } from 'react-toastify';
+import { format } from 'date-fns';
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -19,12 +20,12 @@ export default function Registro() {
     const dt = useRef(null);
     const [registerDialog, setRegisterDialog] = useState(false);
     const registerService = new RegisterService();
-    const [senhaUsuario, setSenhaUsuario] = useState();
+    const [senhaUsuario, setSenhaUsuario] = useState('');
     const [selectedRegister, setSelectedRegister] = useState(null); // Novo estado para armazenar o registro selecionado
     const [precoFuncAtual, setPrecoFuncAtual] = useState();
     const [precoEmpAtual, setPrecoEmpAtual] = useState();
     const [precoTotalAtual, setPrecoTotalAtual] = useState();
-
+    const [setores,setSetores] = useState();
     const [ultimasRefeicoes, setUltimasRefeicoes] = useState({});
     const [ultimasRefeicoesHora, setUltimasRefeicoesHora] = useState({});
 
@@ -41,35 +42,79 @@ export default function Registro() {
     // 	});
     // }, []);
 
+    // useEffect(() => {
+    //     registerService.getRegisters().then(async (data) => {
+    //         const funcionariosAtivos = data.filter((funcionario) => funcionario.status === 'true');
+    //         setRegisters(funcionariosAtivos);
+    //         getPrecos();
+
+
+    //         // Buscar as primeiras refeições de cada usuário e armazenar no estado
+    //         const ultimasRefeicoesData = {};
+    //         const ultimasRefeicoesHora = {};
+    //         for (const funcionario of funcionariosAtivos) {
+    //             const ultimaRefeicao = await getUltimaRefeicao(funcionario.id);
+    //             ultimasRefeicoesData[funcionario.id] = ultimaRefeicao;
+    //             const ultimaRefeicaoTime = await getUltimaRefeicaoHora(funcionario.id);
+    //             ultimasRefeicoesHora[funcionario.id] = ultimaRefeicaoTime;
+                
+    //         }
+    //         setUltimasRefeicoes(ultimasRefeicoesData);
+    //         setUltimasRefeicoesHora(ultimasRefeicoesHora)
+            
+             
+           
+    //     });
+    //     registerService.getSetores().then(data => setSetores(data));
+    // }, []);
+
     useEffect(() => {
+        registerService.getSetores().then(data => setSetores(data));
         registerService.getRegisters().then(async (data) => {
-            const funcionariosAtivos = data.filter((funcionario) => funcionario.status === true);
+          try {
+            const funcionariosAtivos = data.filter((funcionario) => funcionario.status === 'true');
             setRegisters(funcionariosAtivos);
             getPrecos();
-
-
-
-            // Buscar as primeiras refeições de cada usuário e armazenar no estado
+      
+            const ultimasRefeicoesDataPromises = funcionariosAtivos.map(async (funcionario) => {
+              const ultimaRefeicao = await getUltimaRefeicao(funcionario.id);
+              return { id: funcionario.id, ultimaRefeicao };
+            });
+      
+            const ultimasRefeicoesHoraPromises = funcionariosAtivos.map(async (funcionario) => {
+              const ultimaRefeicaoTime = await getUltimaRefeicaoHora(funcionario.id);
+              return { id: funcionario.id, ultimaRefeicaoTime };
+            });
+      
+            const ultimasRefeicoesDataArray = await Promise.all(ultimasRefeicoesDataPromises);
+            const ultimasRefeicoesHoraArray = await Promise.all(ultimasRefeicoesHoraPromises);
+      
             const ultimasRefeicoesData = {};
             const ultimasRefeicoesHora = {};
-            for (const funcionario of funcionariosAtivos) {
-                const ultimaRefeicao = await getUltimaRefeicao(funcionario.id);
-                ultimasRefeicoesData[funcionario.id] = ultimaRefeicao;
-                const ultimaRefeicaoTime = await getUltimaRefeicaoHora(funcionario.id);
-                ultimasRefeicoesHora[funcionario.id] = ultimaRefeicaoTime;
-
-            }
+      
+            ultimasRefeicoesDataArray.forEach((item) => {
+              ultimasRefeicoesData[item.id] = item.ultimaRefeicao;
+            });
+      
+            ultimasRefeicoesHoraArray.forEach((item) => {
+              ultimasRefeicoesHora[item.id] = item.ultimaRefeicaoTime;
+            });
+      
             setUltimasRefeicoes(ultimasRefeicoesData);
-            setUltimasRefeicoesHora(ultimasRefeicoesHora)
+            setUltimasRefeicoesHora(ultimasRefeicoesHora);
+          } catch (error) {
+            console.error("Erro ao buscar as últimas refeições:", error);
+          }
         });
-    }, []);
+      
+      }, []);
 
 
 
     const openNew = (rowData) => {
         setSelectedRegister(rowData);
         setRegisterDialog(true);
-        fetch(`http://localhost:3000/setor`, {
+        fetch(`http://localhost:8080/setor`, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
@@ -77,7 +122,11 @@ export default function Registro() {
         })
             .then(resp => resp.json())
             .then((data) => {
-                // setSetores(data)
+                const setoresData = {};
+                data.forEach((setor) => {
+                    setoresData[setor.id] = setor.name;
+                });
+                setSetores(setoresData);
 
             })
 
@@ -121,7 +170,7 @@ export default function Registro() {
     }
 
     async function getPrecos() {
-        fetch('http://localhost:3000/precos')
+        fetch('http://localhost:8080/precos')
             .then((resp) => resp.json())
             .then((data) => {
                 setPrecoFuncAtual(data[0].precofuncionario || '');
@@ -143,7 +192,7 @@ export default function Registro() {
         }
 
         try {
-            const response = await fetch(`http://localhost:3000/data/${selectedRegister.id}`, {
+            const response = await fetch(`http://localhost:8080/users/${selectedRegister.id}`, {
                 method: "GET",
                 headers: {
                     "Content-type": "application/json",
@@ -161,22 +210,24 @@ export default function Registro() {
             if (senhaUsuario === senhaEsperada) {
                 // Senha correta, faça o que desejar aqui (por exemplo, registrar a refeição)
 
-                let time = new Date().toLocaleTimeString("en-US", {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit',
-                })
+                // let time = new Date().toLocaleTimeString("en-US", {
+                //     hour: '2-digit',
+                //     minute: '2-digit',
+                //     second: '2-digit',
+                // })
+                const currentDate = new Date();
+                const time = currentDate.toLocaleTimeString("en-US", { hour12: false }); // Formato: "HH:MM:SS"
+                const date = format(currentDate, 'yyyy-MM-dd');
 
-                let date = new Date().toLocaleDateString("en-US", {
-                    day: "2-digit",
-                    month: "2-digit",
-                    year: "numeric",
-                });
+                // let date = new Date().toLocaleDateString("en-US", {
+                //     day: "2-digit",
+                //     month: "2-digit",
+                //     year: "numeric",
+                // });
 
                 // Constrói o objeto de refeição para enviar na solicitação POST
                 const refeicaoData = {
-                    idfunc: selectedRegister.id,
-                    nome: selectedRegister.name,
+                    id_funcionario: selectedRegister.id,
                     data: date,
                     time: time,
                     tipo: 'A',
@@ -185,7 +236,9 @@ export default function Registro() {
                     preco_total: precoTotalAtual,
                 };
 
-                const postResponse = await fetch('http://localhost:3000/refeicoes', {
+                console.log(refeicaoData)
+
+                const postResponse = await fetch('http://localhost:8080/refeicoes', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -234,7 +287,7 @@ export default function Registro() {
     async function getUltimaRefeicao(id) {
         try {
             const response = await fetch(
-                `http://localhost:3000/refeicoes?idfunc=${id}`,
+                `http://localhost:8080/refeicoes/id_funcionario/${id}`,
                 {
                     method: 'GET',
                     headers: {
@@ -267,21 +320,37 @@ export default function Registro() {
             return 'Nenhuma refeição registrada';
         }
 
-        const formattedDate = new Date(dataRefeicao).toLocaleDateString('pt-BR', {
+        const dateParts = dataRefeicao.split('-');
+    if (dateParts.length === 3) {
+        // Construa a data a partir das partes da data
+        const formattedDate = new Date(
+            parseInt(dateParts[0]),
+            parseInt(dateParts[1]) - 1, // Mês é base 0
+            parseInt(dateParts[2])
+        ).toLocaleDateString('pt-BR', {
             day: '2-digit',
             month: '2-digit',
             year: 'numeric',
         });
 
-
-
         return formattedDate;
+    } else {
+        // Formato de data inválido
+        return 'Formato de data inválido';
+    }
+        
+        // const formattedDate = new Date(dataRefeicao).toLocaleDateString('pt-BR', {
+        //     day: '2-digit',
+        //     month: '2-digit',
+        //     year: 'numeric',
+        // });
+        // return formattedDate;
     }
 
     async function getUltimaRefeicaoHora(id) {
         try {
             const response = await fetch(
-                `http://localhost:3000/refeicoes?idfunc=${id}`,
+                `http://localhost:8080/refeicoes/id_funcionario/${id}`,
                 {
                     method: 'GET',
                     headers: {
@@ -331,19 +400,20 @@ export default function Registro() {
         if (dataRefeicao === null) {
             return false; // Não desabilita o botão se nenhuma refeição estiver registrada
         }
+        
 
-        const formattedDataRefeicao = new Date(dataRefeicao).toLocaleDateString('en-US', {
-            day: '2-digit',
-            month: '2-digit',
-            year: '2-digit',
-        });
+        const formattedDataRefeicao = dataRefeicao
 
         // Convertendo a data atual para o mesmo formato da data da última refeição
-        const formattedCurrentDate = currentDate.toLocaleDateString('en-US', {
-            day: '2-digit',
-            month: '2-digit',
-            year: '2-digit',
-        });
+        // const formattedCurrentDate = currentDate.toLocaleDateString('en-US', {
+        //     day: '2-digit',
+        //     month: '2-digit',
+        //     year: '2-digit',
+        // });
+
+        const formattedCurrentDate = currentDate.toISOString().slice(0, 10);
+
+       // console.log(`A data de hoje é ${formattedCurrentDate} e a data da ultima ref é ${formattedDataRefeicao}`)
 
         if (formattedCurrentDate > formattedDataRefeicao) {
 
@@ -360,6 +430,17 @@ export default function Registro() {
             return true;
         }
 
+    }
+
+    function renderSetorName(rowData) {
+
+        const setorEncontrado = setores.find((setor) => setor.id === rowData.id_setor);
+
+        if (setorEncontrado) {
+          return setorEncontrado.name;
+        } else {
+          return 'N/A';
+        }
     }
 
 
@@ -381,7 +462,7 @@ export default function Registro() {
                     globalFilter={globalFilter} header={header} responsiveLayout="scroll">
                     <Column field="id" header="id" sortable style={{ minWidth: '1rem' }}></Column>
                     <Column field="name" header="Name" sortable style={{ minWidth: '3rem' }}></Column>
-                    <Column field="setor.name" header="Setor" sortable style={{ minWidth: '3rem' }}></Column>
+                    <Column body={renderSetorName} field="id_setor" header="Setor" sortable style={{ minWidth: '3rem' }}></Column>
                     <Column header="Última Refeição" body={renderUltimaRefeicao} style={{ minWidth: '3rem' }}></Column>
                     <Column header="Hora Ultima Refeição" body={renderUltimaRefeicaoTime} style={{ minWidth: '3rem' }}></Column>
                     <Column className={styles.columnbutton} header="Registro" sortable body={renderButton} style={{ minWidth: '5rem' }}></Column>
