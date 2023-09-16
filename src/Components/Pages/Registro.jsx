@@ -32,41 +32,6 @@ export default function Registro() {
 
 
 
-    // useEffect(() => {
-    // 	registerService.getRegisters().then((data) => {
-    // 		// Filtrar os registros para exibir somente os funcionários com status === true
-    // 		const funcionariosAtivos = data.filter((funcionario) => funcionario.status === true);
-    // 		setRegisters(funcionariosAtivos);
-    // 		getPrecos();
-
-    // 	});
-    // }, []);
-
-    // useEffect(() => {
-    //     registerService.getRegisters().then(async (data) => {
-    //         const funcionariosAtivos = data.filter((funcionario) => funcionario.status === 'true');
-    //         setRegisters(funcionariosAtivos);
-    //         getPrecos();
-
-
-    //         // Buscar as primeiras refeições de cada usuário e armazenar no estado
-    //         const ultimasRefeicoesData = {};
-    //         const ultimasRefeicoesHora = {};
-    //         for (const funcionario of funcionariosAtivos) {
-    //             const ultimaRefeicao = await getUltimaRefeicao(funcionario.id);
-    //             ultimasRefeicoesData[funcionario.id] = ultimaRefeicao;
-    //             const ultimaRefeicaoTime = await getUltimaRefeicaoHora(funcionario.id);
-    //             ultimasRefeicoesHora[funcionario.id] = ultimaRefeicaoTime;
-                
-    //         }
-    //         setUltimasRefeicoes(ultimasRefeicoesData);
-    //         setUltimasRefeicoesHora(ultimasRefeicoesHora)
-            
-             
-           
-    //     });
-    //     registerService.getSetores().then(data => setSetores(data));
-    // }, []);
 
     useEffect(() => {
         registerService.getSetores().then(data => setSetores(data));
@@ -208,22 +173,11 @@ export default function Registro() {
             const senhaEsperada = data.senha; // Supondo que a API retorne a senha do registro selecionado
 
             if (senhaUsuario === senhaEsperada) {
-                // Senha correta, faça o que desejar aqui (por exemplo, registrar a refeição)
-
-                // let time = new Date().toLocaleTimeString("en-US", {
-                //     hour: '2-digit',
-                //     minute: '2-digit',
-                //     second: '2-digit',
-                // })
+               
                 const currentDate = new Date();
                 const time = currentDate.toLocaleTimeString("en-US", { hour12: false }); // Formato: "HH:MM:SS"
                 const date = format(currentDate, 'yyyy-MM-dd');
 
-                // let date = new Date().toLocaleDateString("en-US", {
-                //     day: "2-digit",
-                //     month: "2-digit",
-                //     year: "numeric",
-                // });
 
                 // Constrói o objeto de refeição para enviar na solicitação POST
                 const refeicaoData = {

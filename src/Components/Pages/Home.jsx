@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import styles from './Home.module.css'
 import Navbar from '../Layout/Navbar'
 import { Button } from 'primereact/button';
@@ -7,6 +7,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Tooltip } from 'primereact/tooltip';
 import logo from '../../img/logo.png'
+import api from '../Axios/api';
 
 
 export default function Home() {
@@ -18,6 +19,7 @@ export default function Home() {
 	const [totalAPagarPorFuncionarioCalculated, setTotalAPagarPorFuncionarioCalculated] = useState({});
 	const [totalAPagarPorFuncionarioEmpresa, setTotalAPagarPorFuncionarioEmpresa] = useState({});
 	const [totalAPagarPorFuncionarioGeral, setTotalAPagarPorFuncionarioGeral] = useState({});
+	
 
 	const cols = [
 		{ field: 'name', header: 'Nome Funcionario' },
@@ -48,23 +50,23 @@ export default function Home() {
 
 	// Função para fazer o GET na tabela "users"
 	async function getData() {
-		const response = await fetch('http://localhost:8080/users');
-		const data = await response.json();
+		const response = await api.get('http://localhost:8080/users');
+		const data = await response.data;
 		return data;
 	}
 
 
 	// Função para fazer o GET na tabela "precos"
 	async function getPrecos() {
-		const response = await fetch('http://localhost:8080/precos');
-		const precos = await response.json();
+		const response = await api.get('http://localhost:8080/precos');
+		const precos = await response.data;
 		return precos;
 	}
 
 	// Função para fazer o GET na tabela "refeicoes"
 	async function getRefeicoes() {
-		const response = await fetch('http://localhost:8080/refeicoes');
-		const refeicoes = await response.json();
+		const response = await api.get('http://localhost:8080/refeicoes');
+		const refeicoes = response.data;
 		return refeicoes;
 	}
 
@@ -371,6 +373,7 @@ export default function Home() {
 				<div className="col-12 md:col-12 lg:col-12 flex justify-content-center align-items-center">
 					<Calendar value={dates} onChange={(e) => setDates(e.value)} selectionMode="range" dateFormat="dd/mm/yy" readOnlyInput className='mr-2' />
 					<Button onClick={handleButtonExibir}>Exibir</Button>
+				
 				</div>
 
 				<div className="col-12 md:col-12 lg:col-12 flex justify-content-center">

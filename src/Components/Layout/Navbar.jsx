@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState,useContext } from 'react'
 import logo from '../../img/logo.png'
+import { AuthContext } from '../Context/AuthProvider/AuthContext'
 
 import styles from './Navbar.module.css'
 
 export default function Navbar() {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const {handleLogout} = useContext(AuthContext);
 
   const toggleMenu = () => {
     setIsMenuOpen((prevIsMenuOpen) => !prevIsMenuOpen);

@@ -1,3 +1,4 @@
+import api from '../Axios/api';
 export class RegisterService {
 
     getRegistersSmall() {
@@ -5,16 +6,16 @@ export class RegisterService {
     }
    
         async getRegisters() {
-            const response = await fetch('http://localhost:8080/users');
-            const data = await response.json();
-            // console.log(data)
+            const response = await api.get('http://localhost:8080/users');
+            const data = response.data;
+             //console.log(data)
             return data;
         }
 
         async getSetores() {
-            const response = await fetch('http://localhost:8080/setores');
-            const data = await response.json();
-            // console.log(data)
+            const response = await api.get('http://localhost:8080/setores');
+            const data = response.data;
+           //  console.log(data)
             return data;
         }
     
