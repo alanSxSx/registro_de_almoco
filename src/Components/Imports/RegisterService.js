@@ -8,7 +8,7 @@ export class RegisterService {
         async getRegisters() {
             const response = await api.get('http://localhost:8080/users');
             const data = response.data;
-             //console.log(data)
+             console.log(data)
             return data;
         }
 

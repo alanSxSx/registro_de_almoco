@@ -70,7 +70,7 @@ export default function Home() {
 		return refeicoes;
 	}
 
-	const funcionariosInativos = data ? data.filter((funcionario) => !funcionario.status) : [];
+	const funcionariosInativos = data ? data.filter((funcionario) => funcionario.status === 'false') : [];
 	const refeicoesTipoM = refeicoes ? refeicoes.filter((refeicao) => refeicao.tipo === 'M') : [];
 
 	function calcularTotalAPagarPorFuncionario() {

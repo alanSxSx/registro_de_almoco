@@ -189,53 +189,82 @@ export default function Marcacoes() {
 	}
 
 
+	// function filterRefeicoes(dates) {
+	// 	const refeicoesDoFuncionarioNoIntervalo = refeicoes.filter((refeicao) => {
+	// 		const dataRef = new Date(refeicao.data);
+	// 		const dataInicial = new Date(dates[0]);
+	// 		const dataFinal = new Date(dates[1]);
+
+	// 		return (
+	// 			dataRef >= dataInicial &&
+	// 			dataRef <= dataFinal
+	// 		);
+	// 	});
+
+	// 	return refeicoesDoFuncionarioNoIntervalo.map((refeicao) => {
+	// 		const dateParts = refeicao.data.split('-');
+	// 		if (dateParts.length === 3) {
+	// 			// Construa a data a partir das partes da data
+	// 			const formattedDate = new Date(
+	// 				parseInt(dateParts[0]),
+	// 				parseInt(dateParts[1]) - 1, // Mês é base 0
+	// 				parseInt(dateParts[2])
+	// 			).toLocaleDateString('pt-BR', {
+	// 				day: '2-digit',
+	// 				month: '2-digit',
+	// 				year: 'numeric',
+	// 			});
+
+	// 			return {
+	// 				...refeicao,
+	// 				data: formattedDate,
+	// 			};
+	// 		} else {
+	// 			// Formato de data inválido
+	// 			return {
+	// 				...refeicao,
+	// 				data: 'Formato de data inválido',
+	// 			};
+	// 		}
+	// 	});
+
+	// }
+
 	function filterRefeicoes(dates) {
 		const refeicoesDoFuncionarioNoIntervalo = refeicoes.filter((refeicao) => {
-			const dataRef = new Date(refeicao.data);
-			const dataInicial = new Date(dates[0]);
-			const dataFinal = new Date(dates[1]);
-
-			return (
-				dataRef >= dataInicial &&
-				dataRef <= dataFinal
-			);
+		  const dataRef = new Date(refeicao.data);
+		  const dataInicial = new Date(dates[0]);
+		  const dataFinal = new Date(dates[1]);
+	  
+		  return (
+			dataRef >= dataInicial &&
+			dataRef <= dataFinal
+		  );
 		});
-
-		return refeicoesDoFuncionarioNoIntervalo.map((refeicao) => {
-			const dateParts = refeicao.data.split('-');
-			if (dateParts.length === 3) {
-				// Construa a data a partir das partes da data
-				const formattedDate = new Date(
-					parseInt(dateParts[0]),
-					parseInt(dateParts[1]) - 1, // Mês é base 0
-					parseInt(dateParts[2])
-				).toLocaleDateString('pt-BR', {
-					day: '2-digit',
-					month: '2-digit',
-					year: 'numeric',
-				});
-
-				return {
-					...refeicao,
-					data: formattedDate,
-				};
-			} else {
-				// Formato de data inválido
-				return {
-					...refeicao,
-					data: 'Formato de data inválido',
-				};
-			}
+	  
+		const refeicoesComNome = refeicoesDoFuncionarioNoIntervalo.map((refeicao) => {
+		  const nomeEncontrado = registers.find((users) => users.id === refeicao.id_funcionario);
+	  
+		  const dateParts = refeicao.data.split('-');
+		  const formattedDate = new Date(
+			parseInt(dateParts[0]),
+			parseInt(dateParts[1]) - 1,
+			parseInt(dateParts[2])
+		  ).toLocaleDateString('pt-BR', {
+			day: '2-digit',
+			month: '2-digit',
+			year: 'numeric',
+		  });
+	  
+		  return {
+			...refeicao,
+			nome: nomeEncontrado ? nomeEncontrado.name : 'N/A',
+			data: formattedDate,
+		  };
 		});
-
-		// return refeicoesDoFuncionarioNoIntervalo.map((refeicao) => ({
-		// 	...refeicao,
-		// 	data: format(new Date(refeicao.data), 'dd-MM-yyyy'),
-		// 	// data: new Date(refeicao.data).toISOString().split('T')[0],
-		// 	// data: new Date(refeicao.data).toLocaleDateString('pt-BR'), // Formata a data para "DD/MM/YYYY"
-		// }));
-
-	}
+	  
+		return refeicoesComNome;
+	  }
 
 	function handleDrop(e) {
 		setDrop(e.target.value)
@@ -286,7 +315,8 @@ export default function Marcacoes() {
 					currentPageReportTemplate="Showing {first} to {last} of {totalRecords} registers"
 					globalFilter={globalFilter} header={header} responsiveLayout="scroll">
 					<Column field="id" header="id" sortable style={{ minWidth: '1rem' }}></Column>
-					<Column body={renderUserName} field="nome" header="Nome" sortable style={{ minWidth: '3rem' }}></Column>
+					{/* <Column field="nome" header="Nome" body={renderUserName} sortable filterField="nome" style={{ minWidth: '3rem' }}></Column> */}
+					<Column field="nome" header="Nome" body={renderUserName} sortable filterField="nome" style={{ minWidth: '3rem' }}></Column>
 					<Column field="data" header="Data" sortable style={{ minWidth: '3rem' }}></Column>
 					<Column field="time" header="Time" sortable style={{ minWidth: '3rem' }}></Column>
 					<Column field="tipo" header="Tipo" sortable style={{ minWidth: '3rem' }}></Column>

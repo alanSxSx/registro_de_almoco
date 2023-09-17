@@ -140,7 +140,7 @@ export default function Cadastro() {
 		setRegister({ ...register });
 		setRegisterDialog(true);
 
-		fetch(`http://localhost:8080/setor`, {
+		fetch(`http://localhost:8080/setores`, {
 			method: 'GET',
 			headers: {
 				'Content-type': 'application/json',
@@ -174,6 +174,7 @@ export default function Cadastro() {
 				setRegisters(updatedRegisters);
 				toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Register Updated', life: 3000 });
 				setRegisterDialog(false);
+				console.log(register)
 			})
 			.catch(err => console.log(err));
 
