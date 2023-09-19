@@ -1,15 +1,18 @@
-import React, { useState, useEffect, useRef, useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import styles from './Login.module.css'
 import logo from '../../img/logo.png'
 import { Input } from '../Forms/input'
 import { Button } from '../Forms/button'
 import { AuthContext } from '../Context/AuthProvider/AuthContext'
+import Footer from '../Layout/Footer'
 
 
 export default function Login() {
 
 	useEffect(() => {
+		console.log("useEffect chamado");
 		localStorage.clear();
+		localStorage.removeItem('userData');
 	}, [])
 	
 
@@ -35,12 +38,13 @@ export default function Login() {
 
 
 	return (
-		<div>
+		<div className={styles.divMain}>
 			<div className={styles.title}>
 				<img src={logo} alt="logo" />
 				<a>Sistema de Gerenciamento de Refeições</a>
 			</div>
 			<div className={styles.divform}>
+				
 				<form onSubmit={handleSubmit} className={styles.form}>
 					<span className="p-input-icon-left">
 						<i className="pi pi-user" />
@@ -52,7 +56,8 @@ export default function Login() {
 					</span>
 					<Button text="Entrar" />
 				</form>
-			</div>
+				</div>
+			<Footer/>
 		</div>
 
 	)

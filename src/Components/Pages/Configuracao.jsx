@@ -3,6 +3,7 @@ import styles from './Configuracao.module.css'
 import Navbar from '../Layout/Navbar'
 import { Input } from '../Forms/input'
 import { Button } from '../Forms/button'
+import Footer from '../Layout/Footer'
 
 export default function Configuracao() {
 
@@ -83,6 +84,7 @@ export default function Configuracao() {
                     </form>
                 </div>
             </div>
+            <Footer/>
         </>
 
     )

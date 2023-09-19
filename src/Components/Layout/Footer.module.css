@@ -1,0 +1,49 @@
+.Footer{
+    display: flex;
+    width: 100%;
+    height: 15vh;
+    background-color: white;
+    border-top: 1px solid black;
+}
+
+.horiz{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.horiz a {
+    padding-bottom: 5px;
+    
+}
+
+.horiz a i{
+    margin-left: 25px;
+    font-size: 25px;
+    color: black;
+}
+
+.horiz a i:hover{
+    color: red;
+}
+
+.footerbuton{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: black;
+    background-color: white;
+    cursor: pointer;
+    width: 100%;
+}
+
+.footerbuton:hover{
+    color: red;
+
+}
+
+
+

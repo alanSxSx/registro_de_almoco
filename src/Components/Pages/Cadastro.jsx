@@ -21,6 +21,7 @@ import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.css';
 import 'primeflex/primeflex.css';
 import '../../index.css';
+import Footer from '../Layout/Footer';
 
 
 export default function Cadastro() {
@@ -514,6 +515,7 @@ export default function Cadastro() {
 						<DataTable ref={dt} value={registers} selection={selectedRegisters} onSelectionChange={(e) => setSelectedRegisters(e.value)}
 							dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
 							paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+							style={{ height: '100%' }}
 							currentPageReportTemplate="Showing {first} to {last} of {totalRecords} registers"
 							globalFilter={globalFilter} header={header} responsiveLayout="scroll">
 							<Column selectionMode="multiple" headerStyle={{ width: '3rem' }} exportable={false}></Column>
@@ -595,6 +597,7 @@ export default function Cadastro() {
 				</div>
 
 			</div>
+			<Footer/>
 		</>
 
 	)

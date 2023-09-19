@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, BrowserRouter } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Container } from './Components/Layout/Container';
 import { AuthProvider } from './Components/Context/AuthProvider/AuthContext';
 
@@ -10,6 +10,7 @@ import Configuracao from './Components/Pages/Configuracao';
 import Registro from './Components/Pages/Registro';
 import Marcacoes from './Components/Pages/Marcacoes';
 import ProtectedLayout  from './Components/Layout/ProtectedLayout';
+import Setores from './Components/Pages/Setores';
 
 
 
@@ -23,8 +24,10 @@ function App() {
      
       <Routes>
     
+      <Route path="*" element={<Login/>} />
       <Route path="/" element={<Login />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/setores" element={<Setores />} />
       <Route path="/home" element={<ProtectedLayout isPrivate={true} ><Home /></ProtectedLayout>} />     
       <Route path="/configuracao" element={<ProtectedLayout isPrivate={true} > <Configuracao /> </ProtectedLayout>} />
       <Route path="/registro" element={<ProtectedLayout isPrivate={true}> <Registro /> </ProtectedLayout>} />

@@ -8,6 +8,7 @@ import { Column } from 'primereact/column';
 import { Tooltip } from 'primereact/tooltip';
 import logo from '../../img/logo.png'
 import api from '../Axios/api';
+import Footer from '../Layout/Footer';
 
 
 export default function Home() {
@@ -408,6 +409,7 @@ export default function Home() {
 						)}
 				</div>
 			</div>
+			<Footer/>
 		</>
 
 	)

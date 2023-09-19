@@ -11,6 +11,7 @@ import { Button } from 'primereact/button';
 import { toast, ToastContainer } from 'react-toastify';
 import { format } from 'date-fns';
 import 'react-toastify/dist/ReactToastify.css';
+import Footer from '../Layout/Footer';
 
 
 export default function Registro() {
@@ -25,7 +26,7 @@ export default function Registro() {
     const [precoFuncAtual, setPrecoFuncAtual] = useState();
     const [precoEmpAtual, setPrecoEmpAtual] = useState();
     const [precoTotalAtual, setPrecoTotalAtual] = useState();
-    const [setores,setSetores] = useState();
+    const [setores, setSetores] = useState();
     const [ultimasRefeicoes, setUltimasRefeicoes] = useState({});
     const [ultimasRefeicoesHora, setUltimasRefeicoesHora] = useState({});
 
@@ -36,66 +37,49 @@ export default function Registro() {
     useEffect(() => {
         registerService.getSetores().then(data => setSetores(data));
         registerService.getRegisters().then(async (data) => {
-          try {
-            const funcionariosAtivos = data.filter((funcionario) => funcionario.status === 'true');
-            setRegisters(funcionariosAtivos);
-            getPrecos();
-      
-            const ultimasRefeicoesDataPromises = funcionariosAtivos.map(async (funcionario) => {
-              const ultimaRefeicao = await getUltimaRefeicao(funcionario.id);
-              return { id: funcionario.id, ultimaRefeicao };
-            });
-      
-            const ultimasRefeicoesHoraPromises = funcionariosAtivos.map(async (funcionario) => {
-              const ultimaRefeicaoTime = await getUltimaRefeicaoHora(funcionario.id);
-              return { id: funcionario.id, ultimaRefeicaoTime };
-            });
-      
-            const ultimasRefeicoesDataArray = await Promise.all(ultimasRefeicoesDataPromises);
-            const ultimasRefeicoesHoraArray = await Promise.all(ultimasRefeicoesHoraPromises);
-      
-            const ultimasRefeicoesData = {};
-            const ultimasRefeicoesHora = {};
-      
-            ultimasRefeicoesDataArray.forEach((item) => {
-              ultimasRefeicoesData[item.id] = item.ultimaRefeicao;
-            });
-      
-            ultimasRefeicoesHoraArray.forEach((item) => {
-              ultimasRefeicoesHora[item.id] = item.ultimaRefeicaoTime;
-            });
-      
-            setUltimasRefeicoes(ultimasRefeicoesData);
-            setUltimasRefeicoesHora(ultimasRefeicoesHora);
-          } catch (error) {
-            console.error("Erro ao buscar as últimas refeições:", error);
-          }
+            try {
+                const funcionariosAtivos = data.filter((funcionario) => funcionario.status === 'true');
+                setRegisters(funcionariosAtivos);
+                getPrecos();
+
+                const ultimasRefeicoesDataPromises = funcionariosAtivos.map(async (funcionario) => {
+                    const ultimaRefeicao = await getUltimaRefeicao(funcionario.id);
+                    return { id: funcionario.id, ultimaRefeicao };
+                });
+
+                const ultimasRefeicoesHoraPromises = funcionariosAtivos.map(async (funcionario) => {
+                    const ultimaRefeicaoTime = await getUltimaRefeicaoHora(funcionario.id);
+                    return { id: funcionario.id, ultimaRefeicaoTime };
+                });
+
+                const ultimasRefeicoesDataArray = await Promise.all(ultimasRefeicoesDataPromises);
+                const ultimasRefeicoesHoraArray = await Promise.all(ultimasRefeicoesHoraPromises);
+
+                const ultimasRefeicoesData = {};
+                const ultimasRefeicoesHora = {};
+
+                ultimasRefeicoesDataArray.forEach((item) => {
+                    ultimasRefeicoesData[item.id] = item.ultimaRefeicao;
+                });
+
+                ultimasRefeicoesHoraArray.forEach((item) => {
+                    ultimasRefeicoesHora[item.id] = item.ultimaRefeicaoTime;
+                });
+
+                setUltimasRefeicoes(ultimasRefeicoesData);
+                setUltimasRefeicoesHora(ultimasRefeicoesHora);
+            } catch (error) {
+                console.error("Erro ao buscar as últimas refeições:", error);
+            }
         });
-      
-      }, []);
+
+    }, []);
 
 
 
     const openNew = (rowData) => {
-        setSelectedRegister(rowData);
+        setSelectedRegister(rowData)
         setRegisterDialog(true);
-        fetch(`http://localhost:8080/setor`, {
-            method: 'GET',
-            headers: {
-                'Content-type': 'application/json',
-            }
-        })
-            .then(resp => resp.json())
-            .then((data) => {
-                const setoresData = {};
-                data.forEach((setor) => {
-                    setoresData[setor.id] = setor.name;
-                });
-                setSetores(setoresData);
-
-            })
-
-            .catch(err => console.log(err))
 
     }
 
@@ -157,11 +141,15 @@ export default function Registro() {
         }
 
         try {
-            const response = await fetch(`http://localhost:8080/users/${selectedRegister.id}`, {
-                method: "GET",
+            const response = await fetch(`http://localhost:8080/login`, {
+                method: "POST",
                 headers: {
                     "Content-type": "application/json",
                 },
+                body: JSON.stringify({
+                    cpf: selectedRegister.cpf, // Use o CPF do usuário selecionado
+                    senha: senhaUsuario,
+                }),
             });
 
             if (!response.ok) {
@@ -170,10 +158,12 @@ export default function Registro() {
             }
 
             const data = await response.json();
-            const senhaEsperada = data.senha; // Supondo que a API retorne a senha do registro selecionado
+            
+            console.log(data.mensagem)
+            
 
-            if (senhaUsuario === senhaEsperada) {
-               
+            if (data.mensagem === 'Login realizado com sucesso !') {
+
                 const currentDate = new Date();
                 const time = currentDate.toLocaleTimeString("en-US", { hour12: false }); // Formato: "HH:MM:SS"
                 const date = format(currentDate, 'yyyy-MM-dd');
@@ -190,7 +180,7 @@ export default function Registro() {
                     preco_total: precoTotalAtual,
                 };
 
-                console.log(refeicaoData)
+                //console.log(refeicaoData)
 
                 const postResponse = await fetch('http://localhost:8080/refeicoes', {
                     method: 'POST',
@@ -275,24 +265,24 @@ export default function Registro() {
         }
 
         const dateParts = dataRefeicao.split('-');
-    if (dateParts.length === 3) {
-        // Construa a data a partir das partes da data
-        const formattedDate = new Date(
-            parseInt(dateParts[0]),
-            parseInt(dateParts[1]) - 1, // Mês é base 0
-            parseInt(dateParts[2])
-        ).toLocaleDateString('pt-BR', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-        });
+        if (dateParts.length === 3) {
+            // Construa a data a partir das partes da data
+            const formattedDate = new Date(
+                parseInt(dateParts[0]),
+                parseInt(dateParts[1]) - 1, // Mês é base 0
+                parseInt(dateParts[2])
+            ).toLocaleDateString('pt-BR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+            });
 
-        return formattedDate;
-    } else {
-        // Formato de data inválido
-        return 'Formato de data inválido';
-    }
-        
+            return formattedDate;
+        } else {
+            // Formato de data inválido
+            return 'Formato de data inválido';
+        }
+
         // const formattedDate = new Date(dataRefeicao).toLocaleDateString('pt-BR', {
         //     day: '2-digit',
         //     month: '2-digit',
@@ -354,7 +344,7 @@ export default function Registro() {
         if (dataRefeicao === null) {
             return false; // Não desabilita o botão se nenhuma refeição estiver registrada
         }
-        
+
 
         const formattedDataRefeicao = dataRefeicao
 
@@ -367,7 +357,7 @@ export default function Registro() {
 
         const formattedCurrentDate = currentDate.toISOString().slice(0, 10);
 
-       // console.log(`A data de hoje é ${formattedCurrentDate} e a data da ultima ref é ${formattedDataRefeicao}`)
+        // console.log(`A data de hoje é ${formattedCurrentDate} e a data da ultima ref é ${formattedDataRefeicao}`)
 
         if (formattedCurrentDate > formattedDataRefeicao) {
 
@@ -390,10 +380,10 @@ export default function Registro() {
 
         const setorEncontrado = setores.find((setor) => setor.id === rowData.id_setor);
 
-        if (setorEncontrado) {
-          return setorEncontrado.name;
+        if (setorEncontrado && setorEncontrado.name) {
+            return setorEncontrado.name;
         } else {
-          return 'N/A';
+            return 'N/A';
         }
     }
 
@@ -403,8 +393,10 @@ export default function Registro() {
         <>
             <ToastContainer autoClose={1000} />
             <div className={styles.title}>
-                <img src={logo} alt="logo" />
-                <a>Sistema de Gerenciamento de Refeições</a>
+                <a href='/home'>
+                    <img src={logo} alt="logo" />
+                </a>
+                <p>Sistema de Gerenciamento de Refeições</p>
             </div>
             <div className={styles.card}>
                 <DataTable ref={dt} value={registers}
@@ -445,7 +437,7 @@ export default function Registro() {
                     />
                 </div>
             </Dialog>
-
+        <Footer/>
         </>
 
     )

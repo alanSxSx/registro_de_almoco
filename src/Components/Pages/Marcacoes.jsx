@@ -13,6 +13,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Navbar from '../Layout/Navbar';
 import { Calendar } from 'primereact/calendar';
 import { Dropdown } from 'primereact/dropdown';
+import Footer from '../Layout/Footer';
 
 
 
@@ -347,7 +348,7 @@ export default function Marcacoes() {
 					/>
 				</div>
 			</Dialog>
-
+		<Footer/>
 		</>
 
 	)

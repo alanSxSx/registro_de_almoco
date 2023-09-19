@@ -1,7 +1,4 @@
-import { useState } from "react";
-import { useRef } from "react";
-import { createContext } from "react";
-import { useEffect } from "react";
+import { useState,useEffect,useRef,createContext } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../Axios/api";
 import { Toast } from 'primereact/toast';
@@ -86,16 +83,10 @@ export const AuthProvider = ({ children }) => {
   }
 
   function handleLogout() {
-    setAuthenticated(false);
-    localStorage.removeItem('authToken')
-    localStorage.removeItem('userData')
-    api.defaults.headers.Authorization = undefined;
     setTimeout(() => {
       navigate("/login");
-    }, 1000)
+    }, 100)
   }
-
-
 
 
 

@@ -12,9 +12,6 @@ body,html{
 		background-color: rgb(238, 217, 217);
 }
 
-.card {
-    margin-bottom: 2rem;
-  }
 
   input[type="number"] {
     -moz-appearance: textfield;
