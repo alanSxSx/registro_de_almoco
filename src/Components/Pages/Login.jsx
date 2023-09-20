@@ -1,24 +1,27 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext,useRef } from 'react'
 import styles from './Login.module.css'
 import logo from '../../img/logo.png'
 import { Input } from '../Forms/input'
 import { Button } from '../Forms/button'
 import { AuthContext } from '../Context/AuthProvider/AuthContext'
+import { Toast } from 'primereact/toast';
 import Footer from '../Layout/Footer'
+
 
 
 export default function Login() {
 
 	useEffect(() => {
-		console.log("useEffect chamado");
-		localStorage.clear();
-		localStorage.removeItem('userData');
+	
+	handleLogout()
+
 	}, [])
 	
-
-	const [userLogin, setUserLogin] = useState({})
 	
-	const { handleLogin } = useContext(AuthContext);
+	const [userLogin, setUserLogin] = useState({})
+	const [isSubmitting, setIsSubmitting] = useState(false);
+	const { handleLogin,handleLogout,authenticated,user } = useContext(AuthContext);
+	const toast = useRef(null);
 	
 	
 	function HandleLoginField(e) {
@@ -30,15 +33,40 @@ export default function Login() {
 	}
 
 	
-	const handleSubmit = (e) => {
+	// const handleSubmit = (e) => {
+	// 	e.preventDefault();
+	// 	handleLogin(userLogin.login, userLogin.senha);
+	// }
+
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-		handleLogin(userLogin.login, userLogin.senha);
-		
-	}
+	  
+		if (!isSubmitting) {
+		  setIsSubmitting(true);
+	  
+		  if (userLogin.login && userLogin.senha) { // Verifica se o CPF e a senha estão definidos
+			try {
+			  await handleLogin(userLogin.login, userLogin.senha);
+	  
+			  setTimeout(() => {
+				setIsSubmitting(false);
+			  }, 5000);
+			} catch (error) {
+			  setIsSubmitting(false);
+			}
+		  } else {
+			// Lida com o caso em que CPF ou senha estão faltando
+			setIsSubmitting(false);
+			toast.current.show({ severity: 'error', summary: 'Error', detail: 'CPF ou Senha Inválidos', life: 1000 });
+			console.error('CPF ou senha não estão definidos.');
+		  }
+		}
+	  };
 
 
 	return (
 		<div className={styles.divMain}>
+			<Toast ref={toast} />
 			<div className={styles.title}>
 				<img src={logo} alt="logo" />
 				<a>Sistema de Gerenciamento de Refeições</a>

@@ -82,16 +82,34 @@ export const AuthProvider = ({ children }) => {
     return <Carregamento />;
   }
 
-  function handleLogout() {
+  function handleLogoutRed() {
+
+    localStorage.clear();
+		localStorage.removeItem('userData');
+    localStorage.removeItem('authToken');
+    setAuthenticated(false)
+    setUser('')
+
     setTimeout(() => {
       navigate("/login");
     }, 100)
   }
 
+  function handleLogout() {
+
+    localStorage.clear();
+		localStorage.removeItem('userData');
+    localStorage.removeItem('authToken');
+    setAuthenticated(false)
+    setUser('')
+  
+  }
+
+
 
 
   return (
-    <AuthContext.Provider value={{ authenticated,user, handleLogin, handleLogout }}>
+    <AuthContext.Provider value={{ authenticated,user, handleLogin, handleLogoutRed, handleLogout}}>
       <Toast ref={toast} />
       {children}
     </AuthContext.Provider>
