@@ -20,7 +20,7 @@ export default function Login() {
 	
 	const [userLogin, setUserLogin] = useState({})
 	const [isSubmitting, setIsSubmitting] = useState(false);
-	const { handleLogin,handleLogout,authenticated,user } = useContext(AuthContext);
+	const { handleLogin,handleLogout } = useContext(AuthContext);
 	const toast = useRef(null);
 	
 	
@@ -32,11 +32,6 @@ export default function Login() {
 		setUserLogin({ ...userLogin, senha: e.target.value });
 	}
 
-	
-	// const handleSubmit = (e) => {
-	// 	e.preventDefault();
-	// 	handleLogin(userLogin.login, userLogin.senha);
-	// }
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();

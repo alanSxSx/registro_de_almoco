@@ -8,16 +8,14 @@ import { Column } from 'primereact/column';
 import { RegisterService } from '../imports/RegisterService';
 import { DataTable } from 'primereact/datatable';
 import { Button } from 'primereact/button';
-import { toast, ToastContainer } from 'react-toastify';
+import { Toast } from 'primereact/toast';
 import { format } from 'date-fns';
-import 'react-toastify/dist/ReactToastify.css';
 import Footer from '../Layout/Footer';
 
 
 export default function Registro() {
 
     const [registers, setRegisters] = useState(null);
-    const [globalFilter, setGlobalFilter] = useState(null);
     const dt = useRef(null);
     const [registerDialog, setRegisterDialog] = useState(false);
     const registerService = new RegisterService();
@@ -29,6 +27,10 @@ export default function Registro() {
     const [setores, setSetores] = useState();
     const [ultimasRefeicoes, setUltimasRefeicoes] = useState({});
     const [ultimasRefeicoesHora, setUltimasRefeicoesHora] = useState({});
+    const [isSaving, setIsSaving] = useState(false);
+    const [filterText, setFilterText] = useState('');
+    const [filteredRegisters, setFilteredRegisters] = useState(null);
+    const toast = useRef(null);
 
 
 
@@ -68,15 +70,14 @@ export default function Registro() {
 
                 setUltimasRefeicoes(ultimasRefeicoesData);
                 setUltimasRefeicoesHora(ultimasRefeicoesHora);
-            } catch (error) {
+            } catch (e) {
                 console.error("Erro ao buscar as últimas refeições:", error);
             }
         });
 
     }, []);
 
-
-
+        
     const openNew = (rowData) => {
         setSelectedRegister(rowData)
         setRegisterDialog(true);
@@ -87,14 +88,31 @@ export default function Registro() {
         setRegisterDialog(false);
     }
 
+    const handleGlobalFilter = (e) => {
+        const value = e.target.value;
+        setFilterText(value);
+    
+        // Filtrar os dados com base no novo valor do filtro
+        const filteredData = registers.filter((record) => {
+            console.log(record)
+          return (
+            record.name.toLowerCase().includes(value.toLowerCase()) ||
+            record.id.toString().toLowerCase().includes(value.toLowerCase())
+            
+            // Adicione outras condições de filtro aqui, se necessário
+          );
+        });
+    
+        setFilteredRegisters(filteredData);
+      };
 
 
     const header = (
         <div className={styles.tableheader}>
-            <h2>Digite seu Nome</h2>
+            <h2>Digite seu Nome ou ID</h2>
             <span className="p-input-icon-left">
                 <i className="pi pi-search" />
-                <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Search..." />
+                <InputText type="search" onChange={handleGlobalFilter} value={filterText} placeholder="Search..." />
             </span>
         </div>
     );
@@ -110,7 +128,7 @@ export default function Registro() {
     const registerDialogFooter = (
         <React.Fragment>
             <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={hideDialog} />
-            <Button label="Salvar" icon="pi pi-check" className="p-button-text" onClick={handleSalvar} />
+            <Button label="Salvar" icon="pi pi-check" className="p-button-text" onClick={handleSalvar} disabled={isSaving} />
         </React.Fragment>
     );
 
@@ -134,11 +152,17 @@ export default function Registro() {
         e.preventDefault();
         setSenhaUsuario('')
 
+        if(senhaUsuario === '') {
+           return toast.current.show({ severity: 'error', summary: 'Error', detail: 'Senha não preenchida', life: 1000 });
+        }
+
         if (!selectedRegister) {
             console.log("Nenhum registro selecionado."); // Adicione um tratamento adequado se nenhum registro estiver selecionado.
 
             return;
         }
+
+        setIsSaving(true);
 
         try {
             const response = await fetch(`http://localhost:8080/login`, {
@@ -153,6 +177,7 @@ export default function Registro() {
             });
 
             if (!response.ok) {
+                toast.current.show({ severity: 'error', summary: 'Error', detail: 'Senha Incorreta', life: 1000 });
                 throw new Error("Falha ao buscar a senha da API.");
 
             }
@@ -195,7 +220,8 @@ export default function Registro() {
                 }
 
                 console.log("Refeição registrada com sucesso!");
-                toast.success("Refeição registrada com sucesso!");
+                toast.current.show({ severity: 'success', summary: 'Success', detail: 'Senha não preenchida', life: 1000 });
+                
                 //atualiza FRONT
                 const updatedUltimasRefeicoes = { ...ultimasRefeicoes };
                 const updatedUltimasRefeicoesHora = { ...ultimasRefeicoesHora };
@@ -212,11 +238,16 @@ export default function Registro() {
 
             } else {
                 // Senha incorreta
-                toast.error("Senha incorreta. Tente novamente.");
+                toast.current.show({ severity: 'error', summary: 'Error', detail: 'Senha Incorreta', life: 1000 });
             }
         } catch (error) {
             console.error(error);
 
+
+        } finally {
+            setTimeout(() => {
+                setIsSaving(false);
+			  }, 2000);
 
         }
     }
@@ -241,14 +272,20 @@ export default function Registro() {
             );
 
             if (!response.ok) {
-                throw new Error('Falha ao buscar a última refeição do usuário na API.');
+                if (response.status === 404) {
+                    // Recurso não encontrado
+                    //console.log(`Recurso não encontrado para o ID do funcionário ${id}`);
+                    return null;
+                } else {
+                    throw new Error('Erro na solicitação.');
+                }
             }
 
             const refeicoesDoUsuario = await response.json();
             const length = refeicoesDoUsuario.length - 1;
             return refeicoesDoUsuario[length]?.data || null;
         } catch (error) {
-            console.error(error);
+            console.error("Erro ao buscar a última refeição do usuário:", error);
             return null;
         }
     }
@@ -283,12 +320,7 @@ export default function Registro() {
             return 'Formato de data inválido';
         }
 
-        // const formattedDate = new Date(dataRefeicao).toLocaleDateString('pt-BR', {
-        //     day: '2-digit',
-        //     month: '2-digit',
-        //     year: 'numeric',
-        // });
-        // return formattedDate;
+     
     }
 
     async function getUltimaRefeicaoHora(id) {
@@ -304,14 +336,20 @@ export default function Registro() {
             );
 
             if (!response.ok) {
-                throw new Error('Falha ao buscar a última refeição do usuário na API.');
+                if (response.status === 404) {
+                    // Recurso não encontrado
+                    console.log(`Nenhuma refeição registrada para o funcionário: ${id}`);
+                    return null;
+                } else {
+                    throw new Error('Erro na solicitação.');
+                }
             }
 
             const refeicoesDoUsuario = await response.json();
             const length = refeicoesDoUsuario.length - 1;
             return refeicoesDoUsuario[length]?.time || null;
         } catch (error) {
-            console.error(error);
+            console.error("Erro ao buscar a última refeição do usuário:", error);
             return null;
         }
     }
@@ -378,20 +416,17 @@ export default function Registro() {
 
     function renderSetorName(rowData) {
 
-        const setorEncontrado = setores.find((setor) => setor.id === rowData.id_setor);
+        const setorEncontrado = setores ? setores.find((setor) => setor.id === rowData.id_setor) : null;
+        return setorEncontrado?.name || 'N/A';
 
-        if (setorEncontrado && setorEncontrado.name) {
-            return setorEncontrado.name;
-        } else {
-            return 'N/A';
-        }
     }
 
+     
 
 
     return (
-        <>
-            <ToastContainer autoClose={1000} />
+        <div className={styles.divMain}>
+            <Toast ref={toast} />
             <div className={styles.title}>
                 <a href='/home'>
                     <img src={logo} alt="logo" />
@@ -399,13 +434,14 @@ export default function Registro() {
                 <p>Sistema de Gerenciamento de Refeições</p>
             </div>
             <div className={styles.card}>
-                <DataTable ref={dt} value={registers}
+                <DataTable ref={dt} value={filteredRegisters !== null ? filteredRegisters : registers}
                     style={{ width: '100%' }}
                     onSelectionChange={onRegisterSelect}
                     dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} registers"
-                    globalFilter={globalFilter} header={header} responsiveLayout="scroll">
+                    //globalFilter={globalFilter} 
+                    header={header} responsiveLayout="scroll">
                     <Column field="id" header="id" sortable style={{ minWidth: '1rem' }}></Column>
                     <Column field="name" header="Name" sortable style={{ minWidth: '3rem' }}></Column>
                     <Column body={renderSetorName} field="id_setor" header="Setor" sortable style={{ minWidth: '3rem' }}></Column>
@@ -438,7 +474,7 @@ export default function Registro() {
                 </div>
             </Dialog>
         <Footer/>
-        </>
+        </div>
 
     )
 }
