@@ -4,6 +4,7 @@ import api from "../../Axios/api";
 import { Toast } from 'primereact/toast';
 import axios from "axios";
 import Carregamento from "../../Pages/Carregamento";
+import secureLocalStorage from "react-secure-storage";
 
 const AuthContext = createContext();
 
@@ -17,8 +18,8 @@ export const AuthProvider = ({ children }) => {
   const [loading,setLoading] = useState(true)
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken')
-    const userData = localStorage.getItem('userData')
+    const token = secureLocalStorage.getItem('authToken')
+    const userData = secureLocalStorage.getItem('userData')
 
 
     if(token && userData){
@@ -29,7 +30,6 @@ export const AuthProvider = ({ children }) => {
     }
 
     setLoading(false)
-
   
   }, [])
   
@@ -51,8 +51,8 @@ export const AuthProvider = ({ children }) => {
         toast.current.show({ severity: 'success', summary: 'Success', detail: 'Logado com Sucesso', life: 1000 });
 
         // Salve o token JWT no localStorage			
-        localStorage.setItem('authToken', JSON.stringify(tokenResponse.data.token));
-        localStorage.setItem('userData', JSON.stringify(tokenResponse.data.userData));
+        secureLocalStorage.setItem('authToken', JSON.stringify(tokenResponse.data.token));
+        secureLocalStorage.setItem('userData', JSON.stringify(tokenResponse.data.userData));
         api.defaults.headers.Authorization = `Bearer ${tokenResponse.data.token}`;
 
         setAuthenticated(true);
@@ -84,9 +84,9 @@ export const AuthProvider = ({ children }) => {
 
   function handleLogoutRed() {
 
-    localStorage.clear();
-		localStorage.removeItem('userData');
-    localStorage.removeItem('authToken');
+    secureLocalStorage.clear();
+		secureLocalStorage.removeItem('userData');
+    secureLocalStorage.removeItem('authToken');
     setAuthenticated(false)
     setUser('')
 
@@ -97,9 +97,9 @@ export const AuthProvider = ({ children }) => {
 
   function handleLogout() {
 
-    localStorage.clear();
-		localStorage.removeItem('userData');
-    localStorage.removeItem('authToken');
+    secureLocalStorage.clear();
+		secureLocalStorage.removeItem('userData');
+    secureLocalStorage.removeItem('authToken');
     setAuthenticated(false)
     setUser('')
   
