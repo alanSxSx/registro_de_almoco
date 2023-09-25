@@ -59,13 +59,25 @@ export default function Marcacoes() {
 		setDates(e.target.value)
 	}
 
+
 	function handleExibir() {
 		getRefeicoes();
 		if (dates.length === 2) {
-			const filtered = filterRefeicoes(dates);
-			setFilteredRefeicoes(filtered);
+		  const startDate = new Date(dates[0]);
+		  const endDate = new Date(dates[1]);
+		  
+		  // Get the date parts without time
+		  const startDateString = startDate.toISOString().split('T')[0];
+		  const endDateString = endDate.toISOString().split('T')[0];
+	  
+		  // Now you have the date parts in 'yyyy-mm-dd' format
+		  console.log('Start Date:', startDateString);
+		  console.log('End Date:', endDateString);
+	  
+		  const filtered = filterRefeicoes([startDateString, endDateString]);
+		  setFilteredRefeicoes(filtered);
 		}
-	}
+	  }
 
 
 
