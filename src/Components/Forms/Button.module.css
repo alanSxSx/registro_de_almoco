@@ -1,18 +1,18 @@
-.btn{
-    background-color: #222;
-    color: #fff;
-    padding: 0.75rem 0.75rem;
-    text-decoration: none;
-    transition: .5s;
-    cursor: pointer;
-    border: none;
+.btn {
+  background-color: #222;
+  color: #fff;
+  padding: 0.75rem 0.75rem;
+  text-decoration: none;
+  transition: 0.5s;
+  cursor: pointer;
+  border: none;
 }
 
-.btn:hover{
-    color: #ffbb33;
+.btn:hover {
+  color: #ffbb33;
 }
 
-.divbutton{
-    display: flex;
-    justify-content: center;
+.divbutton {
+  display: flex;
+  justify-content: center;
 }

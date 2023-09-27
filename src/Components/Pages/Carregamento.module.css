@@ -1,12 +1,11 @@
-.carregamento{
-   display: flex;
-   align-items: center;
-   justify-content: center; 
-   width: 100%;
-   height: 100vh;
-   
+.carregamento {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
 }
 
-.loader{  
-      width: 250px;
+.loader {
+  width: 250px;
 }

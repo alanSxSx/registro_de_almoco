@@ -1,112 +1,99 @@
-.divMain{
-    width: 100vw;
-    height: 100vh;
+.divMain {
+  width: 100vw;
+  height: 100vh;
 }
 
 .title {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-weight: bold;
-    width: 100vw;
-    background-color: rgb(255, 0, 0);
-    color: white;
-    height: 10vh;
-    padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: bold;
+  width: 100vw;
+  background-color: rgb(255, 0, 0);
+  color: white;
+  height: 10vh;
+  padding: 0 20px;
 }
 
-.title p{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5em;
-    flex-grow: 1;
-    margin-right: 70px;
+.title p {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5em;
+  flex-grow: 1;
+  margin-right: 70px;
 
-    /* justify-content: center;
+  /* justify-content: center;
     width: 100%; */
 }
 
 .title a {
-    display: flex;
+  display: flex;
 }
 
-
 .title a img {
-    width: 10vh;
-    height: 100%;
-
+  width: 10vh;
+  height: 100%;
 }
 
 .tableheader {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .tableheader input {
-    width: 60vw;
+  width: 60vw;
 }
 
 .tableheader h2 {
-    margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 .card {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
 }
-
 
 .columnbutton {
-    text-align: center !important;
+  text-align: center !important;
 }
 
-
-
 .pbutton {
-    background-color: #22C55E;
-    color: white;
-    width: 20vw;
-    border: 1px solid #22C55E;
+  background-color: #22c55e;
+  color: white;
+  width: 20vw;
+  border: 1px solid #22c55e;
 }
 
 .label {
-    display: flex !important;
-    justify-content: center;
-    align-items: center;
-    margin-top: 1em;
-    margin-bottom: 1em;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1em;
+  margin-bottom: 1em;
 }
 
 .field {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding-bottom: 5em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 5em;
 }
 
 .input {
-    width: 90%;
+  width: 90%;
 }
 
-
-
-
-
-
-
 @media screen and (max-width: 767px) {
-
-    .pbutton {
-        background-color: #22C55E;
-        color: white;
-        width: 100%;
-        border: 1px solid #22C55E;
-    }
-
+  .pbutton {
+    background-color: #22c55e;
+    color: white;
+    width: 100%;
+    border: 1px solid #22c55e;
+  }
 }

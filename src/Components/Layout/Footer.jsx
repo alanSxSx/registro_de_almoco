@@ -1,12 +1,9 @@
-import React, { useEffect,useState,useContext } from 'react'
+import React, { useEffect, useState, useContext } from "react";
 
-import styles from './Footer.module.css'
-import { AuthContext } from '../Context/AuthProvider/AuthContext'
-
-
+import styles from "./Footer.module.css";
+import { AuthContext } from "../Context/AuthProvider/AuthContext";
 
 export default function Footer() {
-
   const { authenticated, user, handleLogoutRed } = useContext(AuthContext);
   const [sairVisible, setSairVisible] = useState(false);
 
@@ -19,11 +16,17 @@ export default function Footer() {
     }
   }, [authenticated, user, sairVisible]);
 
-
   return (
     <div className={styles.Footer}>
       <div className={styles.horiz}>
-        <a className={styles.footerbuton} href='https://www.fulig.com.br' target='_blank' rel='noopener noreferrer'>Visite nosso Site</a>
+        <a
+          className={styles.footerbuton}
+          href="https://www.fulig.com.br"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Visite nosso Site
+        </a>
         {sairVisible && (
           <a className={styles.footerbuton} onClick={handleLogoutRed}>
             Sair
@@ -33,23 +36,30 @@ export default function Footer() {
       <div className={styles.horiz2}>
         <p>Fique Ligado nas nossas redes Sociais:</p>
         <div>
-          <a href='#'><i class="fa-brands fa-linkedin"></i></a>
-          <a href='#'><i class="fa-brands fa-instagram"></i></a>
-          <a href='#'><i class="fa-brands fa-youtube"></i></a>
-          <a href='#'><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="#">
+            <i class="fa-brands fa-linkedin"></i>
+          </a>
+          <a href="#">
+            <i class="fa-brands fa-instagram"></i>
+          </a>
+          <a href="#">
+            <i class="fa-brands fa-youtube"></i>
+          </a>
+          <a href="#">
+            <i class="fa-brands fa-whatsapp"></i>
+          </a>
         </div>
-
       </div>
       <div className={styles.horiz3}>
         <a>Fulig - Fundição de Ligas LTDA</a>
         <p>© 2023 - Todos os Direitos Reservados</p>
         <a>(37) 3229 – 4550</a>
-      </div >
+      </div>
       <div className={styles.horiz4}>
         <a>Rua Wilson Santos</a>
         <a>s/nº – Quadra B – Lote 12,</a>
         <a>Divinópolis - Minas Gerais</a>
       </div>
     </div>
-  )
+  );
 }
