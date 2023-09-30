@@ -7,7 +7,6 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
-import { FileUpload } from "primereact/fileupload";
 import { Toolbar } from "primereact/toolbar";
 import { Password } from "primereact/password";
 import { Dialog } from "primereact/dialog";
@@ -15,12 +14,15 @@ import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
 import { InputMask } from "primereact/inputmask";
 
+
 import "primeicons/primeicons.css";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.css";
 import "primeflex/primeflex.css";
 import "../../index.css";
 import Footer from "../Layout/Footer";
+import ImportCSV from "../Layout/ImportCSV";
+import ExportCSV from "../Layout/ExportCSV";
 
 export default function Cadastro() {
   let emptyRegister = {
@@ -249,45 +251,16 @@ export default function Cadastro() {
     return id;
   };
 
-  const importCSV = (e) => {
-    const file = e.files[0];
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const csv = e.target.result;
-      const data = csv.split("\n");
-
-      // Prepare DataTable
-      const cols = data[0].replace(/['"]+/g, "").split(",");
-      data.shift();
-
-      const importedData = data.map((d) => {
-        d = d.split(",");
-        const processedData = cols.reduce((obj, c, i) => {
-          c =
-            c === "Status"
-              ? "inventoryStatus"
-              : c === "Reviews"
-              ? "rating"
-              : c.toLowerCase();
-          obj[c] = d[i].replace(/['"]+/g, "");
-          (c === "price" || c === "rating") && (obj[c] = parseFloat(obj[c]));
-          return obj;
-        }, {});
-
-        processedData["id"] = createId();
-        return processedData;
-      });
-
-      const _registers = [...registers, ...importedData];
-
-      setRegisters(_registers);
-    };
-
-    reader.readAsText(file, "UTF-8");
+  const handleImportCSV = (importedData) => {
+    // Lide com os dados importados aqui, por exemplo, atualize o estado dos registros
+    const _registers = [...registers, ...importedData];
+    setRegisters(_registers);
   };
 
-  const exportCSV = () => {
-    dt.current.exportCSV();
+  const handleExportCSV = () => {
+    if (dt.current) {
+      dt.current.exportCSV();
+    }
   };
 
   const confirmDeleteSelected = () => {
@@ -347,7 +320,6 @@ export default function Cadastro() {
     } else {
       return "Inativo";
     }
-    // return status ? 'Ativo' : 'Inativo';
   }
 
   function getStatusLabelTipo(tipo) {
@@ -356,18 +328,13 @@ export default function Cadastro() {
     } else {
       return "Usuario";
     }
-    //return tipo ? 'Administrador' : 'Usuário';
+
   }
 
   const onInputChange = (e, name) => {
     let _register = { ...register };
     const val = e.target.value; // Use e.value para obter o valor selecionado
-
-    if (name === "id_setor") {
       _register[name] = val;
-    } else {
-      _register[name] = val;
-    }
 
     setRegister(_register);
   };
@@ -394,7 +361,7 @@ export default function Cadastro() {
   const rightToolbarTemplate = () => {
     return (
       <React.Fragment>
-        <FileUpload
+        {/* <FileUpload
           mode="basic"
           name="demo[]"
           auto
@@ -403,13 +370,15 @@ export default function Cadastro() {
           chooseLabel="Import"
           className="mr-2 w-12 md:w-12 m-0"
           onUpload={importCSV}
-        />
-        <Button
+        /> */}
+         <ImportCSV onImportCSV={handleImportCSV} />
+        {/* <Button
           label="Export"
           icon="pi pi-upload"
           className="p-button-help w-12 md:w-12"
           onClick={exportCSV}
-        />
+        /> */}
+        <ExportCSV onExport={handleExportCSV} />
       </React.Fragment>
     );
   };
