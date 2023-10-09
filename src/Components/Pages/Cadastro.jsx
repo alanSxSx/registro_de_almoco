@@ -14,7 +14,6 @@ import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
 import { InputMask } from "primereact/inputmask";
 
-
 import "primeicons/primeicons.css";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.css";
@@ -328,13 +327,12 @@ export default function Cadastro() {
     } else {
       return "Usuario";
     }
-
   }
 
   const onInputChange = (e, name) => {
     let _register = { ...register };
     const val = e.target.value; // Use e.value para obter o valor selecionado
-      _register[name] = val;
+    _register[name] = val;
 
     setRegister(_register);
   };
@@ -371,7 +369,7 @@ export default function Cadastro() {
           className="mr-2 w-12 md:w-12 m-0"
           onUpload={importCSV}
         /> */}
-         <ImportCSV onImportCSV={handleImportCSV} />
+        <ImportCSV onImportCSV={handleImportCSV} />
         {/* <Button
           label="Export"
           icon="pi pi-upload"

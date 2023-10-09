@@ -1,9 +1,7 @@
 import React from "react";
 import { FileUpload } from "primereact/fileupload";
 
-
 function ImportCSV({ onImportCSV }) {
-
   const importCSV = (e) => {
     const file = e.files[0];
     const reader = new FileReader();

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext,useRef } from "react";
 import styles from "./Home.module.css";
 import Navbar from "../Layout/Navbar";
 import { Button } from "primereact/button";
@@ -6,12 +6,14 @@ import { Calendar } from "primereact/calendar";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Tooltip } from "primereact/tooltip";
+import { Toast } from "primereact/toast";
 import logo from "../../img/logo.png";
 import api from "../Axios/api";
 import Footer from "../Layout/Footer";
 
 export default function Home() {
   const [data, setData] = useState([]);
+  const toast = useRef(null);
   const [precos, setPrecos] = useState();
   const [refeicoes, setRefeicoes] = useState();
   const [dates, setDates] = useState(null);
@@ -84,6 +86,12 @@ export default function Home() {
     setTotalAPagarPorFuncionarioCalculated({}); // Limpa os totais calculados
 
     if (!dates || !refeicoes || !precos || !data) {
+      toast.current.show({
+        severity: "error",
+        summary: "Error",
+        detail: "Escolha uma data",
+        life: 3000,
+      });
       console.log("Dados insuficientes para o cálculo.");
       return;
     }
@@ -289,7 +297,7 @@ export default function Home() {
   const header = (
     <div className="flex align-items-center justify-content-around gap-2">
       <img src={logo} className="w-4rem h-4rem"></img>
-      <a>Relatório de Almoço por Funcionário</a>
+      <a className="text-2xl">Relatório de Almoço por Funcionário</a>
       <Button
         type="button"
         icon="pi pi-file-pdf"
@@ -329,6 +337,7 @@ export default function Home() {
   return (
     <>
       <Navbar />
+      <Toast ref={toast} />
       <div className={styles.home}>
         <div className="col-12 md:col-12 lg:col-4">
           <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
@@ -436,7 +445,7 @@ export default function Home() {
                 paginator
                 rows={10}
                 rowsPerPageOptions={[5, 10, 25]}
-                style={{ width: "60%" }}
+                 style={{ width: "100%" }}
                 className={styles.dataTable}
                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                 showGridlines
