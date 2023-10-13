@@ -4,10 +4,9 @@ import { Password } from "primereact/password";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { Column } from "primereact/column";
-import { RegisterService } from "../imports/RegisterService";
+import { RegisterService } from "../Imports/RegisterService";
 import { DataTable } from "primereact/datatable";
 import { Button } from "primereact/button";
-
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Navbar from "../Layout/Navbar";
