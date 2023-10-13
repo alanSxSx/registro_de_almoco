@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Configuracao.module.css";
 import Navbar from "../Layout/Navbar";
-import { Input } from "../Forms/input";
-import { Button } from "../Forms/button";
+import { Input } from "../Forms/Input";
+import { Button } from "../Forms/Button";
 import Footer from "../Layout/Footer";
 
 export default function Configuracao() {
