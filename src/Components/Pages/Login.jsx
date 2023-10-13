@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext, useRef } from "react";
 import styles from "./Login.module.css";
 import logo from "../../img/logo.png";
 import { Input } from "../Forms/Input";
-import { Button } from "../Forms/button";
+import { Button } from "../Forms/Button";
 import { AuthContext } from "../Context/AuthProvider/AuthContext";
 import { Toast } from "primereact/toast";
 import Footer from "../Layout/Footer";
