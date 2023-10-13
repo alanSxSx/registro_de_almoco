@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import styles from "./Cadastro.module.css";
 import Navbar from "../Layout/Navbar";
 import { classNames } from "primereact/utils";
-import { RegisterService } from "../imports/RegisterService";
+import { RegisterService } from "../Imports/RegisterService";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Toast } from "primereact/toast";
