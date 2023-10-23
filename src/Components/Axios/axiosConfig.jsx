@@ -1,7 +1,7 @@
 // axiosConfig.js
 import axios from "axios";
 
-axios.defaults.baseURL = "http://localhost:8080"; // URL base da sua API
+axios.defaults.baseURL = "https://maliexpress.com.br/"; // URL base da sua API
 
 axios.interceptors.request.use(
   (config) => {

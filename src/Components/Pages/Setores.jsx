@@ -92,7 +92,7 @@ export default function Setores() {
       let _register = { ...register };
 
       // Envia o registro do setor para o servidor
-      fetch("http://localhost:8080/setores", {
+      fetch("https://maliexpress.com.br/setores", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -127,7 +127,7 @@ export default function Setores() {
     setRegister({ ...register });
     setRegisterDialog(true);
 
-    fetch(`http://localhost:8080/setores`, {
+    fetch(`https://maliexpress.com.br/setores`, {
       method: "GET",
       headers: {
         "Content-type": "application/json",
@@ -145,7 +145,7 @@ export default function Setores() {
   const saveEditRegister = () => {
     setSubmitted(false);
 
-    fetch(`http://localhost:8080/setores/`, {
+    fetch(`https://maliexpress.com.br/setores/`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -191,7 +191,7 @@ export default function Setores() {
       life: 3000,
     });
 
-    fetch(`http://localhost:8080/setores/${register.id}`, {
+    fetch(`https://maliexpress.com.br/setores/${register.id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -238,7 +238,7 @@ export default function Setores() {
     });
 
     const deleteRequests = selects.map((id) =>
-      fetch(`http://localhost:8080/users/${id}`, {
+      fetch(`https://maliexpress.com.br/users/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

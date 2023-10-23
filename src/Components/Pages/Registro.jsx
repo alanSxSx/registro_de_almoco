@@ -159,7 +159,7 @@ export default function Registro() {
   }
 
   async function getPrecos() {
-    fetch("http://localhost:8080/precos")
+    fetch("https://maliexpress.com.br/precos")
       .then((resp) => resp.json())
       .then((data) => {
         setPrecoFuncAtual(data[0].precofuncionario || "");
@@ -191,7 +191,7 @@ export default function Registro() {
     setIsSaving(true);
 
     try {
-      const response = await fetch(`http://localhost:8080/login`, {
+      const response = await fetch(`https://maliexpress.com.br/login`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -234,7 +234,7 @@ export default function Registro() {
 
         //console.log(refeicaoData)
 
-        const postResponse = await fetch("http://localhost:8080/refeicoes", {
+        const postResponse = await fetch("https://maliexpress.com.br/refeicoes", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -290,7 +290,7 @@ export default function Registro() {
   async function getUltimaRefeicao(id) {
     try {
       const response = await fetch(
-        `http://localhost:8080/refeicoes/id_funcionario/${id}`,
+        `https://maliexpress.com.br/refeicoes/id_funcionario/${id}`,
         {
           method: "GET",
           headers: {
@@ -352,7 +352,7 @@ export default function Registro() {
   async function getUltimaRefeicaoHora(id) {
     try {
       const response = await fetch(
-        `http://localhost:8080/refeicoes/id_funcionario/${id}`,
+        `https://maliexpress.com.br/refeicoes/id_funcionario/${id}`,
         {
           method: "GET",
           headers: {

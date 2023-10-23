@@ -122,7 +122,7 @@ export default function Cadastro() {
         });
       }
 
-      fetch("http://localhost:8080/users", {
+      fetch("https://maliexpress.com.br/users", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -149,7 +149,7 @@ export default function Cadastro() {
     setRegister({ ...register });
     setRegisterDialog(true);
 
-    fetch(`http://localhost:8080/setores`, {
+    fetch(`https://maliexpress.com.br/setores`, {
       method: "GET",
       headers: {
         "Content-type": "application/json",
@@ -167,7 +167,7 @@ export default function Cadastro() {
   const saveEditRegister = () => {
     setSubmitted(false);
 
-    fetch(`http://localhost:8080/users/${register.id}`, {
+    fetch(`https://maliexpress.com.br/users/${register.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -212,7 +212,7 @@ export default function Cadastro() {
       life: 3000,
     });
 
-    fetch(`http://localhost:8080/users/${register.id}`, {
+    fetch(`https://maliexpress.com.br/users/${register.id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -284,7 +284,7 @@ export default function Cadastro() {
     });
 
     const deleteRequests = selects.map((id) =>
-      fetch(`http://localhost:8080/users/${id}`, {
+      fetch(`https://maliexpress.com.br/users/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

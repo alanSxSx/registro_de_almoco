@@ -12,7 +12,7 @@ export default function Configuracao() {
   const [precoTotalAtual, setPrecoTotalAtual] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:8080/precos")
+    fetch("https://maliexpress.com.br/precos")
       .then((resp) => resp.json())
       .then((data) => {
         setPrecos(data);
@@ -37,7 +37,7 @@ export default function Configuracao() {
 
   function submit(e) {
     e.preventDefault();
-    fetch(`http://localhost:8080/precos/${precos[0].id}`, {
+    fetch(`https://maliexpress.com.br/precos/${precos[0].id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
