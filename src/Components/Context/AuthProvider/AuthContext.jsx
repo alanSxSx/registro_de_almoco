@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
   const handleLogin = async (login, senha) => {
     try {
       const tokenResponse = await axios.post(
-        "http://localhost:8080/login",
+        "https://maliexpress.com.br/login",
         {
           cpf: login,
           senha: senha,
