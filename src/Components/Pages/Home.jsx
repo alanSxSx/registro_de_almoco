@@ -56,21 +56,21 @@ export default function Home() {
 
   // Função para fazer o GET na tabela "users"
   async function getData() {
-    const response = await api.get("http://localhost:8080/users");
+    const response = await api.get("https://maliexpress.com.br/users");
     const data = await response.data;
     return data;
   }
 
   // Função para fazer o GET na tabela "precos"
   async function getPrecos() {
-    const response = await api.get("http://localhost:8080/precos");
+    const response = await api.get("https://maliexpress.com.br/precos");
     const precos = await response.data;
     return precos;
   }
 
   // Função para fazer o GET na tabela "refeicoes"
   async function getRefeicoes() {
-    const response = await api.get("http://localhost:8080/refeicoes");
+    const response = await api.get("https://maliexpress.com.br/refeicoes");
     const refeicoes = response.data;
     return refeicoes;
   }

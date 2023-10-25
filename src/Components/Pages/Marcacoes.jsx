@@ -120,7 +120,7 @@ export default function Marcacoes() {
   }
 
   async function getPrecos() {
-    fetch("http://localhost:8080/precos")
+    fetch("https://maliexpress.com.br/precos")
       .then((resp) => resp.json())
       .then((data) => {
         setPrecoFuncAtual(data[0].precofuncionario || "");
@@ -131,7 +131,7 @@ export default function Marcacoes() {
   }
 
   async function getRefeicoes() {
-    fetch("http://localhost:8080/refeicoes")
+    fetch("https://maliexpress.com.br/refeicoes")
       .then((resp) => resp.json())
       .then((data) => {
         setRefeicoes(data);
@@ -171,7 +171,7 @@ export default function Marcacoes() {
         preco_total: precoTotalAtual,
       };
 
-      const postResponse = await fetch("http://localhost:8080/refeicoes", {
+      const postResponse = await fetch("https://maliexpress.com.br/refeicoes", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
