@@ -278,7 +278,7 @@ export default function Home() {
             const pageCount = doc.internal.getNumberOfPages();
             if (data.pageNumber === pageCount) {
               const pageHeight = doc.internal.pageSize.height;
-              const text = "Este é o rodapé do PDF";
+              const text = ""; //escrever alguma mensagem pra sair no rodapé do pdf
               const textWidth =
                 (doc.getStringUnitWidth(text) * doc.internal.getFontSize()) /
                 doc.internal.scaleFactor;
