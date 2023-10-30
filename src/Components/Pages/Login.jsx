@@ -31,9 +31,10 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true)
+    
 
     if (!isSubmitting) {
+      setLoading(true)
       setIsSubmitting(true);
       
 

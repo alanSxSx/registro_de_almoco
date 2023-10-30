@@ -83,9 +83,12 @@ export const AuthProvider = ({ children }) => {
         severity: "error",
         summary: "Error",
         detail: "CPF ou Senha Inválidos",
-        life: 1000,
+        life: 5000,
       });
       console.error("Erro ao buscar os dados:", error);
+      setLoading(false)   
+      navigate("/registro");
+    
     }
   };
 
