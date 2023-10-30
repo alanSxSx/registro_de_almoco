@@ -6,6 +6,9 @@ import { Button } from "../Forms/Button";
 import { AuthContext } from "../Context/AuthProvider/AuthContext";
 import { Toast } from "primereact/toast";
 import Footer from "../Layout/Footer";
+import Carregamento from "./Carregamento";
+
+
 
 export default function Login() {
   useEffect(() => {
@@ -16,6 +19,7 @@ export default function Login() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { handleLogin, handleLogout } = useContext(AuthContext);
   const toast = useRef(null);
+  const [loading, setLoading] = useState(false);
 
   function HandleLoginField(e) {
     setUserLogin({ ...userLogin, login: e.target.value });
@@ -27,9 +31,11 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true)
 
     if (!isSubmitting) {
       setIsSubmitting(true);
+      
 
       if (userLogin.login && userLogin.senha) {
         // Verifica se o CPF e a senha estão definidos
@@ -45,16 +51,27 @@ export default function Login() {
       } else {
         // Lida com o caso em que CPF ou senha estão faltando
         setIsSubmitting(false);
-        toast.current.show({
-          severity: "error",
-          summary: "Error",
-          detail: "CPF ou Senha Inválidos",
-          life: 1000,
-        });
+
+        setTimeout(() => {
+          toast.current.show({
+            severity: "error",
+            summary: "Error",
+            detail: "CPF ou Senha Inválidos",
+            life: 5000,
+          });
+        }, 600);
+        
+        setTimeout(() => {
+          setLoading(false)
+        }, 500);             
         console.error("CPF ou senha não estão definidos.");
       }
     }
   };
+
+  if (loading) {
+    return <Carregamento />;
+  }
 
   return (
     <div className={styles.divMain}>
