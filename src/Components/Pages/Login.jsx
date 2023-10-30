@@ -75,6 +75,7 @@ export default function Login() {
   }
 
   return (
+    <>
     <div className={styles.divMain}>
       <Toast ref={toast} />
       <div className={styles.title}>
@@ -110,7 +111,8 @@ export default function Login() {
           <Button text="Entrar" />
         </form>
       </div>
-      <Footer />
     </div>
+    <Footer />
+    </>
   );
 }

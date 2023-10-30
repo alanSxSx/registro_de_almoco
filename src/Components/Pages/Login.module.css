@@ -83,6 +83,16 @@
 }
 
 @media screen and (max-width: 767px) {
+
+  .divform{
+    height: auto;
+    margin: 0;
+  }
+
+  .divMain{
+    height: auto;
+  }
+
   .title {
     display: flex;
     flex-direction: column;
@@ -110,6 +120,8 @@
     width: 100%;
     border-radius: 0;
     border: none;
+    height: 75vh
+  
   }
 
   .form input {
