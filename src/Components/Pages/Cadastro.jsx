@@ -22,6 +22,7 @@ import "../../index.css";
 import Footer from "../Layout/Footer";
 import ImportCSV from "../Layout/ImportCSV";
 import ExportCSV from "../Layout/ExportCSV";
+import api from "../Axios/api";
 
 export default function Cadastro() {
   let emptyRegister = {
@@ -122,23 +123,28 @@ export default function Cadastro() {
         });
       }
 
-      fetch("https://maliexpress.com.br/users", {
-        method: "POST",
+      // fetch("https://maliexpress.com.br/users", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(register),
+      // })
+      api.post("/users", register, {  // Use a instância do Axios com a base URL
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(register),
       })
-        .then((resp) => resp.json())
-        .then((data) => {
-          if (data.id) {
-            _register.id = data.id;
-          }
-          registerService.getRegisters().then((data) => setRegisters(data));
-          setRegisters(_registers);
-          setRegisterDialog(false);
-          setRegister(emptyRegister);
-        })
+      .then(response => {
+        const data = response.data.dadosUsuario; // Acessando os dados do usuário corretamente
+        if (data.id) {
+          _register.id = data.id;
+        }
+        registerService.getRegisters().then((data) => setRegisters(data));
+        setRegisters(_registers);
+        setRegisterDialog(false);
+        setRegister(emptyRegister);
+      })
         .catch((err) => console.log(err));
     }
 
@@ -149,16 +155,26 @@ export default function Cadastro() {
     setRegister({ ...register });
     setRegisterDialog(true);
 
-    fetch(`https://maliexpress.com.br/setores`, {
-      method: "GET",
+    // fetch(`https://maliexpress.com.br/setores`, {
+    //   method: "GET",
+    //   headers: {
+    //     "Content-type": "application/json",
+    //   },
+    // })
+    api.get("/setores", {  // Use a instância do Axios com a base URL
       headers: {
         "Content-type": "application/json",
-      },
+      }
     })
-      .then((resp) => resp.json())
-      .then((data) => {
+      // .then((resp) => resp.json())
+      // .then((data) => {
+      //   setSetores(data);
+      //   console.log(registers);
+      // })
+      .then(response => {
+        const data = response.data.dadosUsuario; // A resposta já contém os dados dos setores
         setSetores(data);
-        console.log(registers);
+        console.log(data); // Exibe os dados dos setores
       })
 
       .catch((err) => console.log(err));
@@ -167,18 +183,38 @@ export default function Cadastro() {
   const saveEditRegister = () => {
     setSubmitted(false);
 
-    fetch(`https://maliexpress.com.br/users/${register.id}`, {
-      method: "PATCH",
+    // fetch(`https://maliexpress.com.br/users/${register.id}`, {
+    //   method: "PATCH",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(register),
+    // })
+    api.patch(`/users/${register.id}`, register, {  // Use a instância do Axios com a base URL
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(register),
     })
-      .then((resp) => resp.json())
-      .then((data) => {
-        const updatedRegister = data; // Utilize a resposta da API com os dados atualizados
+      // .then((resp) => resp.json())
+      // .then((data) => {
+      //   const updatedRegister = data; // Utilize a resposta da API com os dados atualizados
+      //   const updatedRegisters = registers.map((r) =>
+      //     r.id === updatedRegister.id ? updatedRegister : r,
+      //   );
+      //   setRegisters(updatedRegisters);
+      //   toast.current.show({
+      //     severity: "success",
+      //     summary: "Successful",
+      //     detail: "Register Updated",
+      //     life: 3000,
+      //   });
+      //   setRegisterDialog(false);
+      //   console.log(register);
+      // })
+      .then(response => {
+        const updatedRegister = response.data.dadosUsuario; // Utilize a resposta da API com os dados atualizados
         const updatedRegisters = registers.map((r) =>
-          r.id === updatedRegister.id ? updatedRegister : r,
+          r.id === updatedRegister.id ? updatedRegister : r
         );
         setRegisters(updatedRegisters);
         toast.current.show({
@@ -212,18 +248,21 @@ export default function Cadastro() {
       life: 3000,
     });
 
-    fetch(`https://maliexpress.com.br/users/${register.id}`, {
-      method: "DELETE",
+    // fetch(`https://maliexpress.com.br/users/${register.id}`, {
+    //   method: "DELETE",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // })
+    api.delete(`/users/${register.id}`, {  // Use a instância do Axios com a base URL
       headers: {
         "Content-Type": "application/json",
-      },
+      }
     })
-      .then((resp) => resp.json())
       .then(() => {
         setRegister(
-          register.filter((registers) => registers.id !== register.id),
+          registers.filter((r) => r.id !== register.id),
         );
-        // setProjectMessage('Projeto Removido com Sucesso !')
       })
       .catch((err) => console.log(err));
   };
@@ -284,27 +323,33 @@ export default function Cadastro() {
     });
 
     const deleteRequests = selects.map((id) =>
-      fetch(`https://maliexpress.com.br/users/${id}`, {
-        method: "DELETE",
+      // fetch(`https://maliexpress.com.br/users/${id}`, {
+      //   method: "DELETE",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({ ids: [id] }),
+      // }),
+      api.delete(`/users/${id}`, {  // Use a instância do Axios com a base URL
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ ids: [id] }),
+        data: { ids: [id] }, // Use 'data' em vez de 'body' para Axios
       }),
     );
 
     Promise.all(deleteRequests)
-      .then((responses) => {
-        // Verifique se todas as solicitações de delete foram bem-sucedidas
-        const allDeleted = responses.every((response) => response.ok);
-        if (allDeleted) {
-          // Todos os registros foram excluídos com sucesso
-          console.log("Registros excluídos com sucesso");
-        } else {
-          // Pelo menos uma solicitação de delete falhou
-          console.log("Erro ao excluir registros");
-        }
-      })
+    .then((responses) => {
+      // Verifique se todas as solicitações de delete foram bem-sucedidas
+      const allDeleted = responses.every((response) => response.status === 200);
+      if (allDeleted) {
+        // Todos os registros foram excluídos com sucesso
+        console.log("Registros excluídos com sucesso");
+      } else {
+        // Pelo menos uma solicitação de delete falhou
+        console.log("Erro ao excluir registros");
+      }
+    })
       .catch((error) => {
         // Trate o erro aqui
         console.error(error);

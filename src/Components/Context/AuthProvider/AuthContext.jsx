@@ -2,7 +2,6 @@ import { useState, useEffect, useRef, createContext } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../Axios/api";
 import { Toast } from "primereact/toast";
-import axios from "axios";
 import Carregamento from "../../Pages/Carregamento";
 import secureLocalStorage from "react-secure-storage";
 
@@ -30,8 +29,8 @@ export const AuthProvider = ({ children }) => {
 
   const handleLogin = async (login, senha) => {
     try {
-      const tokenResponse = await axios.post(
-        "https://maliexpress.com.br/login",
+      const tokenResponse = await api.post(
+        "/login",
         {
           cpf: login,
           senha: senha,
