@@ -7,14 +7,16 @@ export class RegisterService {
   }
 
   async getRegisters() {
-    const response = await api.get("https://maliexpress.com.br/users");
+    //const response = await api.get("https://maliexpress.com.br/users");
+    const response = await api.get('/users');
     const data = response.data;
     //console.log(data)
     return data;
   }
 
   async getSetores() {
-    const response = await api.get("https://maliexpress.com.br/setores");
+   //const response = await api.get("https://maliexpress.com.br/setores");
+    const response = await api.get('/setores');
     const data = response.data;
     //  console.log(data)
     return data;

@@ -39,7 +39,6 @@ export default function Home() {
     async function fetchData() {
       try {
         const dataResponse = await getData();
-
         const precosResponse = await getPrecos();
         const refeicoesResponse = await getRefeicoes();
 
@@ -71,9 +70,6 @@ export default function Home() {
 
   // Função para fazer o GET na tabela "precos"
   async function getPrecos() {
-    // const response = await api.get("https://maliexpress.com.br/precos");
-    // const precos = await response.data;
-    // return precos;
     try {
       const response = await api.get("/precos"); // Use o caminho relativo após configurar a URL base
       const precos = response.data;
@@ -86,9 +82,7 @@ export default function Home() {
 
   // Função para fazer o GET na tabela "refeicoes"
   async function getRefeicoes() {
-    // const response = await api.get("https://maliexpress.com.br/refeicoes");
-    // const refeicoes = response.data;
-    // return refeicoes;
+
     try {
       const response = await api.get("/refeicoes"); // Use o caminho relativo após configurar a URL base
       const refeicoes = response.data;
@@ -122,19 +116,44 @@ export default function Home() {
 
     const totalPorFuncionario = {};
 
+    // data.forEach((funcionario) => {
+    //   const refeicoesDoFuncionarioNoIntervalo = refeicoes.filter((refeicao) => {
+    //     const dataRef = new Date(refeicao.data);
+    //     const dataInicial = new Date(dates[0]);
+    //     const dataFinal = new Date(dates[1]);
+
+    //     // Ajustar para comparar apenas dia, mês e ano
+
+    //     return (
+    //       dataRef >= dataInicial &&
+    //       dataRef <= dataFinal &&
+    //       refeicao.id_funcionario === funcionario.id
+    //     );
+    //   });
+
     data.forEach((funcionario) => {
       const refeicoesDoFuncionarioNoIntervalo = refeicoes.filter((refeicao) => {
-        const dataRef = new Date(refeicao.data);
-        const dataInicial = new Date(dates[0]);
-        const dataFinal = new Date(dates[1]);
-
-        // Ajustar para comparar apenas dia, mês e ano
-
-        return (
-          dataRef >= dataInicial &&
-          dataRef <= dataFinal &&
-          refeicao.id_funcionario === funcionario.id
-        );
+        const dataRefeicao = new Date(refeicao.data);
+  
+        // Obtenha a parte da data em formato 'yyyy-mm-dd'
+        const dataRefeicaoString = dataRefeicao.toISOString().split("T")[0];
+  
+        if (dates.length === 2) {
+          const startDate = new Date(dates[0]);
+          const endDate = new Date(dates[1]);
+  
+          // Obtenha a parte da data em formato 'yyyy-mm-dd'
+          const startDateString = startDate.toISOString().split("T")[0];
+          const endDateString = endDate.toISOString().split("T")[0];
+  
+          // Compare as datas em formato 'yyyy-mm-dd'
+          return (
+            dataRefeicaoString >= startDateString &&
+            dataRefeicaoString <= endDateString &&
+            refeicao.id_funcionario === funcionario.id
+          );
+        }
+        return false;
       });
 
       const totalAPagarFuncionario = refeicoesDoFuncionarioNoIntervalo.reduce(
@@ -160,20 +179,45 @@ export default function Home() {
 
     const totalPorFuncionario = {};
 
+    // data.forEach((funcionario) => {
+    //   const refeicoesDoFuncionarioNoIntervalo = refeicoes.filter((refeicao) => {
+    //     const dataRef = new Date(refeicao.data);
+    //     const dataInicial = new Date(dates[0]);
+    //     const dataFinal = new Date(dates[1]);
+
+    //     // Ajustar para comparar apenas dia, mês e ano
+
+    //     return (
+    //       dataRef >= dataInicial &&
+    //       dataRef <= dataFinal &&
+    //       refeicao.id_funcionario === funcionario.id
+    //     );
+    //   });
     data.forEach((funcionario) => {
       const refeicoesDoFuncionarioNoIntervalo = refeicoes.filter((refeicao) => {
-        const dataRef = new Date(refeicao.data);
-        const dataInicial = new Date(dates[0]);
-        const dataFinal = new Date(dates[1]);
-
-        // Ajustar para comparar apenas dia, mês e ano
-
-        return (
-          dataRef >= dataInicial &&
-          dataRef <= dataFinal &&
-          refeicao.id_funcionario === funcionario.id
-        );
+        const dataRefeicao = new Date(refeicao.data);
+  
+        // Obtenha a parte da data em formato 'yyyy-mm-dd'
+        const dataRefeicaoString = dataRefeicao.toISOString().split("T")[0];
+  
+        if (dates.length === 2) {
+          const startDate = new Date(dates[0]);
+          const endDate = new Date(dates[1]);
+  
+          // Obtenha a parte da data em formato 'yyyy-mm-dd'
+          const startDateString = startDate.toISOString().split("T")[0];
+          const endDateString = endDate.toISOString().split("T")[0];
+  
+          // Compare as datas em formato 'yyyy-mm-dd'
+          return (
+            dataRefeicaoString >= startDateString &&
+            dataRefeicaoString <= endDateString &&
+            refeicao.id_funcionario === funcionario.id
+          );
+        }
+        return false;
       });
+
 
       const totalAPagarFuncionario = refeicoesDoFuncionarioNoIntervalo.reduce(
         (total, refeicao) => total + parseFloat(refeicao.preco_empresa),
@@ -198,20 +242,45 @@ export default function Home() {
 
     const totalPorFuncionario = {};
 
+    // data.forEach((funcionario) => {
+    //   const refeicoesDoFuncionarioNoIntervalo = refeicoes.filter((refeicao) => {
+    //     const dataRef = new Date(refeicao.data);
+    //     const dataInicial = new Date(dates[0]);
+    //     const dataFinal = new Date(dates[1]);
+
+    //     // Ajustar para comparar apenas dia, mês e ano
+
+    //     return (
+    //       dataRef >= dataInicial &&
+    //       dataRef <= dataFinal &&
+    //       refeicao.id_funcionario === funcionario.id
+    //     );
+    //   });
     data.forEach((funcionario) => {
       const refeicoesDoFuncionarioNoIntervalo = refeicoes.filter((refeicao) => {
-        const dataRef = new Date(refeicao.data);
-        const dataInicial = new Date(dates[0]);
-        const dataFinal = new Date(dates[1]);
-
-        // Ajustar para comparar apenas dia, mês e ano
-
-        return (
-          dataRef >= dataInicial &&
-          dataRef <= dataFinal &&
-          refeicao.id_funcionario === funcionario.id
-        );
+        const dataRefeicao = new Date(refeicao.data);
+  
+        // Obtenha a parte da data em formato 'yyyy-mm-dd'
+        const dataRefeicaoString = dataRefeicao.toISOString().split("T")[0];
+  
+        if (dates.length === 2) {
+          const startDate = new Date(dates[0]);
+          const endDate = new Date(dates[1]);
+  
+          // Obtenha a parte da data em formato 'yyyy-mm-dd'
+          const startDateString = startDate.toISOString().split("T")[0];
+          const endDateString = endDate.toISOString().split("T")[0];
+  
+          // Compare as datas em formato 'yyyy-mm-dd'
+          return (
+            dataRefeicaoString >= startDateString &&
+            dataRefeicaoString <= endDateString &&
+            refeicao.id_funcionario === funcionario.id
+          );
+        }
+        return false;
       });
+
 
       const totalAPagarFuncionario = refeicoesDoFuncionarioNoIntervalo.reduce(
         (total, refeicao) => total + parseFloat(refeicao.preco_total),
