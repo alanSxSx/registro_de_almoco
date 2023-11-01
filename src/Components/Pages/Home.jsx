@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styles from "./Home.module.css";
 import Navbar from "../Layout/Navbar";
 import { Button } from "primereact/button";
@@ -56,23 +56,47 @@ export default function Home() {
 
   // Função para fazer o GET na tabela "users"
   async function getData() {
-    const response = await api.get("https://maliexpress.com.br/users");
-    const data = await response.data;
-    return data;
+    // const response = await api.get("https://maliexpress.com.br/users");
+    // const data = await response.data;
+    // return data;
+    try {
+      const response = await api.get("/users"); // Use o caminho relativo após configurar a URL base
+      const data = response.data;
+      return data;
+    } catch (error) {
+      console.error("Erro ao obter dados de usuários:", error);
+      throw error; // Você pode optar por relançar o erro ou lidar com ele de acordo com a necessidade.
+    }
   }
 
   // Função para fazer o GET na tabela "precos"
   async function getPrecos() {
-    const response = await api.get("https://maliexpress.com.br/precos");
-    const precos = await response.data;
-    return precos;
+    // const response = await api.get("https://maliexpress.com.br/precos");
+    // const precos = await response.data;
+    // return precos;
+    try {
+      const response = await api.get("/precos"); // Use o caminho relativo após configurar a URL base
+      const precos = response.data;
+      return precos;
+    } catch (error) {
+      console.error("Erro ao obter dados de preços:", error);
+      throw error; // Você pode optar por relançar o erro ou lidar com ele de acordo com a necessidade.
+    }
   }
 
   // Função para fazer o GET na tabela "refeicoes"
   async function getRefeicoes() {
-    const response = await api.get("https://maliexpress.com.br/refeicoes");
-    const refeicoes = response.data;
-    return refeicoes;
+    // const response = await api.get("https://maliexpress.com.br/refeicoes");
+    // const refeicoes = response.data;
+    // return refeicoes;
+    try {
+      const response = await api.get("/refeicoes"); // Use o caminho relativo após configurar a URL base
+      const refeicoes = response.data;
+      return refeicoes;
+    } catch (error) {
+      console.error("Erro ao obter dados de refeições:", error);
+      throw error; // Você pode optar por relançar o erro ou lidar com ele de acordo com a necessidade.
+    }
   }
 
   const funcionariosInativos = data
@@ -445,7 +469,7 @@ export default function Home() {
                 paginator
                 rows={10}
                 rowsPerPageOptions={[5, 10, 25]}
-                 style={{ width: "100%" }}
+                style={{ width: "100%" }}
                 className={styles.dataTable}
                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                 showGridlines

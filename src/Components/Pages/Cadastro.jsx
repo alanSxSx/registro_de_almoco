@@ -130,21 +130,23 @@ export default function Cadastro() {
       //   },
       //   body: JSON.stringify(register),
       // })
-      api.post("/users", register, {  // Use a instância do Axios com a base URL
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then(response => {
-        const data = response.data.dadosUsuario; // Acessando os dados do usuário corretamente
-        if (data.id) {
-          _register.id = data.id;
-        }
-        registerService.getRegisters().then((data) => setRegisters(data));
-        setRegisters(_registers);
-        setRegisterDialog(false);
-        setRegister(emptyRegister);
-      })
+      api
+        .post("/users", register, {
+          // Use a instância do Axios com a base URL
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => {
+          const data = response.data.dadosUsuario; // Acessando os dados do usuário corretamente
+          if (data.id) {
+            _register.id = data.id;
+          }
+          registerService.getRegisters().then((data) => setRegisters(data));
+          setRegisters(_registers);
+          setRegisterDialog(false);
+          setRegister(emptyRegister);
+        })
         .catch((err) => console.log(err));
     }
 
@@ -161,17 +163,19 @@ export default function Cadastro() {
     //     "Content-type": "application/json",
     //   },
     // })
-    api.get("/setores", {  // Use a instância do Axios com a base URL
-      headers: {
-        "Content-type": "application/json",
-      }
-    })
+    api
+      .get("/setores", {
+        // Use a instância do Axios com a base URL
+        headers: {
+          "Content-type": "application/json",
+        },
+      })
       // .then((resp) => resp.json())
       // .then((data) => {
       //   setSetores(data);
       //   console.log(registers);
       // })
-      .then(response => {
+      .then((response) => {
         const data = response.data.dadosUsuario; // A resposta já contém os dados dos setores
         setSetores(data);
         console.log(data); // Exibe os dados dos setores
@@ -190,11 +194,13 @@ export default function Cadastro() {
     //   },
     //   body: JSON.stringify(register),
     // })
-    api.patch(`/users/${register.id}`, register, {  // Use a instância do Axios com a base URL
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    api
+      .patch(`/users/${register.id}`, register, {
+        // Use a instância do Axios com a base URL
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
       // .then((resp) => resp.json())
       // .then((data) => {
       //   const updatedRegister = data; // Utilize a resposta da API com os dados atualizados
@@ -211,10 +217,10 @@ export default function Cadastro() {
       //   setRegisterDialog(false);
       //   console.log(register);
       // })
-      .then(response => {
+      .then((response) => {
         const updatedRegister = response.data.dadosUsuario; // Utilize a resposta da API com os dados atualizados
         const updatedRegisters = registers.map((r) =>
-          r.id === updatedRegister.id ? updatedRegister : r
+          r.id === updatedRegister.id ? updatedRegister : r,
         );
         setRegisters(updatedRegisters);
         toast.current.show({
@@ -254,15 +260,15 @@ export default function Cadastro() {
     //     "Content-Type": "application/json",
     //   },
     // })
-    api.delete(`/users/${register.id}`, {  // Use a instância do Axios com a base URL
-      headers: {
-        "Content-Type": "application/json",
-      }
-    })
+    api
+      .delete(`/users/${register.id}`, {
+        // Use a instância do Axios com a base URL
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
       .then(() => {
-        setRegister(
-          registers.filter((r) => r.id !== register.id),
-        );
+        setRegister(registers.filter((r) => r.id !== register.id));
       })
       .catch((err) => console.log(err));
   };
@@ -330,7 +336,8 @@ export default function Cadastro() {
       //   },
       //   body: JSON.stringify({ ids: [id] }),
       // }),
-      api.delete(`/users/${id}`, {  // Use a instância do Axios com a base URL
+      api.delete(`/users/${id}`, {
+        // Use a instância do Axios com a base URL
         headers: {
           "Content-Type": "application/json",
         },
@@ -339,17 +346,19 @@ export default function Cadastro() {
     );
 
     Promise.all(deleteRequests)
-    .then((responses) => {
-      // Verifique se todas as solicitações de delete foram bem-sucedidas
-      const allDeleted = responses.every((response) => response.status === 200);
-      if (allDeleted) {
-        // Todos os registros foram excluídos com sucesso
-        console.log("Registros excluídos com sucesso");
-      } else {
-        // Pelo menos uma solicitação de delete falhou
-        console.log("Erro ao excluir registros");
-      }
-    })
+      .then((responses) => {
+        // Verifique se todas as solicitações de delete foram bem-sucedidas
+        const allDeleted = responses.every(
+          (response) => response.status === 200,
+        );
+        if (allDeleted) {
+          // Todos os registros foram excluídos com sucesso
+          console.log("Registros excluídos com sucesso");
+        } else {
+          // Pelo menos uma solicitação de delete falhou
+          console.log("Erro ao excluir registros");
+        }
+      })
       .catch((error) => {
         // Trate o erro aqui
         console.error(error);

@@ -19,6 +19,7 @@ import "primereact/resources/primereact.css";
 import "primeflex/primeflex.css";
 import "../../index.css";
 import Footer from "../Layout/Footer";
+import api from "../Axios/api";
 
 export default function Setores() {
   let emptySetores = {
@@ -92,15 +93,22 @@ export default function Setores() {
       let _register = { ...register };
 
       // Envia o registro do setor para o servidor
-      fetch("https://maliexpress.com.br/setores", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(_register),
-      })
-        .then((resp) => resp.json())
-        .then((data) => {
+      // fetch("https://maliexpress.com.br/setores", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(_register),
+      // })
+      //   .then((resp) => resp.json())
+      //   .then((data) => {
+      //     if (data.id) {
+      //       _register.id = data.id;
+      //     }
+      api
+        .post("/setores", _register)
+        .then((response) => {
+          const data = response.data;
           if (data.id) {
             _register.id = data.id;
           }
@@ -127,51 +135,44 @@ export default function Setores() {
     setRegister({ ...register });
     setRegisterDialog(true);
 
-    fetch(`https://maliexpress.com.br/setores`, {
-      method: "GET",
-      headers: {
-        "Content-type": "application/json",
-      },
-    })
-      .then((resp) => resp.json())
-      .then((data) => {
+    api
+      .get("/setores")
+      .then((response) => {
+        const data = response.data;
         setSetores(data);
         console.log(registers);
       })
-
       .catch((err) => console.log(err));
   };
 
   const saveEditRegister = () => {
     setSubmitted(false);
-
-    fetch(`https://maliexpress.com.br/setores/`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(register),
-    })
-      .then((resp) => resp.json())
-      .then((data) => {
-        const updatedRegister = data; // Utilize a resposta da API com os dados atualizados
-        const updatedRegisters = registers.map((r) =>
-          r.id === updatedRegister.id ? updatedRegister : r,
-        );
-        setRegisters(updatedRegisters);
-        toast.current.show({
-          severity: "success",
-          summary: "Successful",
-          detail: "Register Updated",
-          life: 3000,
-        });
-        setRegisterDialog(false);
-        fetchSetores();
-        console.log(register);
+    api
+      .put(`/setores/`, register)
+      .then((response) => {
+        if (response.status === 200) {
+          const data = response.data;
+          const updatedRegister = data; // Utilize a resposta da API com os dados atualizados
+          const updatedRegisters = registers.map((r) =>
+            r.id === updatedRegister.id ? updatedRegister : r,
+          );
+          setRegisters(updatedRegisters);
+          toast.current.show({
+            severity: "success",
+            summary: "Successful",
+            detail: "Register Updated",
+            life: 3000,
+          });
+          setRegisterDialog(false);
+          fetchSetores();
+        } else {
+          // Lidar com outros status de resposta, se necessário
+          console.error("Erro ao atualizar registro:", response);
+        }
       })
-      .catch((err) => console.log(err));
-
-    console.log(register);
+      .catch((error) => {
+        console.error("Erro ao atualizar registro:", error);
+      });
   };
 
   const confirmDeleteRegister = (register) => {
@@ -180,40 +181,22 @@ export default function Setores() {
   };
 
   const deleteRegister = () => {
-    let _registers = registers.filter((val) => val.id !== register.id);
-    setRegisters(_registers);
-    setDeleteRegisterDialog(false);
-    setRegister(emptySetores);
-    toast.current.show({
-      severity: "success",
-      summary: "Successful",
-      detail: "Register Deleted",
-      life: 3000,
-    });
-
-    fetch(`https://maliexpress.com.br/setores/${register.id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((resp) => resp.json())
+    api
+      .delete(`/setores/${register.id}`)
       .then(() => {
-        setRegister(
-          register.filter((registers) => registers.id !== register.id),
-        );
-
+        const _registers = registers.filter((val) => val.id !== register.id);
+        setRegisters(_registers);
+        setDeleteRegisterDialog(false);
+        setRegister(emptySetores);
         toast.current.show({
           severity: "success",
           summary: "Successful",
-          detail: "Registro deletado com Sucesso",
+          detail: "Register Deleted",
           life: 3000,
         });
-        // setProjectMessage('Projeto Removido com Sucesso !')
+        fetchSetores();
       })
       .catch((err) => console.log(err));
-
-    fetchSetores();
   };
 
   const confirmDeleteSelected = () => {
@@ -238,21 +221,27 @@ export default function Setores() {
     });
 
     const deleteRequests = selects.map((id) =>
-      fetch(`https://maliexpress.com.br/users/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ ids: [id] }),
+      // fetch(`https://maliexpress.com.br/users/${id}`, {
+      //   method: "DELETE",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({ ids: [id] }),
+      // }),
+      api.delete(`/setores/${id}`, {
+        data: { ids: [id] }, // Use 'data' em vez de 'body' no Axios
       }),
     );
 
     Promise.all(deleteRequests)
       .then((responses) => {
         // Verifique se todas as solicitações de delete foram bem-sucedidas
-        const allDeleted = responses.every((response) => response.ok);
+        const allDeleted = responses.every(
+          (response) => response.status === 200,
+        );
         if (allDeleted) {
           // Todos os registros foram excluídos com sucesso
+          fetchSetores();
           console.log("Registros excluídos com sucesso");
         } else {
           // Pelo menos uma solicitação de delete falhou

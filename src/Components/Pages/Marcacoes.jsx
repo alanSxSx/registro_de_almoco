@@ -13,6 +13,7 @@ import Navbar from "../Layout/Navbar";
 import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
 import Footer from "../Layout/Footer";
+import api from "../Axios/api";
 
 export default function Marcacoes() {
   const [registers, setRegisters] = useState(null);
@@ -120,9 +121,17 @@ export default function Marcacoes() {
   }
 
   async function getPrecos() {
-    fetch("https://maliexpress.com.br/precos")
-      .then((resp) => resp.json())
-      .then((data) => {
+    // fetch("https://maliexpress.com.br/precos")
+    //   .then((resp) => resp.json())
+    //   .then((data) => {
+    //     setPrecoFuncAtual(data[0].precofuncionario || "");
+    //     setPrecoEmpAtual(data[0].precoempresa || "");
+    //     setPrecoTotalAtual(data[0].precototal || "");
+    //   })
+    api
+      .get("/precos")
+      .then((response) => {
+        const data = response.data;
         setPrecoFuncAtual(data[0].precofuncionario || "");
         setPrecoEmpAtual(data[0].precoempresa || "");
         setPrecoTotalAtual(data[0].precototal || "");
@@ -131,12 +140,13 @@ export default function Marcacoes() {
   }
 
   async function getRefeicoes() {
-    fetch("https://maliexpress.com.br/refeicoes")
-      .then((resp) => resp.json())
-      .then((data) => {
-        setRefeicoes(data);
-      })
-      .catch((err) => console.log("Erro ao obter dados da API:", err));
+    try {
+      const response = await api.get("/refeicoes");
+      const data = response.data;
+      setRefeicoes(data);
+    } catch (err) {
+      console.log("Erro ao obter dados da API:", err);
+    }
   }
 
   async function handleSalvar(e) {
@@ -171,16 +181,13 @@ export default function Marcacoes() {
         preco_total: precoTotalAtual,
       };
 
-      const postResponse = await fetch("https://maliexpress.com.br/refeicoes", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(refeicaoData),
-      });
+      const response = await api.post("/refeicoes", refeicaoData);
 
-      if (!postResponse.ok) {
-        throw new Error("Falha ao registrar a refeição na API.");
+      if (response.status === 200) {
+        console.log("Refeição criada com sucesso:", response.data);
+        // Realize outras ações, se necessário
+      } else {
+        throw new Error("Falha ao criar refeição.");
       }
 
       console.log("Refeição registrada com sucesso!");
@@ -197,6 +204,89 @@ export default function Marcacoes() {
       );
     }
   }
+
+  // async function getRefeicoes() {
+  //   // fetch("https://maliexpress.com.br/refeicoes")
+  //   //   .then((resp) => resp.json())
+  //   //   .then((data) => {
+  //   //     setRefeicoes(data);
+  //   //   })
+  //   api.get("/refeicoes")
+  // .then((response) => {
+  //   const data = response.data;
+  //   setRefeicoes(data);
+  // })
+  //     .catch((err) => console.log("Erro ao obter dados da API:", err));
+  // }
+
+  // async function handleSalvar(e) {
+  //   e.preventDefault();
+
+  //   try {
+  //     if (!calendar || !timeCalendar || !drop) {
+  //       throw new Error("Por favor, preencha todos os campos necessários.");
+  //     }
+
+  //     const date = new Date(calendar);
+  //     const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1)
+  //       .toString()
+  //       .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`;
+
+  //     const time = new Date(timeCalendar);
+  //     const formattedTime = `${time
+  //       .getHours()
+  //       .toString()
+  //       .padStart(2, "0")}:${time
+  //       .getMinutes()
+  //       .toString()
+  //       .padStart(2, "0")}:${time.getSeconds().toString().padStart(2, "0")}`;
+
+  //     const refeicaoData = {
+  //       id_funcionario: drop.id,
+  //       data: formattedDate,
+  //       time: formattedTime,
+  //       tipo: "M",
+  //       preco_funcionario: precoFuncAtual,
+  //       preco_empresa: precoEmpAtual,
+  //       preco_total: precoTotalAtual,
+  //     };
+
+  //     const postResponse = await
+  //     //   fetch("https://maliexpress.com.br/refeicoes", {
+  //     //   method: "POST",
+  //     //   headers: {
+  //     //     "Content-Type": "application/json",
+  //     //   },
+  //     //   body: JSON.stringify(refeicaoData),
+  //     // });
+  //     api.post("/refeicoes", refeicaoData)
+  // .then((response) => {
+  //   const data = response.data;
+  //   console.log("Refeição criada com sucesso:", data);
+  //   // Realize outras ações, se necessário
+  // })
+  // .catch((error) => {
+  //   console.error("Erro ao criar refeição:", error);
+  // });
+
+  //     if (!postResponse.ok) {
+  //       throw new Error("Falha ao registrar a refeição na API.");
+  //     }
+
+  //     console.log("Refeição registrada com sucesso!");
+  //     toast.success("Refeição registrada com sucesso!");
+  //     //atualiza FRONT
+  //     setDrop("");
+  //     setTimeCalendar("");
+  //     setCalendar("");
+  //     getRefeicoes();
+  //   } catch (error) {
+  //     console.error("Erro ao salvar refeição:", error.message);
+  //     toast.error(
+  //       "Erro ao salvar refeição. Verifique os campos e tente novamente.",
+  //     );
+  //   }
+  // }
 
   function handleChangeSenha(e) {
     setSenhaUsuario(e.target.value); // Atualiza o estado com a senha digitada pelo usuário

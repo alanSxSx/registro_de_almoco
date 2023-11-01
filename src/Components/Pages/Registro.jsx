@@ -11,6 +11,7 @@ import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
 import { format } from "date-fns";
 import Footer from "../Layout/Footer";
+import api from "../Axios/api";
 
 export default function Registro() {
   const [registers, setRegisters] = useState(null);
@@ -159,14 +160,18 @@ export default function Registro() {
   }
 
   async function getPrecos() {
-    fetch("https://maliexpress.com.br/precos")
-      .then((resp) => resp.json())
-      .then((data) => {
+    try {
+      const response = await api.get("/precos");
+      const data = response.data;
+
+      if (data && data.length > 0) {
         setPrecoFuncAtual(data[0].precofuncionario || "");
         setPrecoEmpAtual(data[0].precoempresa || "");
         setPrecoTotalAtual(data[0].precototal || "");
-      })
-      .catch((err) => console.log("Erro ao obter dados da API:", err));
+      }
+    } catch (error) {
+      console.log("Erro ao obter dados de preços da API:", error);
+    }
   }
 
   async function handleSalvar(e) {
@@ -191,18 +196,12 @@ export default function Registro() {
     setIsSaving(true);
 
     try {
-      const response = await fetch(`https://maliexpress.com.br/login`, {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({
-          cpf: selectedRegister.cpf, // Use o CPF do usuário selecionado
-          senha: senhaUsuario,
-        }),
+      const response = await api.post("/login", {
+        cpf: selectedRegister.cpf,
+        senha: senhaUsuario,
       });
 
-      if (!response.ok) {
+      if (response.status !== 200) {
         toast.current.show({
           severity: "error",
           summary: "Error",
@@ -212,7 +211,7 @@ export default function Registro() {
         throw new Error("Falha ao buscar a senha da API.");
       }
 
-      const data = await response.json();
+      const data = response.data;
 
       console.log(data.mensagem);
 
@@ -232,17 +231,9 @@ export default function Registro() {
           preco_total: precoTotalAtual,
         };
 
-        //console.log(refeicaoData)
+        const postResponse = await api.post("/refeicoes", refeicaoData);
 
-        const postResponse = await fetch("https://maliexpress.com.br/refeicoes", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(refeicaoData),
-        });
-
-        if (!postResponse.ok) {
+        if (postResponse.status !== 200) {
           throw new Error("Falha ao registrar a refeição na API.");
         }
 
@@ -289,17 +280,9 @@ export default function Registro() {
 
   async function getUltimaRefeicao(id) {
     try {
-      const response = await fetch(
-        `https://maliexpress.com.br/refeicoes/id_funcionario/${id}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-type": "application/json",
-          },
-        },
-      );
+      const response = await api.get(`/refeicoes/id_funcionario/${id}`);
 
-      if (!response.ok) {
+      if (response.status !== 200) {
         if (response.status === 404) {
           // Recurso não encontrado
           //console.log(`Recurso não encontrado para o ID do funcionário ${id}`);
@@ -309,7 +292,7 @@ export default function Registro() {
         }
       }
 
-      const refeicoesDoUsuario = await response.json();
+      const refeicoesDoUsuario = await response.data;
       const length = refeicoesDoUsuario.length - 1;
       return refeicoesDoUsuario[length]?.data || null;
     } catch (error) {
@@ -351,17 +334,9 @@ export default function Registro() {
 
   async function getUltimaRefeicaoHora(id) {
     try {
-      const response = await fetch(
-        `https://maliexpress.com.br/refeicoes/id_funcionario/${id}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-type": "application/json",
-          },
-        },
-      );
+      const response = await api.get(`/refeicoes/id_funcionario/${id}`);
 
-      if (!response.ok) {
+      if (response.status !== 200) {
         if (response.status === 404) {
           // Recurso não encontrado
           console.log(`Nenhuma refeição registrada para o funcionário: ${id}`);
@@ -371,7 +346,7 @@ export default function Registro() {
         }
       }
 
-      const refeicoesDoUsuario = await response.json();
+      const refeicoesDoUsuario = await response.data;
       const length = refeicoesDoUsuario.length - 1;
       return refeicoesDoUsuario[length]?.time || null;
     } catch (error) {

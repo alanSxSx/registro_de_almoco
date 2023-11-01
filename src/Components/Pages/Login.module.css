@@ -83,13 +83,12 @@
 }
 
 @media screen and (max-width: 767px) {
-
-  .divform{
+  .divform {
     height: auto;
     margin: 0;
   }
 
-  .divMain{
+  .divMain {
     height: auto;
   }
 
@@ -120,8 +119,7 @@
     width: 100%;
     border-radius: 0;
     border: none;
-    height: 75vh
-  
+    height: 75vh;
   }
 
   .form input {

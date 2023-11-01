@@ -85,9 +85,8 @@ export const AuthProvider = ({ children }) => {
         life: 5000,
       });
       console.error("Erro ao buscar os dados:", error);
-      setLoading(false)   
+      setLoading(false);
       navigate("/registro");
-    
     }
   };
 

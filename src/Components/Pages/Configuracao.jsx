@@ -4,6 +4,7 @@ import Navbar from "../Layout/Navbar";
 import { Input } from "../Forms/Input";
 import { Button } from "../Forms/Button";
 import Footer from "../Layout/Footer";
+import api from "../Axios/api";
 
 export default function Configuracao() {
   const [precos, setPrecos] = useState(null);
@@ -12,9 +13,22 @@ export default function Configuracao() {
   const [precoTotalAtual, setPrecoTotalAtual] = useState("");
 
   useEffect(() => {
-    fetch("https://maliexpress.com.br/precos")
-      .then((resp) => resp.json())
-      .then((data) => {
+    // fetch("https://maliexpress.com.br/precos")
+    //   .then((resp) => resp.json())
+    //   .then((data) => {
+    //     setPrecos(data);
+    //     setPrecoFuncAtual(data[0].precofuncionario || "");
+    //     setPrecoEmpAtual(data[0].precoempresa || "");
+    //     setPrecoTotalAtual(data[0].precototal || "");
+    //   })
+    api
+      .get("/precos", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        const data = response.data;
         setPrecos(data);
         setPrecoFuncAtual(data[0].precofuncionario || "");
         setPrecoEmpAtual(data[0].precoempresa || "");
@@ -37,15 +51,29 @@ export default function Configuracao() {
 
   function submit(e) {
     e.preventDefault();
-    fetch(`https://maliexpress.com.br/precos/${precos[0].id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(precos),
-    })
-      .then((resp) => resp.json())
-      .then((data) => {
+    // fetch(`https://maliexpress.com.br/precos/${precos[0].id}`, {
+    //   method: "PATCH",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(precos),
+    // })
+    //   .then((resp) => resp.json())
+    //   .then((data) => {
+    //     console.log("Dados inseridos com sucesso:", data);
+    //     // Aqui você pode realizar outras ações após a inserção dos dados, se necessário.
+    //     setPrecoFuncAtual(data.precofuncionario || "");
+    //     setPrecoEmpAtual(data.precoempresa || "");
+    //     setPrecoTotalAtual(data.precototal || "");
+    //   })
+    api
+      .patch(`/precos/${precos[0].id}`, precos, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        const data = response.data;
         console.log("Dados inseridos com sucesso:", data);
         // Aqui você pode realizar outras ações após a inserção dos dados, se necessário.
         setPrecoFuncAtual(data.precofuncionario || "");
