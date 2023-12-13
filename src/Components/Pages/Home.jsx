@@ -17,6 +17,7 @@ export default function Home() {
   const [precos, setPrecos] = useState();
   const [refeicoes, setRefeicoes] = useState();
   const [dates, setDates] = useState(null);
+  const [totalQtdePorFuncionario,setTotalQtdePorFuncionario] = useState({});
   const [
     totalAPagarPorFuncionarioCalculated,
     setTotalAPagarPorFuncionarioCalculated,
@@ -30,6 +31,7 @@ export default function Home() {
 
   const cols = [
     { field: "name", header: "Nome Funcionario" },
+    { field: "totalQtde", header: "Total de Refeições" },
     { field: "totalFuncionario", header: "Total a Pagar" },
     { field: "totalEmpresa", header: "Total Empresa" },
     { field: "totalGeral", header: "Total Agregado" },
@@ -292,19 +294,75 @@ export default function Home() {
 
   //FIM TOTAL A PAGAR GERAL POR FUNCIONARIO ---------------------------------------------------------
 
+  function TotalQtdeFunc() {
+    setTotalQtdePorFuncionario({}); // Limpa os totais calculados
+
+    if (!dates || !refeicoes || !precos || !data) {
+      console.log("Dados insuficientes para o cálculo.");
+      return;
+    }
+
+    const totalPorFuncionario = {};
+
+    data.forEach((funcionario) => {
+      const refeicoesDoFuncionarioNoIntervalo = refeicoes.filter((refeicao) => {
+        const dataRefeicao = new Date(refeicao.data);
+  
+        // Obtenha a parte da data em formato 'yyyy-mm-dd'
+        const dataRefeicaoString = dataRefeicao.toISOString().split("T")[0];
+  
+        if (dates.length === 2) {
+          const startDate = new Date(dates[0]);
+          const endDate = new Date(dates[1]);
+  
+          // Obtenha a parte da data em formato 'yyyy-mm-dd'
+          const startDateString = startDate.toISOString().split("T")[0];
+          const endDateString = endDate.toISOString().split("T")[0];
+  
+          // Compare as datas em formato 'yyyy-mm-dd'
+          return (
+            dataRefeicaoString >= startDateString &&
+            dataRefeicaoString <= endDateString &&
+            refeicao.id_funcionario === funcionario.id
+          );
+        }
+        return false;
+      });
+
+
+      // const totalAPagarFuncionario = refeicoesDoFuncionarioNoIntervalo.reduce(
+      //   (total, refeicao) => total + parseFloat(refeicao.preco_empresa),
+      //   0,
+      // );
+      const totalRegistrosFuncionario = refeicoesDoFuncionarioNoIntervalo.length;
+
+      totalPorFuncionario[funcionario.id] = totalRegistrosFuncionario;
+    });
+
+    setTotalQtdePorFuncionario(totalPorFuncionario);
+  }
+
+  //FIM TOTAL QTDE
+
   const exportPdf = () => {
     import("jspdf").then((jsPDF) => {
       import("jspdf-autotable").then(() => {
         // Cria uma cópia dos dados atualizados para exibir no PDF
         const updatedData = data.map((funcionario) => ({
           ...funcionario,
+          totalQtde: totalQtdePorFuncionario[funcionario.id] || 0,
           totalFuncionario:
             totalAPagarPorFuncionarioCalculated[funcionario.id] || 0,
           totalEmpresa: totalAPagarPorFuncionarioEmpresa[funcionario.id] || 0,
           totalGeral: totalAPagarPorFuncionarioGeral[funcionario.id] || 0,
+        
         }));
 
         // Calcula os totais
+        const totalQtdeFunc = updatedData.reduce(
+          (total, funcionario) => total + funcionario.totalQtde,
+          0,
+        );
         const totalFuncAPagar = updatedData.reduce(
           (total, funcionario) => total + funcionario.totalFuncionario,
           0,
@@ -320,6 +378,10 @@ export default function Home() {
 
         const totalRow = [
           { content: "Total", styles: { fontStyle: "bold" } },
+          {
+            content: totalQtdeFunc.toString(),
+            styles: { fontStyle: "bold" },
+          },
           {
             content: totalFuncAPagar.toString(),
             styles: { fontStyle: "bold" },
@@ -404,6 +466,9 @@ export default function Home() {
     dataKey: col.field,
   }));
 
+  const totalQtdeRefs = data.reduce((total, funcionario) => {
+    return total + (totalQtdePorFuncionario[funcionario.id] || 0);
+  }, 0);
   const totalFuncAPagar = data.reduce((total, funcionario) => {
     return total + (totalAPagarPorFuncionarioCalculated[funcionario.id] || 0);
   }, 0);
@@ -416,10 +481,12 @@ export default function Home() {
     return total + (totalAPagarPorFuncionarioGeral[funcionario.id] || 0);
   }, 0);
 
+
   function handleButtonExibir() {
     calcularTotalAPagarPorFuncionario();
     TotalAPagarEmpresa();
     TotalAPagarGeral();
+    TotalQtdeFunc();
     setData([...data]);
     console.log(refeicoes);
   }
@@ -547,6 +614,13 @@ export default function Home() {
                   sortable
                   style={{ maxWidth: "8rem" }}
                   footer={"Total"}
+                />
+                <Column
+                  field="totalRef"
+                  header="Total de Refeicoes"
+                  style={{ maxWidth: "4rem" }}
+                  body={(rowData) =>`${totalQtdePorFuncionario[rowData.id] || 0}`}
+                  footer={`${totalQtdeRefs}`}
                 />
                 <Column
                   field="totalfunc"
