@@ -150,75 +150,42 @@ export default function Cadastro() {
         .catch((err) => console.log(err));
     }
 
-    console.log(register);
+    // console.log(register);
   };
 
   const editRegister = (register) => {
-    setRegister({ ...register });
+    setRegister((prevRegister) => ({ ...prevRegister, ...register }));
     setRegisterDialog(true);
 
-    // fetch(`https://maliexpress.com.br/setores`, {
-    //   method: "GET",
-    //   headers: {
-    //     "Content-type": "application/json",
-    //   },
-    // })
-    api
-      .get("/setores", {
-        // Use a instância do Axios com a base URL
-        headers: {
-          "Content-type": "application/json",
-        },
-      })
-      // .then((resp) => resp.json())
-      // .then((data) => {
-      //   setSetores(data);
-      //   console.log(registers);
-      // })
-      .then((response) => {
-        const data = response.data.dadosUsuario; // A resposta já contém os dados dos setores
-        setSetores(data);
-        console.log(data); // Exibe os dados dos setores
-      })
+    // api
+    //   .get("/setores", {
+    //     headers: {
+    //       "Content-type": "application/json",
+    //     },
+    //   })
+    
+    //   .then((response) => {
+    //     const data = response.data.dadosUsuario; // A resposta já contém os dados dos setores
+    //     setSetores(data);
+    //     console.log(data); // Exibe os dados dos setores
+    //   })
 
-      .catch((err) => console.log(err));
+    //   .catch((err) => console.log(err));
   };
 
   const saveEditRegister = () => {
-    setSubmitted(false);
+    // setSubmitted(false);
+    //console.log(register.id)
 
-    // fetch(`https://maliexpress.com.br/users/${register.id}`, {
-    //   method: "PATCH",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(register),
-    // })
     api
       .patch(`/users/${register.id}`, register, {
-        // Use a instância do Axios com a base URL
         headers: {
           "Content-Type": "application/json",
         },
       })
-      // .then((resp) => resp.json())
-      // .then((data) => {
-      //   const updatedRegister = data; // Utilize a resposta da API com os dados atualizados
-      //   const updatedRegisters = registers.map((r) =>
-      //     r.id === updatedRegister.id ? updatedRegister : r,
-      //   );
-      //   setRegisters(updatedRegisters);
-      //   toast.current.show({
-      //     severity: "success",
-      //     summary: "Successful",
-      //     detail: "Register Updated",
-      //     life: 3000,
-      //   });
-      //   setRegisterDialog(false);
-      //   console.log(register);
-      // })
       .then((response) => {
-        const updatedRegister = response.data.dadosUsuario; // Utilize a resposta da API com os dados atualizados
+       // console.log(response.data)
+        const updatedRegister = response.data; // Utilize a resposta da API com os dados atualizados
         const updatedRegisters = registers.map((r) =>
           r.id === updatedRegister.id ? updatedRegister : r,
         );
@@ -230,11 +197,11 @@ export default function Cadastro() {
           life: 3000,
         });
         setRegisterDialog(false);
-        console.log(register);
+       // console.log(register);
       })
       .catch((err) => console.log(err));
 
-    console.log(register);
+    //console.log(register);
   };
 
   const confirmDeleteRegister = (register) => {
@@ -364,7 +331,7 @@ export default function Cadastro() {
         console.error(error);
       });
 
-    console.log(selects);
+    //console.log(selects);
   };
 
   function getStatusLabel(status) {
@@ -597,8 +564,11 @@ export default function Cadastro() {
   };
 
   const getSetorName = (rowData) => {
+    
     const setorId = rowData.id_setor;
-    const setor = setores.find((setor) => setor.id === setorId);
+   const setor = setores && setores.find((setor) => setor.id === setorId);
+  
+   
 
     return setor ? setor.name : "";
   };

@@ -55,9 +55,6 @@ export default function Home() {
 
   // Função para fazer o GET na tabela "users"
   async function getData() {
-    // const response = await api.get("https://maliexpress.com.br/users");
-    // const data = await response.data;
-    // return data;
     try {
       const response = await api.get("/users"); // Use o caminho relativo após configurar a URL base
       const data = response.data;
