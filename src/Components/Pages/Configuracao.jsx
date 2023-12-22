@@ -13,14 +13,6 @@ export default function Configuracao() {
   const [precoTotalAtual, setPrecoTotalAtual] = useState("");
 
   useEffect(() => {
-    // fetch("https://maliexpress.com.br/precos")
-    //   .then((resp) => resp.json())
-    //   .then((data) => {
-    //     setPrecos(data);
-    //     setPrecoFuncAtual(data[0].precofuncionario || "");
-    //     setPrecoEmpAtual(data[0].precoempresa || "");
-    //     setPrecoTotalAtual(data[0].precototal || "");
-    //   })
     api
       .get("/precos", {
         headers: {
@@ -51,21 +43,7 @@ export default function Configuracao() {
 
   function submit(e) {
     e.preventDefault();
-    // fetch(`https://maliexpress.com.br/precos/${precos[0].id}`, {
-    //   method: "PATCH",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(precos),
-    // })
-    //   .then((resp) => resp.json())
-    //   .then((data) => {
-    //     console.log("Dados inseridos com sucesso:", data);
-    //     // Aqui você pode realizar outras ações após a inserção dos dados, se necessário.
-    //     setPrecoFuncAtual(data.precofuncionario || "");
-    //     setPrecoEmpAtual(data.precoempresa || "");
-    //     setPrecoTotalAtual(data.precototal || "");
-    //   })
+
     api
       .patch(`/precos/${precos[0].id}`, precos, {
         headers: {
@@ -91,7 +69,7 @@ export default function Configuracao() {
           <form onSubmit={submit} className={styles.form}>
             <div className={styles.divinput}>
               <Input
-                type="text"
+                type="number"
                 text="Preço Funcionário"
                 name="precofunc"
                 className="precofunc"
@@ -100,7 +78,7 @@ export default function Configuracao() {
                 value={precos?.precofuncionario || ""}
               />
               <Input
-                type="text"
+                type="number"
                 text="Preço Empresa"
                 name="precoemp"
                 id="precoemp"
@@ -109,7 +87,7 @@ export default function Configuracao() {
                 value={precos?.precoempresa || ""}
               />
               <Input
-                type="text"
+                type="number"
                 text="Preço Total"
                 name="precototal"
                 id="precototal"
